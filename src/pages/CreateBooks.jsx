@@ -8,7 +8,7 @@ import { useSnackbar } from 'notistack';
 const CreateBooks = () => {
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
-  const [publishYear, setPublishYear] = useState('');
+  // const [publishYear, setPublishYear] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
@@ -52,7 +52,7 @@ const CreateBooks = () => {
 
   return (
     <div className="p-4">
-      <BackButton />
+      {/* <BackButton /> */}
       <h1 className="text-3xl my-4">Create Book</h1>
       {loading && <Spinner />}
       <div className="flex flex-col border-2 border-sky-400 rounded-xl w-[600px] p-4 mx-auto">

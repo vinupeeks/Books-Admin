@@ -10,11 +10,14 @@ import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import { jwtDecode } from 'jwt-decode';
 import Offcanvas from 'react-bootstrap/Offcanvas';
-import LogDetails from '../../pages/LogDetails';
 import { useNavigate } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
+import { useViewContext } from '../../ViewContext';
 
 export default function AppBarWithSideMenu() {
+
+    const { setViewFormat } = useViewContext();
+
     const { enqueueSnackbar } = useSnackbar();
     const [auth, setAuth] = useState(true);
     const [anchorEl, setAnchorEl] = useState(null);
@@ -22,12 +25,19 @@ export default function AppBarWithSideMenu() {
     const [sideMenu, setSideMenu] = useState(false);
     const [role, setRole] = useState('');
     const [show, setShow] = useState(false);
+    const [showType, setShowType] = useState('table')
     const navigate = useNavigate();
 
     const handleClose = (e) => {
         setShow(false);
         console.log(e);
         setAnchorEl(null);
+    };
+
+    const handleViewChange = (format) => {
+        setViewFormat(format); 
+        setSideMenu((prev) => !prev);
+        // navigate('/home'); 
     };
 
     const handleLogOut = () => {
@@ -167,7 +177,7 @@ export default function AppBarWithSideMenu() {
                                         <li>
                                             <a
                                                 className="text-black font-normal block px-4 py-2 rounded hover:bg-gray-200 transition no-underline"
-                                                onClick={() => alert('table clicked')}
+                                                onClick={() => handleViewChange('table')}
                                             >
                                                 Table
                                             </a>
@@ -175,7 +185,7 @@ export default function AppBarWithSideMenu() {
                                         <li>
                                             <a
                                                 className="text-black font-normal block px-4 py-2 rounded hover:bg-gray-200 transition no-underline"
-                                                onClick={() => alert('card clicked')}
+                                                onClick={() => handleViewChange('card')}
                                             >
                                                 Card
                                             </a>
@@ -225,6 +235,6 @@ export default function AppBarWithSideMenu() {
                     </Offcanvas.Body>
                 </Offcanvas>
             </>
-        </Box>
+        </Box >
     );
 }

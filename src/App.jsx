@@ -12,6 +12,7 @@ import PrivateRoute from './utils/PrivateRoute';
 import Navbar from './components/home/Navbar';
 import LogDetails from './pages/LogDetails';
 import UsersList from './pages/UsersList';
+import { ViewProvider } from './ViewContext';
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -29,21 +30,22 @@ const App = () => {
   };
 
   return (
-    <>
-      {isAuthenticated && <Navbar />}
-      <Routes>
-        <Route path='/' element={<Home />} />
-        <Route path='/login' element={<Login />} />
-        <Route path="/books/create" element={<PrivateRoute element={<CreateBook />} />} />
-        <Route path='/books/details/:id' element={<ShowBook />} />
-        <Route path="/books/edit/:id" element={<PrivateRoute element={<EditBook />} />} />
-        <Route path='/books/delete/:id' element={<PrivateRoute element={<DeleteBook />} />} />
-        <Route path='/admin/users' element={<PrivateRoute element={<UsersList />} />} />
-        <Route path='/cart' element={<PrivateRoute element={<BookCart />} />} />
-        <Route path='/logout' element={<LogDetails handleLogout={handleLogout} />} />
-        <Route path='*' element={<NotFound />} />
-      </Routes>
-    </>
+    <ViewProvider>
+      <>
+        {isAuthenticated && <Navbar />}
+        <Routes>
+          <Route path='/' element={<Home />} />
+          <Route path='/login' element={<Login />} />
+          <Route path="/books/create" element={<PrivateRoute element={<CreateBook />} />} />
+          <Route path='/books/details/:id' element={<ShowBook />} />
+          <Route path="/books/edit/:id" element={<PrivateRoute element={<EditBook />} />} />
+          <Route path='/books/delete/:id' element={<PrivateRoute element={<DeleteBook />} />} />
+          <Route path='/admin/users' element={<PrivateRoute element={<UsersList />} />} />
+          <Route path='/cart' element={<PrivateRoute element={<BookCart />} />} />
+          <Route path='/logout' element={<LogDetails handleLogout={handleLogout} />} />
+          <Route path='*' element={<NotFound />} />
+        </Routes>
+      </></ViewProvider>
   );
 };
 
