@@ -1,59 +1,65 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import Spinner from '../components/Spinner';
+import { useSnackbar } from 'notistack';
+import { Navigate } from 'react-router-dom';
 
 const UsersList = () => {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const { enqueueSnackbar } = useSnackbar();
 
     useEffect(() => {
-        // Fetch users from the API
         const fetchUsers = async () => {
             try {
-                // Make sure the URL matches the actual API endpoint
                 const response = await axios.get('http://localhost:1000/admin-users/all');
                 console.log('Fetched users:', response.data);
 
-                // If the response is an array, set it to the state
                 setUsers(response.data);
             } catch (err) {
-                setError(err.message); // Handle any errors from the request
+                setError(err.message);
             } finally {
-                setLoading(false); // End loading state
+                setLoading(false);
             }
         };
 
         fetchUsers();
     }, []);
 
-    if (loading) return <div>Loading...</div>;
-    if (error) return <div>Error: {error}</div>;
+    if (loading) return <Spinner />;
+    if (error) {
+        enqueueSnackbar('Error Fetching Users List', { variant: 'warning' });
+        // Navigate("/");
+    };
 
     return (
-        <div>
-            <h2>User List</h2>
-            {users.length > 0 ? (
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Username</th>
-                            <th>Email</th>
-                            <th>Role</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {users.map((user) => (
-                            <tr key={user.id}>
-                                <td>{user.username}</td>
-                                <td>{user.email}</td>
-                                <td>{user.role ? 'Admin' : 'User'}</td>
+        <div className="min-h-screen bg-gray-100 py-8 flex items-center justify-center">
+            <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-4xl">
+                <h2 className="text-2xl font-semibold text-gray-700 mb-6">User List</h2>
+                {users.length > 0 ? (
+                    <table className="min-w-full table-auto">
+                        <thead>
+                            <tr>
+                                <th className="px-4 py-2 text-left text-gray-600">Username</th>
+                                <th className="px-4 py-2 text-left text-gray-600">Email</th>
+                                <th className="px-4 py-2 text-left text-gray-600">Role</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
-            ) : (
-                <p>No users found</p>
-            )}
+                        </thead>
+                        <tbody>
+                            {users.map((user) => (
+                                <tr key={user.id} className="border-b">
+                                    <td className="px-4 py-2 text-gray-800">{user.username}</td>
+                                    <td className="px-4 py-2 text-gray-800">{user.email}</td>
+                                    <td className="px-4 py-2 text-gray-800">{user.role ? 'Admin' : 'User'}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                ) : (
+                    <p className="text-center text-gray-600">No users found</p>
+                )}
+            </div>
         </div>
     );
 };

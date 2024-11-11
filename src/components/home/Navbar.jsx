@@ -29,13 +29,22 @@ export default function AppBarWithSideMenu() {
     const navigate = useNavigate();
 
     const handleClose = (e) => {
+        
+        if (e && !e.altKey) {
+            console.log(e);
+            e = null;
+        }
+        if (e) {
+            navigate(`/${e}`);
+        }
         setShow(false);
-        console.log(e);
+        // console.log(e);
         setAnchorEl(null);
     };
 
+
     const handleViewChange = (format) => {
-        setViewFormat(format); 
+        setViewFormat(format);
         setSideMenu((prev) => !prev);
         // navigate('/home'); 
     };
@@ -75,7 +84,7 @@ export default function AppBarWithSideMenu() {
     }, []);
 
     return (
-        <Box sx={{ flexGrow: 1 }}>
+        <Box sx={{ flexGrow: 2 }}>
             <AppBar position="static">
                 <Toolbar>
                     <IconButton
@@ -88,7 +97,7 @@ export default function AppBarWithSideMenu() {
                     >
                         <MenuIcon />
                     </IconButton>
-                    <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                    <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} onClick={() => { navigate(`/`) }}>
                         Books-Library
                     </Typography>
                     {auth && (
@@ -123,7 +132,7 @@ export default function AppBarWithSideMenu() {
                                 open={Boolean(anchorEl)}
                                 onClose={handleClose}
                             >
-                                <MenuItem onClick={() => { handleClose('profile') }}>Profile</MenuItem>
+                                <MenuItem onClick={() => { handleClose('admin/profile') }}>Profile</MenuItem>
                                 <MenuItem onClick={() => { handleClose('account') }}>My account</MenuItem>
                             </Menu>
                         </div>
@@ -192,15 +201,15 @@ export default function AppBarWithSideMenu() {
                                         </li>
                                     </ul>
                                 </li>
-                                <li className="mb-3">
+                                {/* <li className="mb-3">
                                     <a
-                                        href="/profile"
+                                        href="/admin/profile"
                                         onClick={() => handleMenuClick()}
                                         className="text-black font-semibold block px-4 py-2 rounded hover:bg-blue-300 transition no-underline"
                                     >
                                         Profile
                                     </a>
-                                </li>
+                                </li> */}
                                 <li className="mb-3">
                                     <a
                                         href="/admin/users"
@@ -226,7 +235,6 @@ export default function AppBarWithSideMenu() {
                                         }}
                                         className="text-black font-semibold block px-4 py-2 rounded hover:bg-blue-300 transition no-underline"
                                     >
-                                        {/* <LogDetails /> */}
                                         Log-Out
                                     </div>
                                 </li>
@@ -235,6 +243,7 @@ export default function AppBarWithSideMenu() {
                     </Offcanvas.Body>
                 </Offcanvas>
             </>
+            {/* <br /> */}
         </Box >
     );
 }
