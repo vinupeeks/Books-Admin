@@ -37,27 +37,16 @@ const App = () => {
         {isAuthenticated && <Navbar />}
         <Routes>
           <Route path='/' element={<Home />} />
-
           <Route path='/login' element={<Login />} />
-
           <Route path="/books/create" element={<PrivateRoute element={<CreateBook />} />} />
-
           <Route path='/books/details/:id' element={<ShowBook />} />
-
           <Route path="/books/edit/:id" element={<PrivateRoute element={<EditBook />} />} />
-
           <Route path='/books/delete/:id' element={<PrivateRoute element={<DeleteBook />} />} />
-
           <Route path='/admin/users' element={<PrivateRoute element={<UsersList />} />} />
-
           <Route path='/admin/profile' element={<PrivateRoute element={<Profile />} />} />
-
           <Route path='/cart' element={<PrivateRoute element={<BookCart />} />} />
-
           <Route path='/contact' element={<PrivateRoute element={<ContactPage />} />} />
-
           <Route path='/logout' element={<LogDetails handleLogout={handleLogout} />} />
-
           <Route path='*' element={<NotFound />} />
         </Routes>
       </></ViewProvider>
