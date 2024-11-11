@@ -49,7 +49,8 @@ const App = () => {
           <Route path='/logout' element={<LogDetails handleLogout={handleLogout} />} />
           <Route path='*' element={<NotFound />} />
         </Routes>
-      </></ViewProvider>
+      </>
+    </ViewProvider>
   );
 };
 
