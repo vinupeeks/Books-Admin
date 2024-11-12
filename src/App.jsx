@@ -1,20 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import Home from './pages/Home';
-import Login from './pages/Login';
-import CreateBook from './pages/CreateBooks';
-import ShowBook from './pages/ShowBook';
-import EditBook from './pages/EditBook';
-import DeleteBook from './pages/DeleteBook';
-import NotFound from './components/NotFound';
-import BookCart from './pages/BookCart';
+import Home from './components/Home/Home';
+import ShowBook from './components/Books/ShowBook';
+import EditBook from './components/Books/EditBook';
+import DeleteBook from './components/Books/DeleteBook';
+import NotFound from './utils/NotFound';
+import BasicCard from './components/cart/BookCart';
 import PrivateRoute from './utils/PrivateRoute';
-import Navbar from './components/home/Navbar';
-import LogDetails from './pages/LogDetails';
-import UsersList from './pages/UsersList';
-import Profile from './pages/Profile';
+import Navbar from './components/navbar/Navbar';
+import LogDetails from './components/Log/LogDetails';
+import UsersList from './components/UserList/UsersList';
+import Profile from './components/Profile/Profile';
 import { ViewProvider } from './ViewContext';
-import ContactPage from './components/home/ContactPage';
+import ContactPage from './components/contact/ContactPage';
+import CreateBooks from './components/Books/CreateBooks';
+import AdminLogin from './components/Log/Login';
+import RouteConstants from "./constant/Routeconstant.jsx";
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -36,18 +37,18 @@ const App = () => {
       <>
         {isAuthenticated && <Navbar />}
         <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='/login' element={<Login />} />
-          <Route path="/books/create" element={<PrivateRoute element={<CreateBook />} />} />
-          <Route path='/books/details/:id' element={<ShowBook />} />
-          <Route path="/books/edit/:id" element={<PrivateRoute element={<EditBook />} />} />
-          <Route path='/books/delete/:id' element={<PrivateRoute element={<DeleteBook />} />} />
-          <Route path='/admin/users' element={<PrivateRoute element={<UsersList />} />} />
-          <Route path='/admin/profile' element={<PrivateRoute element={<Profile />} />} />
-          <Route path='/cart' element={<PrivateRoute element={<BookCart />} />} />
-          <Route path='/contact' element={<PrivateRoute element={<ContactPage />} />} />
-          <Route path='/logout' element={<LogDetails handleLogout={handleLogout} />} />
-          <Route path='*' element={<NotFound />} />
+          <Route path={RouteConstants.ROOT} element={<Home />} />
+          <Route path={RouteConstants.LOGIN} element={<AdminLogin />} />
+          <Route path={RouteConstants.BOOKCREATE} element={<PrivateRoute element={<CreateBooks />} />} />
+          <Route path={RouteConstants.BOKKSDETAILS} element={<ShowBook />} />
+          <Route path={RouteConstants.BOOKSEDIT} element={<PrivateRoute element={<EditBook />} />} />
+          <Route path={RouteConstants.BOOKSDELETE} element={<PrivateRoute element={<DeleteBook />} />} />
+          <Route path={RouteConstants.USERSLIST} element={<PrivateRoute element={<UsersList />} />} />
+          <Route path={RouteConstants.ADMINPROFILE} element={<PrivateRoute element={<Profile />} />} />
+          <Route path={RouteConstants.CART} element={<PrivateRoute element={<BasicCard />} />} />
+          <Route path={RouteConstants.CONTACT} element={<PrivateRoute element={<ContactPage />} />} />
+          <Route path={RouteConstants.LOGOUT} element={<LogDetails handleLogout={handleLogout} />} />
+          <Route path={RouteConstants.NOTFOUND} element={<NotFound />} />
         </Routes>
       </>
     </ViewProvider>

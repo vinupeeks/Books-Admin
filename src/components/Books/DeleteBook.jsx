@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import BackButton from '../components/BackButton';
-import Spinner from '../components/Spinner';
+import BackButton from '../../utils/BackButton';
+import Spinner from '../../utils/Spinner';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
+import RouteConstants from '../../constant/Routeconstant';
 
 const DeleteBook = () => {
   const [loading, setLoading] = useState(false);
@@ -18,7 +19,7 @@ const DeleteBook = () => {
     const Token = localStorage.getItem('BooksAdminToken')
     if (!Token) {
       enqueueSnackbar('You need to log-In.', { variant: 'warning' });
-      navigate('/login');
+      navigate(RouteConstants.LOGIN);
       return;
     }
 
@@ -31,7 +32,7 @@ const DeleteBook = () => {
       .then(() => {
         setLoading(false);
         enqueueSnackbar('Book deleted successfully', { variant: 'success' });
-        navigate('/');
+        navigate(RouteConstants.ROOT);
       })
       .catch((error) => {
         setLoading(false);
@@ -46,7 +47,7 @@ const DeleteBook = () => {
       const Token = localStorage.getItem('BooksAdminToken');
       if (!Token) {
         enqueueSnackbar('You need to log in to show the book.', { variant: 'warning' });
-        navigate('/login');
+        navigate(RouteConstants.LOGIN);
         return;
       }
 

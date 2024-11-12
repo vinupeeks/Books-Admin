@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useSnackbar } from 'notistack';
 import { useNavigate } from 'react-router-dom';
+import RouteConstants from '../../constant/Routeconstant';
 
 const AdminLogin = ({ onLogIn }) => {
     const [email, setEmail] = useState('');
@@ -21,7 +22,7 @@ const AdminLogin = ({ onLogIn }) => {
                 const token = response.data.token;
                 localStorage.setItem('BooksAdminToken', token);
                 enqueueSnackbar('Login successful', { variant: 'success' });
-                navigate('/');
+                navigate(RouteConstants.ROOT);
             } else {
                 enqueueSnackbar('Invalid email or password', { variant: 'error' });
             }

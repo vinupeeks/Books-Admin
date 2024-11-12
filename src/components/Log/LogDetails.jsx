@@ -2,6 +2,7 @@ import { jwtDecode } from 'jwt-decode';
 import { useSnackbar } from 'notistack';
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import RouteConstants from '../../constant/Routeconstant';
 
 function LogDetails({ handleLOGOUT }) {
     const [user, setUser] = useState(null);
@@ -24,26 +25,18 @@ function LogDetails({ handleLOGOUT }) {
         }
     }, []);
 
-    // const handleLogout = () => {
-    //     localStorage.removeItem('BooksAdminToken');
-    //     setUser(null);
-    //     enqueueSnackbar('User Logged-Out Successfully', { variant: 'success' });
-    //     navigate('/login');
-    //     handleLOGOUT();  // Update the parent component state
-    // };
-
     return (
         <div>
             {user ? (
                 <button
                     className="w-fit px-4 py-1 rounded-lg text-white hover:bg-[#92C5FC]"
                     style={{ backgroundColor: '#1976D2' }}
-                    // onClick={handleLogout}
+                // onClick={handleLogout}
                 >
                     LogOut
                 </button>
             ) : (
-                <Link to="/login" className="w-fit px-4 py-1 rounded-lg text-white hover:bg-blue-300"
+                <Link to={RouteConstants.LOGIN} className="w-fit px-4 py-1 rounded-lg text-white hover:bg-blue-300"
                     style={{ backgroundColor: '#1976D2' }}
                 >
                     Log In

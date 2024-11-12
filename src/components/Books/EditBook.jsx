@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import BackButton from '../components/BackButton';
-import Spinner from '../components/Spinner';
+import BackButton from '../../utils/BackButton';
+import Spinner from '../../utils/Spinner';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
+import RouteConstants from '../../constant/Routeconstant';
 
 const EditBook = () => {
   const [title, setTitle] = useState('');
@@ -37,7 +38,7 @@ const EditBook = () => {
       .then(() => {
         setLoading(false);
         enqueueSnackbar('Book edited successfully', { variant: 'success' });
-        navigate('/');
+        navigate(RouteConstants.ROOT);
       })
       .catch((error) => {
         setLoading(false);

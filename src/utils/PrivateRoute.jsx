@@ -9,6 +9,8 @@ const PrivateRoute = ({ element }) => {
     if (token) {
         try {
             const decodedToken = jwtDecode(token);
+            console.log(`Decoded : `, decodedToken);
+
             isAdmin = decodedToken.role;
         } catch (error) {
             console.error('Error decoding token', error);

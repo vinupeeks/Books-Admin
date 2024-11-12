@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import BookSingleCart from './BookSingleCart.jsx';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import RouteConstants from '../../constant/Routeconstant.jsx';
 
 
 export default function BasicCard() {
@@ -10,7 +11,7 @@ export default function BasicCard() {
     const navigate = useNavigate();
 
     const NvBtn = () => {
-        navigate('/')
+        navigate(RouteConstants.ROOT);
     }
 
     useEffect(() => {

@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import Spinner from '../components/Spinner';
+import Spinner from '../../utils/Spinner';
 import { Link, useNavigate } from 'react-router-dom';
 import { MdOutlineAddBox } from 'react-icons/md';
-import BooksTable from '../components/home/BooksTable';
-import BooksCard from '../components/home/BooksCard';
+import BooksTable from '../Books/BooksTable';
+import BooksCard from '../Books/BooksCard';
 import { useSnackbar } from 'notistack';
-import { useViewContext } from '../ViewContext';
+import { useViewContext } from '../../ViewContext';
+import RouteConstants from '../../constant/Routeconstant';
 
 const Home = () => {
 
@@ -22,7 +23,7 @@ const Home = () => {
     const Token = localStorage.getItem('BooksAdminToken')
     if (!Token) {
       enqueueSnackbar('You need to log-In.', { variant: 'warning' });
-      navigate('/login');
+      navigate(RouteConstants.LOGIN);
       return;
     }
 

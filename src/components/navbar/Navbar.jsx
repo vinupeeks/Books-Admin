@@ -13,6 +13,7 @@ import Offcanvas from 'react-bootstrap/Offcanvas';
 import { useNavigate } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
 import { useViewContext } from '../../ViewContext';
+import RouteConstants from '../../constant/Routeconstant';
 
 export default function AppBarWithSideMenu() {
 
@@ -51,7 +52,7 @@ export default function AppBarWithSideMenu() {
 
     const handleLogOut = () => {
         localStorage.removeItem('BooksAdminToken');
-        navigate('/login');
+        navigate(RouteConstants.LOGIN);
         enqueueSnackbar('Admin Logged-Out Successfully', { variant: 'success' });
         setShow(false);
     }

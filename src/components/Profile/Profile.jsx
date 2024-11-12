@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
-import Spinner from '../components/Spinner';
+import Spinner from '../../utils/Spinner';
 import { jwtDecode } from 'jwt-decode';
+import RouteConstants from '../../constant/Routeconstant';
 
 const ProfilePage = () => {
     const navigate = useNavigate();
@@ -17,11 +18,10 @@ const ProfilePage = () => {
                 const token = localStorage.getItem('BooksAdminToken');
                 const decodedToken = jwtDecode(token);
                 const id = decodedToken.id;
-                // console.log(id);
 
                 if (!token) {
                     enqueueSnackbar('No token found, redirecting to login...', { variant: 'warning' });
-                    navigate("/login")
+                    navigate(RouteConstants.LOGIN);
                     return;
                 }
 
@@ -43,7 +43,7 @@ const ProfilePage = () => {
 
     const handleLogout = () => {
         localStorage.removeItem('BooksAdminToken');
-        navigate('/login');
+        navigate(RouteConstants.LOGIN);
         enqueueSnackbar('Admin Logged-Out Successfully', { variant: 'success' });
     };
 

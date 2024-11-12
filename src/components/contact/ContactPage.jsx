@@ -23,8 +23,7 @@ export default function ContactPage() {
   };
 
   const submit = (e) => {
-    e.preventDefault();
-    // Handle form submission logic (e.g., API call)
+    e.preventDefault(); 
     console.log("Form Data Submitted", formData);
   };
 

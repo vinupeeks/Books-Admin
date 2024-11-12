@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import Spinner from '../components/Spinner';
+import Spinner from '../../utils/Spinner';
 import { useSnackbar } from 'notistack';
 import { Navigate } from 'react-router-dom';
 

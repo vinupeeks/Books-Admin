@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useNavigate, useParams } from 'react-router-dom'; 
-import Spinner from '../components/Spinner';
+import { useNavigate, useParams } from 'react-router-dom';
+import Spinner from '../../utils/Spinner';
 import { useSnackbar } from 'notistack';
+import RouteConstants from '../../constant/Routeconstant';
 
 const ShowBook = () => {
   const [book, setBook] = useState({});
@@ -17,7 +18,7 @@ const ShowBook = () => {
 
     if (!Token) {
       enqueueSnackbar('You need to log in to reserve the book.', { variant: 'warning' });
-      navigate('/login');
+      navigate(RouteConstants.LOGIN);
       return;
     }
 
@@ -44,7 +45,8 @@ const ShowBook = () => {
             setLoading(false);
           }
 
-          navigate(`/books/details/${book.id}`);
+          navigate(`${RouteConstants.BOKKSDETAILS.replace(':id', book.id)}`);
+
         } else {
           enqueueSnackbar(`Failed to reserve the book. Please try again.`, { variant: 'error' });
         }
