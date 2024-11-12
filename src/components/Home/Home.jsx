@@ -8,6 +8,7 @@ import { useSnackbar } from 'notistack';
 import { useViewContext } from '../../context/ViewContext';
 import RouteConstants from '../../constant/Routeconstant';
 import bookQueries from '../../queries/bookQueries';
+import { getAuthToken } from '../../utils/TokenHelper';
 
 
 const Home = () => {
@@ -20,14 +21,13 @@ const Home = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const Token = localStorage.getItem('BooksAdminToken')
-
+    const Token = getAuthToken();
     if (!Token) {
       enqueueSnackbar('You need to log-In.', { variant: 'warning' });
       navigate(RouteConstants.LOGIN);
       return;
     }
-
+    setLoading(true);
     fetchBooks();
   }, []);
 
