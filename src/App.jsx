@@ -11,7 +11,7 @@ import Navbar from './components/navbar/Navbar';
 import LogDetails from './components/Log/LogDetails';
 import UsersList from './components/UserList/UsersList';
 import Profile from './components/Profile/Profile';
-import { ViewProvider } from './ViewContext';
+import { ViewProvider } from './context/ViewContext.jsx';
 import ContactPage from './components/contact/ContactPage';
 import CreateBooks from './components/Books/CreateBooks';
 import AdminLogin from './components/Log/Login';

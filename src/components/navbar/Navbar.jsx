@@ -12,7 +12,7 @@ import { jwtDecode } from 'jwt-decode';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import { useNavigate } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
-import { useViewContext } from '../../ViewContext';
+import { useViewContext } from '../../context/ViewContext';
 import RouteConstants from '../../constant/Routeconstant';
 
 export default function AppBarWithSideMenu() {
@@ -25,12 +25,11 @@ export default function AppBarWithSideMenu() {
     const [name, setName] = useState('');
     const [sideMenu, setSideMenu] = useState(false);
     const [role, setRole] = useState('');
-    const [show, setShow] = useState(false);
-    const [showType, setShowType] = useState('table')
+    const [show, setShow] = useState(false); 
     const navigate = useNavigate();
 
     const handleClose = (e) => {
-        
+
         if (e && !e.altKey) {
             console.log(e);
             e = null;
@@ -38,16 +37,13 @@ export default function AppBarWithSideMenu() {
         if (e) {
             navigate(`/${e}`);
         }
-        setShow(false);
-        // console.log(e);
+        setShow(false); 
         setAnchorEl(null);
     };
 
-
     const handleViewChange = (format) => {
         setViewFormat(format);
-        setSideMenu((prev) => !prev);
-        // navigate('/home'); 
+        setSideMenu((prev) => !prev);  
     };
 
     const handleLogOut = () => {
@@ -98,7 +94,7 @@ export default function AppBarWithSideMenu() {
                     >
                         <MenuIcon />
                     </IconButton>
-                    <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} onClick={() => { navigate(`/`) }}>
+                    <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} onClick={() => { navigate(RouteConstants.ROOT) }}>
                         Books-Library
                     </Typography>
                     {auth && (
@@ -151,7 +147,7 @@ export default function AppBarWithSideMenu() {
                             <ul className="list-none p-0">
                                 <li className="mb-3">
                                     <a
-                                        href="/"
+                                        href={RouteConstants.ROOT}
                                         onClick={() => handleMenuClick('Home')}
                                         className="text-black font-semibold block px-4 py-2 rounded hover:bg-blue-300 transition no-underline"
                                     >
@@ -160,7 +156,7 @@ export default function AppBarWithSideMenu() {
                                 </li>
                                 <li className="mb-3">
                                     <a
-                                        href="/books/create"
+                                        href={RouteConstants.BOOKCREATE}
                                         onClick={() => handleMenuClick('Add Product')}
                                         className="text-black font-semibold block px-4 py-2 rounded hover:bg-blue-300 transition no-underline"
                                     >
@@ -169,7 +165,7 @@ export default function AppBarWithSideMenu() {
                                 </li>
                                 <li className="mb-3">
                                     <a
-                                        href="/cart"
+                                        href={RouteConstants.CART}
                                         onClick={() => handleMenuClick('Cart')}
                                         className="text-black font-semibold block px-4 py-2 rounded hover:bg-blue-300 transition no-underline"
                                     >
@@ -202,18 +198,18 @@ export default function AppBarWithSideMenu() {
                                         </li>
                                     </ul>
                                 </li>
-                                {/* <li className="mb-3">
+                                <li className="mb-3">
                                     <a
-                                        href="/admin/profile"
+                                        href={RouteConstants.ADMINPROFILE}
                                         onClick={() => handleMenuClick()}
                                         className="text-black font-semibold block px-4 py-2 rounded hover:bg-blue-300 transition no-underline"
                                     >
                                         Profile
                                     </a>
-                                </li> */}
+                                </li>
                                 <li className="mb-3">
                                     <a
-                                        href="/admin/users"
+                                        href={RouteConstants.USERSLIST}
                                         onClick={() => handleMenuClick()}
                                         className="text-black font-semibold block px-4 py-2 rounded hover:bg-blue-300 transition no-underline"
                                     >
@@ -222,7 +218,7 @@ export default function AppBarWithSideMenu() {
                                 </li>
                                 <li className="mb-3">
                                     <a
-                                        href="/contact"
+                                        href={RouteConstants.CONTACT}
                                         onClick={() => handleMenuClick('Contact Us')}
                                         className="text-black font-semibold block px-4 py-2 rounded hover:bg-blue-300 transition no-underline"
                                     >

@@ -1,50 +1,50 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import Spinner from '../../utils/Spinner';
 import { Link, useNavigate } from 'react-router-dom';
 import { MdOutlineAddBox } from 'react-icons/md';
 import BooksTable from '../Books/BooksTable';
 import BooksCard from '../Books/BooksCard';
 import { useSnackbar } from 'notistack';
-import { useViewContext } from '../../ViewContext';
+import { useViewContext } from '../../context/ViewContext';
 import RouteConstants from '../../constant/Routeconstant';
+import bookQueries from '../../queries/bookQueries';
+
 
 const Home = () => {
 
   const { viewFormat } = useViewContext();
-
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [showType, setShowType] = useState('table');
+  const [error, setError] = useState(null);
   const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
 
   useEffect(() => {
     const Token = localStorage.getItem('BooksAdminToken')
+
     if (!Token) {
       enqueueSnackbar('You need to log-In.', { variant: 'warning' });
       navigate(RouteConstants.LOGIN);
       return;
     }
 
-    const fetchBooks = async () => {
-      setLoading(true);
-      try {
-        const response = await axios.get('http://localhost:1000/books/', {
-          headers: {
-            Authorization: `Bearer ${Token}`,
-          },
-        });
-        setBooks(response.data || []);
-      } catch (error) {
-        console.error("Failed to fetch books:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchBooks();
   }, []);
+
+  const getBooks = bookQueries.booksListMutation(
+    async (response) => {
+      setBooks(response?.data || []);
+      setLoading(false);
+    },
+    {
+      onError: (error) => {
+        setError('Failed to fetch Books list. Please try again later.');
+      }
+    }
+  );
+  const fetchBooks = () => {
+    getBooks.mutate();
+  }
 
   return (
     <div className="p-4">
