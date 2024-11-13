@@ -45,7 +45,6 @@ const EditBook = () => {
 
   const editBook = bookQueries.bookEditByIdMutation(
     async (response) => {
-      // console.log(response);
       setLoading(false);
       enqueueSnackbar(`${response.data.message} successfully..!`, { variant: 'success' });
       navigate(RouteConstants.ROOT);
