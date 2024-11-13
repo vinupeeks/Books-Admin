@@ -43,11 +43,22 @@ const bookDeleteByIdMutation = (onbooksListSuccess, onErrorCallback) => {
     });
 };
 
+const bookEditByIdMutation = (onbooksListSuccess, onErrorCallback) => {
+
+    return useMutation(booksService.bookEditById, {
+        onSuccess: (data) => {
+            onbooksListSuccess(data);
+        },
+        onError: onErrorCallback,
+    });
+};
+
 const bookQueries = {
     booksListMutation,
     booksAddMutation,
     bookByIdMutation,
-    bookDeleteByIdMutation
+    bookDeleteByIdMutation,
+    bookEditByIdMutation
 };
 
 export default bookQueries;

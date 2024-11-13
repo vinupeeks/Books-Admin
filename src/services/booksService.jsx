@@ -51,6 +51,17 @@ const booksService = {
             }
         });
     },
+
+    bookEditById: async (book) => {
+        return apiRequest({
+            method: "PUT",
+            url: `${RouteConstants.BOOKID.replace(':id', book.id)}`,
+            headers: {
+                Authorization: "Bearer " + Token
+            },
+            data: book,
+        });
+    },
 }
 
 export default booksService;

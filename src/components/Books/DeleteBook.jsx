@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import BackButton from '../../utils/BackButton';
-import Spinner from '../../utils/Spinner'; 
+import Spinner from '../../utils/Spinner';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
 import RouteConstants from '../../constant/Routeconstant';
@@ -44,7 +44,7 @@ const DeleteBook = () => {
     {
       onError: (error) => {
         setLoading(false);
-        setError('Failed to fetch Books list. Please try again later.');
+        setError('Failed to fetch Book data. Please try again later.');
         enqueueSnackbar(error.response.data.message, { variant: 'warning' });
       }
     }

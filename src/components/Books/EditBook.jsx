@@ -5,6 +5,8 @@ import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
 import RouteConstants from '../../constant/Routeconstant';
+import bookQueries from '../../queries/bookQueries';
+import { getAuthToken } from '../../utils/TokenHelper';
 
 const EditBook = () => {
   const [title, setTitle] = useState('');
@@ -15,37 +17,70 @@ const EditBook = () => {
   const { id } = useParams();
   const { enqueueSnackbar } = useSnackbar();
 
+  const getBookDetail = bookQueries.bookByIdMutation(
+    async (response) => {
+      setTitle(response.data.title);
+      setAuthor(response.data.author);
+      setStatus(response.data.status);
+      setLoading(false);
+    },
+    {
+      onError: (error) => {
+        setLoading(false);
+        setError('Failed to fetch Book data. Please try again later.');
+        enqueueSnackbar(error.response.data.message, { variant: 'warning' });
+      }
+    }
+  )
+
   useEffect(() => {
+    const Token = getAuthToken();
+    if (!Token) {
+      enqueueSnackbar('You need to log in to show the book.', { variant: 'warning' });
+      navigate(RouteConstants.LOGIN);
+      return;
+    }
     setLoading(true);
-    axios.get(`http://localhost:1000/books/${id}`)
-      .then((response) => {
-        setTitle(response.data.title);
-        setAuthor(response.data.author);
-        setStatus(response.data.status);
+    getBookDetail.mutateAsync(id);
+  }, [id])
+
+  const editBook = bookQueries.bookEditByIdMutation(
+    async (response) => {
+      // console.log(response);
+      setLoading(false);
+      enqueueSnackbar(`${response.data.message} successfully..!`, { variant: 'success' });
+      navigate(RouteConstants.ROOT);
+    },
+    {
+      onError: (error) => {
         setLoading(false);
-      })
-      .catch((error) => {
-        setLoading(false);
-        enqueueSnackbar('Error fetching book data', { variant: 'error' });
+        enqueueSnackbar('Error deleting book', { variant: 'error' });
         console.error(error);
-      });
-  }, [id, enqueueSnackbar]);
+      }
+    }
+  )
 
   const handleEditBook = () => {
-    const data = { title, author, status };
+    const data = { id, title, author, status };
     setLoading(true);
-    axios.put(`http://localhost:1000/books/${id}`, data)
-      .then(() => {
-        setLoading(false);
-        enqueueSnackbar('Book edited successfully', { variant: 'success' });
-        navigate(RouteConstants.ROOT);
-      })
-      .catch((error) => {
-        setLoading(false);
-        enqueueSnackbar('Error editing book', { variant: 'error' });
-        console.error(error);
-      });
-  };
+    editBook.mutateAsync(data);
+  }
+
+  // const handleEditBook = () => {
+  //   const data = { title, author, status };
+  //   setLoading(true);
+  //   axios.put(`http://localhost:1000/books/${id}`, data)
+  //     .then(() => {
+  //       setLoading(false);
+  //       enqueueSnackbar('Book edited successfully', { variant: 'success' });
+  //       navigate(RouteConstants.ROOT);
+  //     })
+  //     .catch((error) => {
+  //       setLoading(false);
+  //       enqueueSnackbar('Error editing book', { variant: 'error' });
+  //       console.error(error);
+  //     });
+  // };
 
   return (
     <div className='p-4'>
