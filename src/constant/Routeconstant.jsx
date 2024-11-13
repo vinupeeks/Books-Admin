@@ -2,6 +2,8 @@ const RouteConstants = {
     ROOT: '/',
     LOGIN: '/auth/admin/login',
     BOOKS: '/books',
+    BOOKID: '/books/:id',
+    
     BOOKCREATE: '/books/create',
     BOKKSDETAILS: '/books/details/:id',
     BOOKSEDIT: '/books/edit/:id',

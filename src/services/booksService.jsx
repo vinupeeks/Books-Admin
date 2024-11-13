@@ -32,6 +32,25 @@ const booksService = {
         });
     },
 
+    bookGetById: async (id) => {
+        return apiRequest({
+            method: "GET",
+            url: `${RouteConstants.BOOKID.replace(':id', id)}`,
+            headers: {
+                Authorization: "Bearer " + Token
+            }
+        });
+    },
+
+    bookDeleteById: async (id = '') => {
+        return apiRequest({
+            method: "DELETE",
+            url: `${RouteConstants.BOOKID.replace(':id', id)}`,
+            headers: {
+                Authorization: "Bearer " + Token
+            }
+        });
+    },
 }
 
 export default booksService;

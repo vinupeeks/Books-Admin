@@ -1,15 +1,16 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
+import { getAuthToken } from './TokenHelper';
 
 const PrivateRoute = ({ element }) => {
-    const token = localStorage.getItem('BooksAdminToken');
+    const token = getAuthToken();
     let isAdmin = false;
 
     if (token) {
         try {
             const decodedToken = jwtDecode(token);
-            console.log(`Decoded : `, decodedToken);
+            // console.log(`Decoded : `, decodedToken);
 
             isAdmin = decodedToken.role;
         } catch (error) {

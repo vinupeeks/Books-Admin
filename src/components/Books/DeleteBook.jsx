@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import BackButton from '../../utils/BackButton';
-import Spinner from '../../utils/Spinner';
-import axios from 'axios';
+import Spinner from '../../utils/Spinner'; 
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
 import RouteConstants from '../../constant/Routeconstant';
+import { getAuthToken } from '../../utils/TokenHelper';
+import bookQueries from '../../queries/bookQueries';
 
 const DeleteBook = () => {
   const [loading, setLoading] = useState(false);
@@ -13,60 +14,53 @@ const DeleteBook = () => {
   const { id } = useParams();
   const { enqueueSnackbar } = useSnackbar();
 
+  const deleteBook = bookQueries.bookDeleteByIdMutation(
+    async (response) => {
+      console.log(response);
 
-  const handleDeleteBook = () => {
-
-    const Token = localStorage.getItem('BooksAdminToken')
-    if (!Token) {
-      enqueueSnackbar('You need to log-In.', { variant: 'warning' });
-      navigate(RouteConstants.LOGIN);
-      return;
-    }
-
-    setLoading(true);
-    axios.delete(`http://localhost:1000/books/${id}`, {
-      headers: {
-        Authorization: `Bearer ${Token}`,
-      },
-    })
-      .then(() => {
-        setLoading(false);
-        enqueueSnackbar('Book deleted successfully', { variant: 'success' });
-        navigate(RouteConstants.ROOT);
-      })
-      .catch((error) => {
+      setLoading(false);
+      enqueueSnackbar(`${response.data.message} successfully..!`, { variant: 'success' });
+      navigate(RouteConstants.ROOT);
+    },
+    {
+      onError: (error) => {
         setLoading(false);
         enqueueSnackbar('Error deleting book', { variant: 'error' });
         console.error(error);
-      });
-  };
+      }
+    }
+  )
+
+  const handleDeleteBook = () => {
+    setLoading(true);
+    deleteBook.mutate(id);
+  }
+
+  const getBookDetail = bookQueries.bookByIdMutation(
+    async (response) => {
+      setBook(response?.data || []);
+      setLoading(false);
+    },
+    {
+      onError: (error) => {
+        setLoading(false);
+        setError('Failed to fetch Books list. Please try again later.');
+        enqueueSnackbar(error.response.data.message, { variant: 'warning' });
+      }
+    }
+  )
 
   useEffect(() => {
-    const fetchBooks = async () => {
+    const Token = getAuthToken();
+    if (!Token) {
+      enqueueSnackbar('You need to log in to show the book.', { variant: 'warning' });
+      navigate(RouteConstants.LOGIN);
+      return;
+    }
+    setLoading(true);
+    getBookDetail.mutateAsync(id);
+  }, [id])
 
-      const Token = localStorage.getItem('BooksAdminToken');
-      if (!Token) {
-        enqueueSnackbar('You need to log in to show the book.', { variant: 'warning' });
-        navigate(RouteConstants.LOGIN);
-        return;
-      }
-
-      setLoading(true);
-      try {
-        const response = await axios.get(`http://localhost:1000/books/${id}`, {
-          headers: {
-            Authorization: `Bearer ${Token}`,
-          },
-        });
-        setBook(response.data || []);
-      } catch (error) {
-        console.error("Failed to fetch books:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchBooks();
-  }, [id]);
 
   return (
     <div className='p-4'>
