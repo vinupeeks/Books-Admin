@@ -35,8 +35,9 @@ export const onResponseError = (error) => {
         // notification.error({ message: error.message });
         return;
     } else if (error.response.status === 401) {
-        console.log("error.request", error.request);
-        console.log("error.response", error.response);
+        // console.log("error.request", error.request);
+        console.log("Error Response: ", error.response.data.message);
+        // enqueueSnackbar(error.response.data.message, { variant: 'error' });
 
         if (
             error?.response?.config?.url &&

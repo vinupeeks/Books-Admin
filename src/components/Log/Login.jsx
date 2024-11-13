@@ -1,36 +1,55 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useState } from 'react'; 
 import { useSnackbar } from 'notistack';
 import { useNavigate } from 'react-router-dom';
 import RouteConstants from '../../constant/Routeconstant';
+import adminQueries from '../../queries/adminQueries.jsx'; 
 
-const AdminLogin = ({ onLogIn }) => {
+const AdminLogin = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const { enqueueSnackbar } = useSnackbar();
+    const [error, setError] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-
-        try {
-            const response = await axios.post('http://localhost:1000/auth/admin/login', { email, password });
-            console.log(`loging respppp:`,response);
-            
+    const submitForm = adminQueries.adminLoginMutation(
+        async (response) => {
+            console.log(`Loging Response: `, response);
 
             if (response.data.token) {
                 const token = response.data.token;
                 localStorage.setItem('BooksAdminToken', token);
                 enqueueSnackbar('Login successful', { variant: 'success' });
                 navigate(RouteConstants.ROOT);
+                window.location.reload();
             } else {
                 enqueueSnackbar('Invalid email or password', { variant: 'error' });
             }
-        } catch (error) {
-            console.error('Error logging in:', error);
-            enqueueSnackbar('Access denied, not an admin account..!', { variant: 'error' });
+            setIsLoading(false);
+        },
+        {
+            onError: (error) => {
+                enqueueSnackbar(error.response.data.message, { variant: 'error' });
+                setError('Failed to fetch Books list. Please try again later.');
+                setIsLoading(false);
+            }
         }
-    };
+    );
+
+    const handleSubmit = (e) => {
+        setIsLoading(true);
+        e.preventDefault();
+        try {
+            const datavalues = {
+                email,
+                password
+            };
+            submitForm.mutateAsync(datavalues);
+        } catch (error) {
+            setIsLoading(false);
+            enqueueSnackbar(error.response.data.message, { variant: 'error' });
+        }
+    }
 
     return (
         <div className="flex items-center justify-center min-h-screen bg-gray-100">
