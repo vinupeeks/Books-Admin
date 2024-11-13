@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-// import BackButton from '../../utils/BackButton';
-import Spinner from '../../utils/Spinner';
-import axios from 'axios';
+import Spinner from '../../utils/Spinner'; 
 import { useNavigate } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
 import RouteConstants from '../../constant/Routeconstant';
+import bookQueries from '../../queries/bookQueries';
 
 const CreateBooks = () => {
   const [title, setTitle] = useState('');
@@ -14,42 +13,48 @@ const CreateBooks = () => {
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
 
-  const handleSaveBook = () => {
+  const submitForm = bookQueries.booksAddMutation(
+    async (response) => {
+      console.log(`Adding Book Response: `, response);
+
+      if (response.status === 201) {
+        setLoading(false);
+        enqueueSnackbar('Book Created successfully', { variant: 'success' });
+        navigate(RouteConstants.ROOT);
+      } else {
+        setLoading(false);
+        enqueueSnackbar('Error creating book. Check console for details.', { variant: 'error' });
+      }
+      setLoading(false);
+    },
+    {
+      onError: (error) => {
+        setLoading(false);
+        enqueueSnackbar('Error creating book. Check console for details.', { variant: 'error' });
+      }
+    }
+  );
+
+  const handleSaveBook = (e) => {
     if (!title || !author) {
       enqueueSnackbar('All fields are required', { variant: 'warning' });
       return;
     }
-    const data = {
-      title,
-      author,
-    };
-    const Token = localStorage.getItem('BooksAdminToken');
-    if (!Token) {
-      enqueueSnackbar('You need to log in to remove the book.', { variant: 'warning' });
-      navigate(RouteConstants.LOGIN);
-      return;
+    e.preventDefault();
+    try {
+      const datavalues = {
+        title,
+        author,
+      };
+      console.log(`Titile and author from front-end: `, title, author);
+
+      setLoading(true);
+      submitForm.mutateAsync(datavalues);
+    } catch (error) {
+      setLoading(false);
+      enqueueSnackbar(error.response.data.message, { variant: 'error' });
     }
-
-    setLoading(true);
-
-    axios
-      .post('http://localhost:1000/books', data, {
-        headers: {
-          Authorization: `Bearer ${Token}`,
-        },
-      }
-      )
-      .then(() => {
-        setLoading(false);
-        enqueueSnackbar('Book Created successfully', { variant: 'success' });
-        navigate(RouteConstants.ROOT);
-      })
-      .catch((error) => {
-        setLoading(false);
-        enqueueSnackbar('Error creating book. Check console for details.', { variant: 'error' });
-        console.error(error);
-      });
-  };
+  }
 
   return (
     <div className="p-4">

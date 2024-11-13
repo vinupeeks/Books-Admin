@@ -13,9 +13,20 @@ const booksListMutation = (onbooksListSuccess, onErrorCallback) => {
     });
 };
 
+const booksAddMutation = (onbooksListSuccess, onErrorCallback) => {
+
+    return useMutation(booksService.booksAdd, {
+        onSuccess: (data) => {
+            onbooksListSuccess(data);
+        },
+        onError: onErrorCallback,
+    });
+};
+
 
 const bookQueries = {
     booksListMutation,
+    booksAddMutation
 };
 
 export default bookQueries;

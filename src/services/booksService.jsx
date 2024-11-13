@@ -21,6 +21,17 @@ const booksService = {
         });
     },
 
+    booksAdd: async (book) => {
+        return apiRequest({
+            method: "POST",
+            url: `${RouteConstants.BOOKS}`,
+            headers: {
+                Authorization: "Bearer " + Token
+            },
+            data: book,
+        });
+    },
+
 }
 
 export default booksService;

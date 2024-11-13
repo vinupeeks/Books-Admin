@@ -14,8 +14,8 @@ const adminLoginMutation = (onAdminLoginSuccess, onErrorCallback) => {
 };
 
 
-const bookQueries = {
+const adminQueries = {
     adminLoginMutation,
 };
 
-export default bookQueries;
+export default adminQueries;
