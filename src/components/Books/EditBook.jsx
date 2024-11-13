@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import BackButton from '../../utils/BackButton';
-import Spinner from '../../utils/Spinner';
-import axios from 'axios';
+import Spinner from '../../utils/Spinner'; 
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
 import RouteConstants from '../../constant/Routeconstant';
@@ -65,22 +64,6 @@ const EditBook = () => {
     setLoading(true);
     editBook.mutateAsync(data);
   }
-
-  // const handleEditBook = () => {
-  //   const data = { title, author, status };
-  //   setLoading(true);
-  //   axios.put(`http://localhost:1000/books/${id}`, data)
-  //     .then(() => {
-  //       setLoading(false);
-  //       enqueueSnackbar('Book edited successfully', { variant: 'success' });
-  //       navigate(RouteConstants.ROOT);
-  //     })
-  //     .catch((error) => {
-  //       setLoading(false);
-  //       enqueueSnackbar('Error editing book', { variant: 'error' });
-  //       console.error(error);
-  //     });
-  // };
 
   return (
     <div className='p-4'>
