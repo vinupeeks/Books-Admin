@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import Spinner from '../../utils/Spinner';
 import { useSnackbar } from 'notistack';
 import RouteConstants from '../../constant/Routeconstant';
+import { getAuthToken } from '../../utils/TokenHelper';
 
 const ShowBook = () => {
   const [book, setBook] = useState({});
@@ -13,7 +14,7 @@ const ShowBook = () => {
   const { enqueueSnackbar } = useSnackbar();
 
   const bookingBtn = async (book) => {
-    const Token = localStorage.getItem('BooksToken');
+    const Token = getAuthToken;
     console.log(book);
 
     if (!Token) {
