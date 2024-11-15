@@ -49,7 +49,7 @@ function Dashboard() {
                                     onClick={card.navigateTo ? () => navigate(card.navigateTo) : () => handleCardClick(card.title)}>
                                     <Card.Body>
                                         <h6 className="text-dark fw-bold">{card.title}</h6>
-                                        <p>{card.description}</p>
+                                        <p>{card.description}</p> 
                                     </Card.Body>
                                 </Card>
                             </Col>
