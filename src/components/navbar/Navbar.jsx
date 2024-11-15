@@ -25,7 +25,7 @@ export default function AppBarWithSideMenu() {
     const [name, setName] = useState('');
     const [sideMenu, setSideMenu] = useState(false);
     const [role, setRole] = useState('');
-    const [show, setShow] = useState(false); 
+    const [show, setShow] = useState(false);
     const navigate = useNavigate();
 
     const handleClose = (e) => {
@@ -37,17 +37,18 @@ export default function AppBarWithSideMenu() {
         if (e) {
             navigate(`/${e}`);
         }
-        setShow(false); 
+        setShow(false);
         setAnchorEl(null);
     };
 
     const handleViewChange = (format) => {
         setViewFormat(format);
-        setSideMenu((prev) => !prev);  
+        setSideMenu((prev) => !prev);
     };
 
     const handleLogOut = () => {
         localStorage.removeItem('BooksAdminToken');
+        window.location.reload();
         navigate(RouteConstants.LOGIN);
         enqueueSnackbar('Admin Logged-Out Successfully', { variant: 'success' });
         setShow(false);
@@ -82,7 +83,7 @@ export default function AppBarWithSideMenu() {
 
     return (
         <Box sx={{ flexGrow: 2 }}>
-            <AppBar position="static">
+            <AppBar position="static" sx={{ height: 80 }}>
                 <Toolbar>
                     <IconButton
                         size="large"
@@ -138,8 +139,8 @@ export default function AppBarWithSideMenu() {
             </AppBar>
 
             <>
-                <Offcanvas show={show} onHide={handleClose} placement="start" className="w-64 bg-blue-100">
-                    <Offcanvas.Header closeButton style={{ backgroundColor: '#1976D2' }}>
+                <Offcanvas show={show} onHide={handleClose} placement="start" className="w-64 bg-blue-100" style={{ height: '100vh' }}>
+                    <Offcanvas.Header closeButton style={{ backgroundColor: '#1976D2', height: '90px' }}>
                         <Offcanvas.Title className="text-white">Books-Store</Offcanvas.Title>
                     </Offcanvas.Header>
                     <Offcanvas.Body>
@@ -147,11 +148,11 @@ export default function AppBarWithSideMenu() {
                             <ul className="list-none p-0">
                                 <li className="mb-3">
                                     <a
-                                        href={RouteConstants.ROOT}
+                                        href={RouteConstants.DASHBOARD}
                                         onClick={() => handleMenuClick('Home')}
                                         className="text-black font-semibold block px-4 py-2 rounded hover:bg-blue-300 transition no-underline"
                                     >
-                                        Home
+                                        Dashboard
                                     </a>
                                 </li>
                                 <li className="mb-3">

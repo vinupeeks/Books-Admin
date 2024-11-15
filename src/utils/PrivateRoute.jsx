@@ -2,6 +2,7 @@ import React from 'react';
 import { Navigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import { getAuthToken } from './TokenHelper';
+import RouteConstants from '../constant/Routeconstant';
 
 const PrivateRoute = ({ element }) => {
     const token = getAuthToken();
@@ -19,7 +20,7 @@ const PrivateRoute = ({ element }) => {
     }
 
 
-    return isAdmin === 'admin' ? element : <Navigate to="/login" />;
+    return isAdmin === 'admin' ? element : <Navigate to={RouteConstants.LOGIN} />;
 };
 
 export default PrivateRoute;

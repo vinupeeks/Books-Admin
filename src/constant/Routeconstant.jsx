@@ -1,9 +1,17 @@
 const RouteConstants = {
-    ROOT: '/',
+    DASHBOARD: '/',
+    ROOT: '/home',
     LOGIN: '/auth/admin/login',
     BOOKS: '/books',
     BOOKID: '/books/:id',
-    
+    BOOKSLAST: '/books/last',
+    SEARCHEDBOOKS: '/books/searchedBook',
+
+    INDIVIDUAL_MEMBERSHIP: '/membership/indivual',
+    FAMILY_MEMBERSHIP: '/membership/family',
+    MEMBERS_LIST: '/members',
+    MEMBERS_INDIVUDAL: '/members/indivual',
+
     BOOKCREATE: '/books/create',
     BOKKSDETAILS: '/books/details/:id',
     BOOKSEDIT: '/books/edit/:id',

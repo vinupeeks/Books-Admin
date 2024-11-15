@@ -53,12 +53,34 @@ const bookEditByIdMutation = (onbooksListSuccess, onErrorCallback) => {
     });
 };
 
+const LastBooksListMutation = (onbooksListSuccess, onErrorCallback) => {
+
+    return useMutation(booksService.Lastbookslist, {
+        onSuccess: (data) => {
+            onbooksListSuccess(data);
+        },
+        onError: onErrorCallback,
+    });
+};
+
+const SearchedBooksListMutation = (onbooksListSuccess, onErrorCallback) => {
+
+    return useMutation(booksService.Searchedbookslist, {
+        onSuccess: (data) => {
+            onbooksListSuccess(data);
+        },
+        onError: onErrorCallback,
+    });
+};
+
 const bookQueries = {
     booksListMutation,
     booksAddMutation,
     bookByIdMutation,
     bookDeleteByIdMutation,
-    bookEditByIdMutation
+    bookEditByIdMutation,
+    LastBooksListMutation,
+    SearchedBooksListMutation
 };
 
 export default bookQueries;

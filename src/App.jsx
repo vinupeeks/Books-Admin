@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Home from './components/Home/Home';
+import DashBoard from './components/DashBoard/DashBoard';
+import IndividualMemberShip from './components/IndividualMemberShip/IndividualMemberShip';
+import MembersList from './components/MembersList/MembersList';
 import ShowBook from './components/Books/ShowBook';
 import EditBook from './components/Books/EditBook';
 import DeleteBook from './components/Books/DeleteBook';
@@ -9,6 +12,7 @@ import BasicCard from './components/cart/BookCart';
 import PrivateRoute from './utils/PrivateRoute';
 import Navbar from './components/navbar/Navbar';
 import LogDetails from './components/Log/LogDetails';
+
 import UsersList from './components/UserList/UsersList';
 import Profile from './components/Profile/Profile';
 import { ViewProvider } from './context/ViewContext.jsx';
@@ -37,7 +41,13 @@ const App = () => {
       <>
         {isAuthenticated && <Navbar />}
         <Routes>
-          <Route path={RouteConstants.ROOT} element={<Home />} />
+          <Route path={RouteConstants.DASHBOARD} element={<PrivateRoute element={<DashBoard />} />} />
+
+          <Route path={RouteConstants.INDIVIDUAL_MEMBERSHIP} element={<PrivateRoute element={<IndividualMemberShip />} />} />
+          <Route path={RouteConstants.ROOT} element={<PrivateRoute element={<Home />} />} />
+          <Route path={RouteConstants.MEMBERS_LIST} element={<PrivateRoute element={<MembersList />} />} />
+          <Route path={RouteConstants.DASHBOARD} element={<PrivateRoute element={<DashBoard />} />} />
+
           <Route path={RouteConstants.LOGIN} element={<AdminLogin />} />
           <Route path={RouteConstants.BOOKCREATE} element={<PrivateRoute element={<CreateBooks />} />} />
           <Route path={RouteConstants.BOKKSDETAILS} element={<ShowBook />} />

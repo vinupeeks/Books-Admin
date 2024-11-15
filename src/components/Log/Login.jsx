@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSnackbar } from 'notistack';
 import { useNavigate } from 'react-router-dom';
 import RouteConstants from '../../constant/Routeconstant';
 import adminQueries from '../../queries/adminQueries.jsx';
 import logo from '../../assets/images/skyline-logo.png';
+import { jwtDecode } from 'jwt-decode';
 
 const AdminLogin = () => {
     const [email, setEmail] = useState('');
@@ -21,7 +22,7 @@ const AdminLogin = () => {
                 const token = response.data.token;
                 localStorage.setItem('BooksAdminToken', token);
                 enqueueSnackbar('Login successful', { variant: 'success' });
-                navigate(RouteConstants.ROOT);
+                navigate(RouteConstants.DASHBOARD);
                 window.location.reload();
             } else {
                 enqueueSnackbar('Invalid email or password', { variant: 'error' });
@@ -51,6 +52,23 @@ const AdminLogin = () => {
             enqueueSnackbar(error.response.data.message, { variant: 'error' });
         }
     }
+
+    useEffect(() => {
+        const token = localStorage.getItem("BooksAdminToken");
+
+        if (token) {
+            try {
+                const decoded = jwtDecode(token);
+                const isTokenExpired = decoded.exp * 1000 < Date.now();
+
+                if (!isTokenExpired) {
+                    navigate(RouteConstants.DASHBOARD);
+                }
+            } catch (error) {
+                console.error("Invalid token");
+            }
+        }
+    }, []);
 
     return (
         <div className="flex items-center justify-center min-h-screen bg-gray-200">
