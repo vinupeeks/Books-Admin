@@ -70,7 +70,7 @@ const MembersList = () => {
 
       <div>
         <b>MEMBERSHIP - TYPES:</b>
-        <button onClick={() => handleTypeChange("single")}><i>Single</i></button> /&nbsp;
+        <button onClick={() => handleTypeChange("single")}><i>&nbsp;  Single</i></button> /&nbsp;
         <button onClick={() => handleTypeChange("family")}><i>Family</i></button>
       </div>
       <br />
