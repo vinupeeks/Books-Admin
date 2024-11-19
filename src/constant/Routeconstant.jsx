@@ -10,6 +10,8 @@ const RouteConstants = {
     INDIVIDUAL_MEMBERSHIP: '/membership/indivual',
     FAMILY_MEMBERSHIP: '/membership/family',
     MEMBERS_LIST: '/members',
+    MEMBER_SHIP: '/membership/:id',
+    MEMBER_SHIP_BY_ID: '/membership/details/:id',
     MEMBERS_INDIVUDAL: '/members/indivual',
 
     BOOKCREATE: '/books/create',

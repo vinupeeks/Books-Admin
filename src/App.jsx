@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Home from './components/Home/Home';
 import DashBoard from './components/DashBoard/DashBoard';
-import IndividualMemberShip from './components/IndividualMemberShip/IndividualMemberShip';
+import IndividualMemberShip from './components/MemberShip/IndividualMemberShip';
+import FamilyMemberShip from './components/MemberShip/FamilyMemberShip';
 import MembersList from './components/MembersList/MembersList';
 import ShowBook from './components/Books/ShowBook';
 import EditBook from './components/Books/EditBook';
@@ -44,6 +45,8 @@ const App = () => {
           <Route path={RouteConstants.DASHBOARD} element={<PrivateRoute element={<DashBoard />} />} />
 
           <Route path={RouteConstants.INDIVIDUAL_MEMBERSHIP} element={<PrivateRoute element={<IndividualMemberShip />} />} />
+          <Route path={RouteConstants.FAMILY_MEMBERSHIP} element={<PrivateRoute element={<FamilyMemberShip />} />} />
+
           <Route path={RouteConstants.ROOT} element={<PrivateRoute element={<Home />} />} />
           <Route path={RouteConstants.MEMBERS_LIST} element={<PrivateRoute element={<MembersList />} />} />
           <Route path={RouteConstants.DASHBOARD} element={<PrivateRoute element={<DashBoard />} />} />
