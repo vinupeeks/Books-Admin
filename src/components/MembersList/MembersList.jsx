@@ -113,20 +113,24 @@ const MembersList = () => {
       {/* Modal */}
       {showModal && selectedMembership && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50">
+          {/* {console.log(selectedMembership)} */}
           <div className="bg-white p-6 rounded-lg shadow-lg w-96 max-h-[90vh] overflow-y-auto">
             <h2 className="text-2xl font-semibold mb-4">Membership Details</h2>
-            <p className="mb-2">
-              <strong>Membership ID:</strong> {selectedMembership.membershipId}
-            </p>
-            <p className="mb-2">
-              <strong>Type:</strong> {selectedMembership.membershipType}
-            </p>
-            <p className="mb-2">
-              <strong>Date Issued:</strong>{" "}
-              {new Date(selectedMembership.dateOfIssuingMembershipCard).toLocaleDateString()}{" "}
-              {new Date(selectedMembership.dateOfIssuingMembershipCard).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
-            </p>
-            <h3 className="mt-4 mb-2 font-semibold">Members:</h3>
+            <div className="mb-2 bg-gray-300 p-2 rounded">
+              <p className="mb-2">
+                <strong>Membership ID:</strong> {selectedMembership.membershipId}
+              </p>
+              <p className="mb-2">
+                <strong>Type:</strong> {selectedMembership.membershipType}
+              </p>
+              <p className="mb-2">
+                <strong>Date Issued:</strong>{" "}
+                {new Date(selectedMembership.dateOfIssuingMembershipCard).toLocaleDateString()}{" "}
+                {new Date(selectedMembership.dateOfIssuingMembershipCard).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+              </p>
+            </div>
+            <h3 className="mt-4 mb-2 font-semibold bg-gray-200  p-2 rounded">{selectedMembership.membershipType === 'single' ? 'Member Details' : 'Members Details'}</h3>
+            <hr className="my-2" />
             {selectedMembership.MembershipDetails.map((detail) => (
               <div key={detail.id} className="mb-2">
                 <p>
