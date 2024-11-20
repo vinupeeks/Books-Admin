@@ -14,7 +14,7 @@ function Dashboard() {
 
     const cardsData = [
         { id: 1, md: 3, xs: 12, title: 'New Individual Membership', borderRadius: '12px', borderColor: '#8ab9e6', description: 'Details of new individual memberships.', navigateTo: RouteConstants.INDIVIDUAL_MEMBERSHIP, height: '200px' },
-        { id: 2, md: 4, xs: 12, title: 'New Family Membership', borderRadius: '12px', borderColor: '#8ab9e6', description: 'Details of new family memberships.', navigateTo: RouteConstants.INDIVIDUAL_MEMBERSHIP, height: '200px' },
+        { id: 2, md: 4, xs: 12, title: 'New Family Membership', borderRadius: '12px', borderColor: '#8ab9e6', description: 'Details of new family memberships.', navigateTo: RouteConstants.FAMILY_MEMBERSHIP, height: '200px' },
         { id: 3, md: 4, xs: 12, title: 'Book Listing', borderRadius: '12px', borderColor: '#8ab9e6', description: 'Name/Title/Issue/Return', navigateTo: RouteConstants.ROOT, height: '200px' },
         { id: 4, md: 4, xs: 12, title: 'Total Members', borderRadius: '10px', borderColor: '#8ab9e6', description: 'Individual, Family members count.', height: '200px' },
         { id: 5, md: 3, xs: 12, title: 'Total Dues', borderRadius: '15px', borderColor: '#8ab9e6', description: 'Total amount due for members.', height: '200px' },
