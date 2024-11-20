@@ -21,9 +21,9 @@ const AdminLogin = () => {
             if (response.data.token) {
                 const token = response.data.token;
                 localStorage.setItem('BooksAdminToken', token);
-                enqueueSnackbar('Login successful', { variant: 'success' });
                 navigate(RouteConstants.DASHBOARD);
                 window.location.reload();
+                enqueueSnackbar('Login successful', { variant: 'success' });
             } else {
                 enqueueSnackbar('Invalid email or password', { variant: 'error' });
             }

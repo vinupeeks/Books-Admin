@@ -33,9 +33,11 @@ const booksService = {
     },
 
     bookGetById: async (id) => {
+        console.log(id);
+
         return apiRequest({
             method: "GET",
-            url: `${RouteConstants.BOOKID.replace(':id', id)}`,
+            url: `${RouteConstants.BOOKS}/${id}`,
             headers: {
                 Authorization: "Bearer " + Token
             }
@@ -45,7 +47,7 @@ const booksService = {
     bookDeleteById: async (id = '') => {
         return apiRequest({
             method: "DELETE",
-            url: `${RouteConstants.BOOKID.replace(':id', id)}`,
+            url: `${RouteConstants.BOOKS}/${id}`,
             headers: {
                 Authorization: "Bearer " + Token
             }
@@ -55,7 +57,7 @@ const booksService = {
     bookEditById: async (book) => {
         return apiRequest({
             method: "PUT",
-            url: `${RouteConstants.BOOKID.replace(':id', book.id)}`,
+            url: `${RouteConstants.BOOKS}/${book.id}`,
             headers: {
                 Authorization: "Bearer " + Token
             },
@@ -64,13 +66,14 @@ const booksService = {
     },
 
     Lastbookslist: async (book) => {
+        const search = book?.text ? book.text : '';
         return apiRequest({
             method: "GET",
-            url: `${RouteConstants.BOOKSLAST}`,
+            url: `${RouteConstants.BOOKSLAST}?search=${search}`,
             headers: {
                 Authorization: "Bearer " + Token
             },
-            data: book,
+            // data: book,
         });
     },
 

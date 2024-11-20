@@ -1,6 +1,10 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import RouteConstants from "../../constant/Routeconstant";
+import axios from "axios";
 
 const IndividualMemberShip = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     members: [
       {
@@ -23,17 +27,25 @@ const IndividualMemberShip = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!window.confirm("Are you sure you want to continue?")) {
+      return;
+    }
+
     try {
-      const response = await fetch("http://localhost:1000/membership/creation", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
+      const response = await axios.post("http://localhost:1000/membership/creation/", {
+        formData
+        // method: "POST",
+        // headers: {
+        //   "Content-Type": "application/json",
+        // },
+        // body: JSON.stringify(formData),
       });
+      console.log(`Reponse of the Membership creation: `, response.data);
 
       if (response.ok) {
+        console.log(`Reponse of the Membership creation inside of if: `, response);
         alert("Membership created successfully!");
+
         setFormData({
           members: [
             {
@@ -56,12 +68,33 @@ const IndividualMemberShip = () => {
     }
   };
 
+  const handleCancelBtn = () => {
+
+    if (!window.confirm("Are you sure you want to continue?")) {
+      return;
+    }
+    setFormData({
+      members: [
+        {
+          name: "",
+          contactNumber: "",
+          towerName: "",
+          flatNumber: "",
+          dateOfBirth: "",
+        },
+      ],
+      membershipType: "single",
+    });
+    navigate(RouteConstants.DASHBOARD)
+
+  }
+
   return (
-    <div className="max-w-xl mx-auto mt-10 bg-white shadow-md p-6 rounded-lg">
-      <h2 className="text-2xl font-bold text-gray-800 mb-6">Create Membership</h2>
+    <div className="max-w-5xl mx-auto mt-10 bg-white shadow-md p-6 rounded-lg">
+      <h2 className="text-2xl font-bold text-gray-800 mb-6">Individual Membership</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         {formData.members.map((member, index) => (
-          <div key={index} className="space-y-4">
+          <div key={index} className="px-4 py-2 bg-gray-200 rounded-lg space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700">Name</label>
               <input
@@ -127,10 +160,17 @@ const IndividualMemberShip = () => {
           </select>
         </div>
 
-        <div>
+        <div className="flex items-center justify-between px-10">
+          <button
+            type="button"
+            onClick={handleCancelBtn}
+            className="flex items-center bg-gray-400 text-white py-2 px-4 rounded-md hover:bg-gray-300"
+          >
+            Cancel
+          </button>
           <button
             type="submit"
-            className="w-full bg-indigo-500 text-white py-2 px-4 rounded-md hover:bg-indigo-600 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+            className=" bg-indigo-500 text-white py-2 px-4 rounded-md hover:bg-indigo-600 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
           >
             Submit
           </button>

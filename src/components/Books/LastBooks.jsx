@@ -28,7 +28,7 @@ function LastBooks() {
 
     const fetchLastBooks = async () => {
         setLoading(true);
-        LastBooksDetails.mutate();
+        LastBooksDetails.mutateAsync();
     };
 
     const LastBooksDetails = bookQueries.LastBooksListMutation(
@@ -46,29 +46,6 @@ function LastBooks() {
         }
     );
 
-    const fetchFilteredBooks = bookQueries.SearchedBooksListMutation(
-        (response) => {
-            setLoading(false);
-            if (!response || !response.data) {
-                enqueueSnackbar('No books found matching that name.', { variant: 'warning' });
-                setFilteredBooks([])
-            } else {
-                const bookList = response.data || [];
-                setFilteredBooks(bookList);
-
-                if (bookList.length === 0) {
-                    enqueueSnackbar('No books found matching that name.', { variant: 'warning' });
-                }
-            }
-        },
-        {
-            onError: (error) => {
-                enqueueSnackbar('An error occurred while searching for books. Please try again later.', { variant: 'error' });
-                setLoading(false);
-            }
-        }
-    );
-
     const debouncedSearch = useCallback(
         debounce((text) => {
             // fetchFilteredBooks(text);
@@ -77,10 +54,11 @@ function LastBooks() {
             }
 
             setLoading(true);
-            fetchFilteredBooks.mutate(text);
+            LastBooksDetails.mutateAsync({ text });
         }, 300),
         []
     );
+
 
     const handleSearchChange = async (event) => {
         const value = event.target.value;
@@ -119,10 +97,10 @@ function LastBooks() {
                 </thead>
                 <tbody>
                     {(filteredBooks.length > 0 ? filteredBooks : booksDup)?.map((book, index) => (
-                        <tr key={book.id} style={{ verticalAlign: 'top' }}>
+                        <tr key={book?.id} style={{ verticalAlign: 'top' }}>
                             <td style={{ border: '1px solid #ccc', padding: '10px' }}>{index + 1}</td>
-                            <td style={{ border: '1px solid #ccc', padding: '10px' }}>{book.title}</td>
-                            <td style={{ border: '1px solid #ccc', padding: '10px' }}>{book.author}</td>
+                            <td style={{ border: '1px solid #ccc', padding: '10px' }}>{book?.title}</td>
+                            <td style={{ border: '1px solid #ccc', padding: '10px' }}>{book?.author}</td>
                         </tr>
                     ))}
                 </tbody>

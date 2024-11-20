@@ -3,7 +3,6 @@ const RouteConstants = {
     ROOT: '/home',
     LOGIN: '/auth/admin/login',
     BOOKS: '/books',
-    BOOKID: '/books/:id',
     BOOKSLAST: '/books/last',
     SEARCHEDBOOKS: '/books/searchedBook',
 
