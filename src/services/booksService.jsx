@@ -76,17 +76,6 @@ const booksService = {
             // data: book,
         });
     },
-
-    Searchedbookslist: async (book) => {
-        return apiRequest({
-            method: "GET",
-            url: `${RouteConstants.SEARCHEDBOOKS}?bookName=${book}`,
-            headers: {
-                Authorization: "Bearer " + Token
-            },
-            data: book,
-        });
-    },
 }
 
 export default booksService;
