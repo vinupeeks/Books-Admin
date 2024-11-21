@@ -11,10 +11,21 @@ const Token = getAuthToken();
 
 const membershipService = {
 
-    membershipslist: async (id) => {
+    membershipslist: async (id, text) => {
+        console.log(`get api :`, id);
+        console.log(`get text :`, text);
+        // const data = id?.id;
+        // console.log(`Data: `, data);
+
+        // const text = id.text?.id.text;
+        // console.log(`text: `, text);
+
+
         return apiRequest({
             method: "GET",
-            url: `${RouteConstants.MEMBER_SHIP.replace(':id', id)}`,
+            // url: `${RouteConstants.MEMBER_SHIP}?type=${id}`,
+
+            url: `${RouteConstants.MEMBER_SHIP}?type=${id}`,
             headers: {
                 Authorization: "Bearer " + Token
             }

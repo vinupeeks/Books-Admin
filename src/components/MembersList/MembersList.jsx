@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import membershipsQueries from "../../queries/membershipQueries";
+import debounce from "lodash.debounce";
 
 const MembersList = () => {
   const [memberships, setMemberships] = useState([]);
@@ -8,6 +9,7 @@ const MembersList = () => {
   const [selectedMembership, setSelectedMembership] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [membershipType, setMembershipType] = useState("single");
+  const [searchTerm, setSearchTerm] = useState('');
 
   const handleTypeChange = (type) => {
     setMembershipType(type);
@@ -21,6 +23,8 @@ const MembersList = () => {
   const getMemberships = membershipsQueries.membershipListMutation(
     async (response) => {
       setMemberships(response?.data.rows || []);
+      console.log(response);
+
       setLoading(false);
     },
     {
@@ -54,9 +58,32 @@ const MembersList = () => {
     getMembershipById.mutate(membership.membershipId);
   };
 
+  const handleSearchChange = async (event) => {
+    const value = event.target.value;
+    setSearchTerm(value);
+
+
+    if (value === '') {
+      setSelectedMembership('');
+    } else {
+      debouncedSearch(value);
+    }
+  };
+  const debouncedSearch = useCallback(
+    debounce((text) => {
+      if (!text) {
+        return;
+      }
+
+      setLoading(true);
+      getMemberships.mutateAsync({ text });
+    }, 300),
+    []
+  );
+
   const handleModalClose = () => {
     setShowModal(false);
-    setSelectedMembership(null); // Clear selected membership data
+    setSelectedMembership(null);
   };
 
   if (loading) return <p>Loading...</p>;
@@ -68,10 +95,20 @@ const MembersList = () => {
         Membership List
       </h1>
 
-      <div>
-        <b>MEMBERSHIP - TYPES:</b>
-        <button onClick={() => handleTypeChange("single")}><i>&nbsp;  Single</i></button> /&nbsp;
-        <button onClick={() => handleTypeChange("family")}><i>Family</i></button>
+      <div className="flex items-center justify-between px-5 ">
+        <div>
+          <b>MEMBERSHIP - TYPES:</b>
+          <button onClick={() => handleTypeChange("single")}><i>&nbsp;  Single</i></button> /&nbsp;
+          <button onClick={() => handleTypeChange("family")}><i>Family</i></button>
+        </div>
+        <input
+          type="text"
+          placeholder="Search by Membership ID"
+          value={searchTerm}
+          onChange={handleSearchChange}
+          className="border-2 border-sky-500 rounded-lg bg-gray-100 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-sky-500 p-2 w-64"
+        // style={{ padding: '8px', margin: '10px 0', width: '20%' }}
+        />
       </div>
       <br />
 

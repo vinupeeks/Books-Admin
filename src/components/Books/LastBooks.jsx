@@ -85,7 +85,7 @@ function LastBooks() {
                 value={searchTerm}
                 onChange={handleSearchChange}
                 style={{ padding: '8px', margin: '10px 0', width: '100%' }}
-            />
+            /> 
 
             <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '20px', verticalAlign: 'top' }}>
                 <thead>
