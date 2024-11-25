@@ -14,7 +14,7 @@ const BooksTable = ({ books }) => {
             Author
           </th>
           <th className='border border-slate-600 rounded-md max-md:hidden'>
-            Book Status
+            Book Stock
           </th>
           <th className='border border-slate-600 rounded-md'>Operations</th>
         </tr>
@@ -32,7 +32,7 @@ const BooksTable = ({ books }) => {
               {book.author}
             </td>
             <td className='border border-slate-700 rounded-md text-center max-md:hidden'>
-              {book.status}
+              {book.Stock}
             </td>
             {/* {console.log(book.id)} */}
             <td className='border border-slate-700 rounded-md text-center'>

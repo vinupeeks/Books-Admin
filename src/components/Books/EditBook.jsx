@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import BackButton from '../../utils/BackButton';
-import Spinner from '../../utils/Spinner'; 
+import Spinner from '../../utils/Spinner';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
 import RouteConstants from '../../constant/Routeconstant';
@@ -10,6 +10,10 @@ import { getAuthToken } from '../../utils/TokenHelper';
 const EditBook = () => {
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
+  const [stock, setStock] = useState('');
+  const [ISBN, setISBN] = useState('');
+  const [price, setPrice] = useState('');
+  const [donatedBy, setDonatedBy] = useState('');
   const [status, setStatus] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -18,30 +22,35 @@ const EditBook = () => {
 
   const getBookDetail = bookQueries.bookByIdMutation(
     async (response) => {
-      setTitle(response.data.title);
-      setAuthor(response.data.author);
-      setStatus(response.data.status);
+      const { title, author, Stock, ISBN, Price, DonatedBy, status } = response.data;
+      setTitle(title);
+      setAuthor(author);
+      setStock(Stock);
+      setISBN(ISBN);
+      setPrice(Price);
+      setDonatedBy(DonatedBy);
+      setStatus(status);
       setLoading(false);
     },
     {
       onError: (error) => {
         setLoading(false);
-        setError('Failed to fetch Book data. Please try again later.');
-        enqueueSnackbar(error.response.data.message, { variant: 'warning' });
+        enqueueSnackbar('Failed to fetch book data. Please try again later.', { variant: 'warning' });
+        console.error(error);
       }
     }
-  )
+  );
 
   useEffect(() => {
     const Token = getAuthToken();
     if (!Token) {
-      enqueueSnackbar('You need to log in to show the book.', { variant: 'warning' });
+      enqueueSnackbar('You need to log in to edit the book.', { variant: 'warning' });
       navigate(RouteConstants.LOGIN);
       return;
     }
     setLoading(true);
     getBookDetail.mutateAsync(id);
-  }, [id])
+  }, [id]);
 
   const editBook = bookQueries.bookEditByIdMutation(
     async (response) => {
@@ -52,17 +61,26 @@ const EditBook = () => {
     {
       onError: (error) => {
         setLoading(false);
-        enqueueSnackbar('Error deleting book', { variant: 'error' });
+        enqueueSnackbar('Error editing book', { variant: 'error' });
         console.error(error);
       }
     }
-  )
+  );
 
   const handleEditBook = () => {
-    const data = { id, title, author, status };
+    const data = {
+      id,
+      title,
+      author,
+      Stock: stock,
+      ISBN,
+      Price: price,
+      DonatedBy: donatedBy,
+      status
+    };
     setLoading(true);
     editBook.mutateAsync(data);
-  }
+  };
 
   return (
     <div className='p-4'>
@@ -85,6 +103,42 @@ const EditBook = () => {
             type='text'
             value={author}
             onChange={(e) => setAuthor(e.target.value)}
+            className='border-2 border-gray-500 px-4 py-2 w-full'
+          />
+        </div>
+        <div className='my-4'>
+          <label className='text-xl mr-4 text-gray-500'>Stock</label>
+          <input
+            type='number'
+            value={stock}
+            onChange={(e) => setStock(e.target.value)}
+            className='border-2 border-gray-500 px-4 py-2 w-full'
+          />
+        </div>
+        <div className='my-4'>
+          <label className='text-xl mr-4 text-gray-500'>ISBN</label>
+          <input
+            type='text'
+            value={ISBN}
+            onChange={(e) => setISBN(e.target.value)}
+            className='border-2 border-gray-500 px-4 py-2 w-full'
+          />
+        </div>
+        <div className='my-4'>
+          <label className='text-xl mr-4 text-gray-500'>Price</label>
+          <input
+            type='number'
+            value={price}
+            onChange={(e) => setPrice(e.target.value)}
+            className='border-2 border-gray-500 px-4 py-2 w-full'
+          />
+        </div>
+        <div className='my-4'>
+          <label className='text-xl mr-4 text-gray-500'>Donated By</label>
+          <input
+            type='text'
+            value={donatedBy}
+            onChange={(e) => setDonatedBy(e.target.value)}
             className='border-2 border-gray-500 px-4 py-2 w-full'
           />
         </div>

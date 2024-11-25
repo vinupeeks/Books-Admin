@@ -85,7 +85,7 @@ function LastBooks() {
                 value={searchTerm}
                 onChange={handleSearchChange}
                 style={{ padding: '8px', margin: '10px 0', width: '100%' }}
-            /> 
+            />
 
             <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '20px', verticalAlign: 'top' }}>
                 <thead>
@@ -93,6 +93,7 @@ function LastBooks() {
                         <th style={{ border: '1px solid #ccc', padding: '10px' }}>ID</th>
                         <th style={{ border: '1px solid #ccc', padding: '10px' }}>Title</th>
                         <th style={{ border: '1px solid #ccc', padding: '10px' }}>Author</th>
+                        <th style={{ border: '1px solid #ccc', padding: '10px' }}>Price</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -101,6 +102,7 @@ function LastBooks() {
                             <td style={{ border: '1px solid #ccc', padding: '10px' }}>{index + 1}</td>
                             <td style={{ border: '1px solid #ccc', padding: '10px' }}>{book?.title}</td>
                             <td style={{ border: '1px solid #ccc', padding: '10px' }}>{book?.author}</td>
+                            <td style={{ border: '1px solid #ccc', padding: '10px' }}>{book?.Price}</td>
                         </tr>
                     ))}
                 </tbody>

@@ -14,9 +14,7 @@ const ShowBook = () => {
   const { enqueueSnackbar } = useSnackbar();
 
   const bookingBtn = async (book) => {
-    const Token = getAuthToken;
-    console.log(book);
-
+    const Token = getAuthToken();
     if (!Token) {
       enqueueSnackbar('You need to log in to reserve the book.', { variant: 'warning' });
       navigate(RouteConstants.LOGIN);
@@ -25,13 +23,11 @@ const ShowBook = () => {
 
     if (book.status === 'available') {
       try {
-        console.log(`Booked Book id: `, book.id);
-
-        const response = await axios.post(`http://localhost:1000/cart/${book.id}`, {}, {
-          headers: {
-            Authorization: `Bearer ${Token}`,
-          },
-        });
+        const response = await axios.post(
+          `http://localhost:1000/cart/${book.id}`,
+          {},
+          { headers: { Authorization: `Bearer ${Token}` } }
+        );
 
         if (response.status === 200) {
           enqueueSnackbar(`Book reserved successfully!`, { variant: 'success' });
@@ -41,82 +37,82 @@ const ShowBook = () => {
             const updatedResponse = await axios.get(`http://localhost:1000/books/${book.id}`);
             setBook(updatedResponse.data);
           } catch (error) {
-            enqueueSnackbar(`Failed to fetch updated book: `, { variant: 'warning' });
+            enqueueSnackbar(`Failed to fetch updated book details.`, { variant: 'warning' });
           } finally {
             setLoading(false);
           }
 
-          navigate(`${RouteConstants.BOKKSDETAILS.replace(':id', book.id)}`);
-
+          navigate(`${RouteConstants.BOOKSDETAILS.replace(':id', book.id)}`);
         } else {
           enqueueSnackbar(`Failed to reserve the book. Please try again.`, { variant: 'error' });
         }
       } catch (error) {
-        if (error.response) {
-          enqueueSnackbar(`Error booking the book: ${error.response.data.message}`, { variant: 'error' });
-        } else {
-          enqueueSnackbar(`Network error: ${error.message}`, { variant: 'error' });
-        }
+        const errorMessage =
+          error.response?.data?.message || 'An error occurred while reserving the book.';
+        enqueueSnackbar(errorMessage, { variant: 'error' });
       }
     } else {
-      enqueueSnackbar(`Book is Already Sold-Out..!`, { variant: 'warning' });
-      return;
+      enqueueSnackbar('Book is already sold out.', { variant: 'warning' });
     }
-  }
+  };
 
   useEffect(() => {
-    const fetchBooks = async () => {
+    const fetchBook = async () => {
       setLoading(true);
       try {
         const response = await axios.get(`http://localhost:1000/books/${id}`);
-        console.log(`API Response:`, response.data);
         setBook(response.data);
+        console.log(`Book details: `, response.data);
+
       } catch (error) {
-        console.error("Failed to fetch books:", error);
+        enqueueSnackbar('Failed to fetch book details.', { variant: 'error' });
       } finally {
         setLoading(false);
       }
     };
-    fetchBooks();
+    fetchBook();
   }, [id]);
 
   return (
     <div className="p-4 flex justify-center items-center h-full flex-column">
-      {/* <BackButton /> */}
-      <h1 className='text-3xl my-4'>Show Book</h1>
+      <h1 className="text-3xl my-4">Show Book</h1>
       {loading ? (
         <Spinner />
       ) : (
-        <div className='flex flex-col border-2 border-sky-400 rounded-xl w-fit p-4'>
-          <div className='my-4'>
-            <span className='text-xl mr-4 text-gray-500'>Id</span>
+        <div className="flex flex-col border-2 border-sky-400 rounded-xl w-fit p-4">
+          <div className="my-4">
+            <span className="text-xl mr-4 text-gray-500">ID</span>
             <span>{book.id}</span>
           </div>
-          <div className='my-4'>
-            <span className='text-xl mr-4 text-gray-500'>Title</span>
+          <div className="my-4">
+            <span className="text-xl mr-4 text-gray-500">Title</span>
             <span>{book.title}</span>
           </div>
-          <div className='my-4'>
-            <span className='text-xl mr-4 text-gray-500'>Author</span>
+          <div className="my-4">
+            <span className="text-xl mr-4 text-gray-500">Author</span>
             <span>{book.author}</span>
           </div>
-          <div className='my-4'>
-            <span className='text-xl mr-4 text-gray-500'>Book Status</span>
+          <div className="my-4">
+            <span className="text-xl mr-4 text-gray-500">Stock</span>
+            <span>{book.Stock ? `${book.Stock}` : 'N/A'}</span>
+          </div>
+          <div className="my-4">
+            <span className="text-xl mr-4 text-gray-500">Price</span>
+            <span>{book.Price ? `$${book.Price.toFixed(2)}` : 'N/A'}</span>
+          </div>
+          <div className="my-4">
+            <span className="text-xl mr-4 text-gray-500">Status</span>
             <span>{book.status}</span>
           </div>
-          <div className='my-4'>
-            <span className='text-xl mr-4 text-gray-500'>Create Time</span>
+          <div className="my-4">
+            <span className="text-xl mr-4 text-gray-500">Created At</span>
             <span>{new Date(book.createdAt).toLocaleString()}</span>
           </div>
-          <div className='my-4'>
-            <span className='text-xl mr-4 text-gray-500'>Last Update Time</span>
-            <span>{new Date(book.updatedAt).toLocaleString()}</span>
-          </div>
           <button
-            className='w-fit px-4 py-1 bg-sky-300 rounded-lg'
-            onClick={() => bookingBtn(book)} // Pass book as argument
+            className="w-fit px-4 py-2 bg-sky-300 rounded-lg"
+            onClick={() => bookingBtn(book)}
           >
-            {book.status === 'available' ? 'ADD to Cart' : 'Sold-Out'}
+            {book.status === 'available' ? 'Add to Cart' : 'Sold Out'}
           </button>
         </div>
       )}
