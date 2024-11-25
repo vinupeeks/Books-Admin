@@ -16,10 +16,7 @@ const membershipService = {
         console.log(`get text :`, text);
         // const data = id?.id;
         // console.log(`Data: `, data);
-
-        // const text = id.text?.id.text;
-        // console.log(`text: `, text);
-
+ 
 
         return apiRequest({
             method: "GET",

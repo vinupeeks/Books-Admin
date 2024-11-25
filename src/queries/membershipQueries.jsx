@@ -21,7 +21,7 @@ const membershipByIdMutation = (onmembershipListSuccess, onErrorCallback) => {
         onError: onErrorCallback,
     });
 };
-
+ 
 
 const membershipsQueries = {
     membershipListMutation,
