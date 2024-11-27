@@ -42,7 +42,7 @@ const App = () => {
     <ViewProvider>
       <>
         {isAuthenticated && <Navbar />}
-        <Routes>
+        <Routes> 
           <Route path={RouteConstants.LOGIN} element={<AdminLogin />} />
           <Route path={RouteConstants.DASHBOARD} element={<PrivateRoute element={<DashBoard />} />} />
           <Route path={RouteConstants.ROOT} element={<PrivateRoute element={<Home />} />} />
