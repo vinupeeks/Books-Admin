@@ -73,8 +73,8 @@ function LastBooks() {
     };
 
     return (
-        <div style={{ textAlign: 'center', alignItems: 'flex-start' }}>
-            <h2>Fresh Books</h2>
+        <div style={{textAlign: 'center', alignItems: 'flex-start' }}>
+            <h2>Books</h2>
             {loading && <p>Loading...</p>}
             {error && <p style={{ color: 'red' }}>{error}</p>}
             {!loading && !error && filteredBooks.length === 0 && <p>No books available.</p>}

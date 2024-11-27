@@ -13,6 +13,9 @@ const RouteConstants = {
     MEMBER_SHIP_BY_ID: '/membership/details/:id',
     MEMBERS_INDIVUDAL: '/members/indivual',
 
+
+    BOOK_ISSUING: '/book/issuing',
+
     BOOKCREATE: '/books/create',
     BOKKSDETAILS: '/books/details/:id',
     BOOKSEDIT: '/books/edit/:id',
