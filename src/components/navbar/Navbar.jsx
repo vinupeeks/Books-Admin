@@ -30,13 +30,13 @@ export default function AppBarWithSideMenu() {
 
     const handleClose = (e) => {
 
-        if (e && !e.altKey) {
-            console.log(e);
-            e = null;
-        }
-        if (e) {
-            navigate(`/${e}`);
-        }
+        // if (e && !e.altKey) {
+        //     console.log(e);
+        //     e = null;
+        // }
+        // if (e) {
+        //     // navigate(`/${e}`);
+        // }
         setShow(false);
         setAnchorEl(null);
     };
@@ -95,7 +95,7 @@ export default function AppBarWithSideMenu() {
                     >
                         <MenuIcon />
                     </IconButton>
-                    <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} onClick={() => { navigate(RouteConstants.ROOT) }}>
+                    <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} onClick={() => { navigate(RouteConstants.DASHBOARD) }}>
                         Books-Library
                     </Typography>
                     {auth && (
@@ -149,7 +149,7 @@ export default function AppBarWithSideMenu() {
                                 <li className="mb-3">
                                     <a
                                         href={RouteConstants.DASHBOARD}
-                                        onClick={() => handleMenuClick('Home')}
+                                        onClick={() => handleMenuClick('Dashboard')}
                                         className="text-black font-semibold block px-4 py-2 rounded hover:bg-blue-300 transition no-underline"
                                     >
                                         Dashboard
@@ -157,45 +157,74 @@ export default function AppBarWithSideMenu() {
                                 </li>
                                 <li className="mb-3">
                                     <a
-                                        href={RouteConstants.BOOKCREATE}
-                                        onClick={() => handleMenuClick('Add Product')}
+                                        href={RouteConstants.BOOK_ISSUING}
+                                        onClick={() => handleMenuClick('Membership')}
                                         className="text-black font-semibold block px-4 py-2 rounded hover:bg-blue-300 transition no-underline"
                                     >
-                                        Add Product
+                                        Book Issue
                                     </a>
                                 </li>
                                 <li className="mb-3">
                                     <a
-                                        href={RouteConstants.CART}
-                                        onClick={() => handleMenuClick('Cart')}
+                                        href={RouteConstants.MEMBERS_LIST}
+                                        onClick={() => handleMenuClick('Membership')}
                                         className="text-black font-semibold block px-4 py-2 rounded hover:bg-blue-300 transition no-underline"
                                     >
-                                        Cart
+                                        Members List
                                     </a>
                                 </li>
                                 <li className="mb-3">
                                     <a
+                                        href={RouteConstants.FAMILY_MEMBERSHIP}
+                                        onClick={() => handleMenuClick('Membership')}
                                         className="text-black font-semibold block px-4 py-2 rounded hover:bg-blue-300 transition no-underline"
                                     >
-                                        Section-Wise
+                                        Membership Creation
                                     </a>
-
+                                </li>
+                                <li className="mb-3">
+                                    <a
+                                        href={RouteConstants.ROOT}
+                                        onClick={() => handleMenuClick()}
+                                        className="text-black font-semibold block px-4 py-2 rounded hover:bg-blue-300 transition no-underline"
+                                    >
+                                        Manage Books
+                                    </a>
                                     <ul className="pl-4 mt-2">
-                                        <li>
+                                        <li className="mb-3">
                                             <a
-                                                className="text-black font-normal block px-4 py-2 rounded hover:bg-gray-200 transition no-underline"
-                                                onClick={() => handleViewChange('table')}
+                                                href={RouteConstants.BOOKCREATE}
+                                                onClick={() => handleMenuClick('Add Product')}
+                                                className="text-black font-semibold block px-4 py-2 rounded hover:bg-blue-300 transition no-underline"
                                             >
-                                                Table
+                                                Add Product
                                             </a>
                                         </li>
-                                        <li>
+                                        <li className="mb-3">
                                             <a
-                                                className="text-black font-normal block px-4 py-2 rounded hover:bg-gray-200 transition no-underline"
-                                                onClick={() => handleViewChange('card')}
+                                                className="text-black font-semibold block px-4 py-2 rounded hover:bg-blue-300 transition no-underline"
                                             >
-                                                Card
+                                                Section-Wise
                                             </a>
+
+                                            <ul className="pl-4 mt-2">
+                                                <li>
+                                                    <a
+                                                        className="text-black font-normal block px-4 py-2 rounded hover:bg-gray-200 transition no-underline"
+                                                        onClick={() => handleViewChange('table')}
+                                                    >
+                                                        Table
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a
+                                                        className="text-black font-normal block px-4 py-2 rounded hover:bg-gray-200 transition no-underline"
+                                                        onClick={() => handleViewChange('card')}
+                                                    >
+                                                        Card
+                                                    </a>
+                                                </li>
+                                            </ul>
                                         </li>
                                     </ul>
                                 </li>
@@ -245,3 +274,19 @@ export default function AppBarWithSideMenu() {
         </Box >
     );
 }
+
+
+
+
+
+
+
+{/* <li className="mb-3">
+    <a
+        href={RouteConstants.CART}
+        onClick={() => handleMenuClick('Cart')}
+        className="text-black font-semibold block px-4 py-2 rounded hover:bg-blue-300 transition no-underline"
+    >
+        Cart
+    </a>
+</li> */}

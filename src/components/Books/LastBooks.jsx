@@ -5,6 +5,7 @@ import bookQueries from '../../queries/bookQueries';
 import { useNavigate } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
 import debounce from 'lodash.debounce';
+import { BsInfoCircle } from 'react-icons/bs';
 
 function LastBooks() {
     const [books, setBooks] = useState([]);
@@ -73,7 +74,7 @@ function LastBooks() {
     };
 
     return (
-        <div style={{textAlign: 'center', alignItems: 'flex-start' }}>
+        <div style={{ textAlign: 'center', alignItems: 'flex-start' }}>
             <h2>Books</h2>
             {loading && <p>Loading...</p>}
             {error && <p style={{ color: 'red' }}>{error}</p>}
@@ -94,6 +95,7 @@ function LastBooks() {
                         <th style={{ border: '1px solid #ccc', padding: '10px' }}>Title</th>
                         <th style={{ border: '1px solid #ccc', padding: '10px' }}>Author</th>
                         <th style={{ border: '1px solid #ccc', padding: '10px' }}>Price</th>
+                        <th style={{ border: '1px solid #ccc', padding: '10px' }}>Options</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -103,6 +105,9 @@ function LastBooks() {
                             <td style={{ border: '1px solid #ccc', padding: '10px' }}>{book?.title}</td>
                             <td style={{ border: '1px solid #ccc', padding: '10px' }}>{book?.author}</td>
                             <td style={{ border: '1px solid #ccc', padding: '10px' }}>{book?.Price}</td>
+                            <td style={{ border: '1px solid #ccc', padding: '10px', display: 'flex', justifyContent: 'center' }}>
+                                <BsInfoCircle className='text-2xl text-green-800' />
+                            </td>
                         </tr>
                     ))}
                 </tbody>

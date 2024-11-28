@@ -11,12 +11,7 @@ const Token = getAuthToken();
 
 const membershipService = {
 
-    membershipslist: async (id, text) => {
-        console.log(`get api :`, id);
-        console.log(`get text :`, text);
-        // const data = id?.id;
-        // console.log(`Data: `, data);
- 
+    membershipslist: async (id, text) => {  
 
         return apiRequest({
             method: "GET",

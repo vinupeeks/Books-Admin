@@ -67,7 +67,7 @@ const FamilyMemberShip = () => {
     console.log(`Form data: `, formData);
 
 
-    try {
+    try { 
       const response = await fetch("http://localhost:1000/membership/creation", {
         method: "POST",
         headers: {
@@ -88,7 +88,7 @@ const FamilyMemberShip = () => {
               dateOfBirth: "",
             },
           ],
-          membershipType: "",
+          membershipType: "single",
         });
       } else {
         const errorData = await response.json();

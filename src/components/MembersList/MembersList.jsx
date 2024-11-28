@@ -148,11 +148,15 @@ const MembersList = () => {
         </table>
       </div>
 
-      {/* Modal */}
+      {/* modal */}
       {showModal && selectedMembership && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50">
-          {/* {console.log(selectedMembership)} */}
-          <div className="bg-white p-6 rounded-lg shadow-lg w-96 max-h-[90vh] overflow-y-auto">
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50"
+          onClick={handleModalClose}
+        >
+          <div className="bg-white p-6 rounded-lg shadow-lg w-96 max-h-[90vh] overflow-y-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
             <h2 className="text-2xl font-semibold mb-4">Membership Details</h2>
             <div className="mb-2 bg-gray-300 p-2 rounded">
               <p className="mb-2">
@@ -187,7 +191,9 @@ const MembersList = () => {
                     </p>
                   </div>
                   <div>
-                    <button className="px-4 py-2 bg-gray-400 text-white rounded-lg hover:bg-gray-500">
+                    <button type="button" className="px-4 py-2 bg-gray-400 text-white rounded-lg hover:bg-gray-500"
+                      onClick={() => { alert(detail.Member.id) }}
+                    >
                       View
                     </button>
                   </div>
