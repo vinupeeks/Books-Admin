@@ -170,7 +170,7 @@ export default function AppBarWithSideMenu() {
                                         onClick={() => handleMenuClick('Membership')}
                                         className="text-black font-semibold block px-4 py-2 rounded hover:bg-blue-300 transition no-underline"
                                     >
-                                        Members List
+                                        Memberships List
                                     </a>
                                 </li>
                                 <li className="mb-3">

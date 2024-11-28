@@ -22,8 +22,9 @@ const MembersList = () => {
 
   const getMemberships = membershipsQueries.membershipListMutation(
     async (response) => {
+      // console.log(`Response from the memberships fetch: `.response)
       setMemberships(response?.data.rows || []);
-      // console.log(response); 
+      // console.log(memberships); 
       setLoading(false);
     },
     {
@@ -40,6 +41,7 @@ const MembersList = () => {
 
   const getMembershipById = membershipsQueries.membershipByIdMutation(
     async (response) => {
+      // console.log(`Response from the memberships fetch: `.response)
       setSelectedMembership(response?.data?.Details || null);
       setLoading(false);
       setShowModal(true);
@@ -85,12 +87,18 @@ const MembersList = () => {
     setSelectedMembership(null);
   };
 
+  const IssueListForMembers = (id) => {
+    alert(id)
+    // setLoading(true);
+    // getMemberships.mutateAsync({ text });
+  }
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
-      <h1 className="text-3xl font-semibold text-center text-gray-800 mb-8">
+      <h1 className="text-3xl font-semibold text-left text-gray-800 mb-8">
         Membership List : {membershipType === 'family' ? 'FAMILY' : 'SINGLE'}
       </h1>
 
@@ -181,6 +189,9 @@ const MembersList = () => {
                 >
                   <div>
                     <p>
+                      <strong>Member-ID:</strong> {detail.Member.memID}
+                    </p>
+                    <p>
                       <strong>Name:</strong> {detail.Member.name}
                     </p>
                     <p>
@@ -192,7 +203,8 @@ const MembersList = () => {
                   </div>
                   <div>
                     <button type="button" className="px-4 py-2 bg-gray-400 text-white rounded-lg hover:bg-gray-500"
-                      onClick={() => { alert(detail.Member.id) }}
+                      onClick={() => { IssueListForMembers(detail.Member.id) }}
+                    // onClick={() => { alert(detail.Member.id) }}
                     >
                       View
                     </button>
