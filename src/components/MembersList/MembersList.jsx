@@ -23,8 +23,7 @@ const MembersList = () => {
   const getMemberships = membershipsQueries.membershipListMutation(
     async (response) => {
       setMemberships(response?.data.rows || []);
-      console.log(response);
-
+      // console.log(response); 
       setLoading(false);
     },
     {
@@ -92,7 +91,7 @@ const MembersList = () => {
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
       <h1 className="text-3xl font-semibold text-center text-gray-800 mb-8">
-        Membership List : {membershipType==='family'?'FAMILY':'SINGLE'}
+        Membership List : {membershipType === 'family' ? 'FAMILY' : 'SINGLE'}
       </h1>
 
       <div className="flex items-center justify-between px-5 ">
@@ -117,6 +116,7 @@ const MembersList = () => {
         <table className="min-w-full table-auto">
           <thead className="bg-gray-200">
             <tr>
+              <th className="px-4 py-2 text-left">Number</th>
               <th className="px-4 py-2 text-left">Membership ID</th>
               <th className="px-4 py-2 text-left">Type</th>
               <th className="px-4 py-2 text-left">Date Issued</th>
@@ -124,8 +124,9 @@ const MembersList = () => {
             </tr>
           </thead>
           <tbody>
-            {memberships.map((membership) => (
+            {memberships.map((membership, index) => (
               <tr key={membership.id} className="border-b hover:bg-gray-100">
+                <td className="px-4 py-2">{index + 1}</td>
                 <td className="px-4 py-2">{membership.membershipId}</td>
                 <td className="px-4 py-2">
                   {membership.membershipType === "family" ? "F-MS" : "S-MS"}
@@ -169,16 +170,28 @@ const MembersList = () => {
             <h3 className="mt-4 mb-2 font-semibold bg-gray-200  p-2 rounded">{selectedMembership.membershipType === 'single' ? 'Member Details' : 'Members Details'}</h3>
             <hr className="my-2" />
             {selectedMembership.MembershipDetails.map((detail) => (
-              <div key={detail.id} className="mb-2">
-                <p>
-                  <strong>Name:</strong> {detail.Member.name}
-                </p>
-                <p>
-                  <strong>Contact:</strong> {detail.Member.contactNumber}
-                </p>
-                <p>
-                  <strong>Flat Number:</strong> {detail.Member.flatNumber}
-                </p>
+              <div key={detail.id} className="mb-4">
+                <div
+                  className="flex flex-row items-end justify-between px-2"
+                  style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-end' }}
+                >
+                  <div>
+                    <p>
+                      <strong>Name:</strong> {detail.Member.name}
+                    </p>
+                    <p>
+                      <strong>Contact:</strong> {detail.Member.contactNumber}
+                    </p>
+                    <p>
+                      <strong>Flat Number:</strong> {detail.Member.flatNumber}
+                    </p>
+                  </div>
+                  <div>
+                    <button className="px-4 py-2 bg-gray-400 text-white rounded-lg hover:bg-gray-500">
+                      View
+                    </button>
+                  </div>
+                </div>
                 <hr className="my-2" />
               </div>
             ))}
