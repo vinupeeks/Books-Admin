@@ -12,6 +12,7 @@ const membershipListMutation = (onmembershipListSuccess, onErrorCallback) => {
         onError: onErrorCallback,
     });
 };
+
 const membershipByIdMutation = (onmembershipListSuccess, onErrorCallback) => {
 
     return useMutation(membershipService.membershipById, {
@@ -21,11 +22,21 @@ const membershipByIdMutation = (onmembershipListSuccess, onErrorCallback) => {
         onError: onErrorCallback,
     });
 };
- 
+
+const memberBookDetailsMutation = (onmembershipListSuccess, onErrorCallback) => {
+
+    return useMutation(membershipService.memberBookDetails, {
+        onSuccess: (data) => {
+            onmembershipListSuccess(data);
+        },
+        onError: onErrorCallback,
+    });
+};
 
 const membershipsQueries = {
     membershipListMutation,
-    membershipByIdMutation
+    membershipByIdMutation,
+    memberBookDetailsMutation
 };
 
 export default membershipsQueries;

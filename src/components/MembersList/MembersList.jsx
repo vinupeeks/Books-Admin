@@ -1,14 +1,20 @@
 import React, { useCallback, useEffect, useState } from "react";
 import membershipsQueries from "../../queries/membershipQueries";
 import debounce from "lodash.debounce";
+import LastBooks from "../Books/LastBooks";
+import BookSearchComp from "../BookIssuing/BookSearchComp";
 
 const MembersList = () => {
   const [memberships, setMemberships] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedMembership, setSelectedMembership] = useState(null);
+  const [selectedMember, setSelectedMember] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [membershipType, setMembershipType] = useState("single");
+  const [bookDetails, setBookDetails] = useState('');
+  const [bookDetailsGet, setBookDetailsGet] = useState(false);
+  const [selectedBook, SetSelectedBook] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
 
   const handleTypeChange = (type) => {
@@ -83,14 +89,42 @@ const MembersList = () => {
   );
 
   const handleModalClose = () => {
+    setBookDetails('')
+    setBookDetailsGet(false);
     setShowModal(false);
     setSelectedMembership(null);
   };
+  const handleCheckRemove = () => {
+    setBookDetails('')
+    setBookDetailsGet(false);
+    console.log(`selected Book details is : `, selectedBook);
+    SetSelectedBook(null)
 
-  const IssueListForMembers = (id) => {
-    alert(id)
-    // setLoading(true);
-    // getMemberships.mutateAsync({ text });
+    // setShowModal(false);
+    // setSelectedMembership(null);
+  };
+
+  const getMemberBookDetails = membershipsQueries.memberBookDetailsMutation(
+    async (response) => {
+      setBookDetails(response?.data?.rows || null);
+
+      if (bookDetails?.length <= 0) {
+        setBookDetailsGet(true);
+      }
+      setLoading(false);
+      // setShowModal(true);
+    },
+    {
+      onError: (error) => {
+        setError("Error fetching membership details");
+        setLoading(false);
+      }
+    }
+  );
+  const IssueListForMembers = (member) => {
+    setSelectedMember(member);
+    setLoading(true);
+    getMemberBookDetails.mutateAsync(member.id);
   }
 
   if (loading) return <p>Loading...</p>;
@@ -162,7 +196,7 @@ const MembersList = () => {
           className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50"
           onClick={handleModalClose}
         >
-          <div className="bg-white p-6 rounded-lg shadow-lg w-96 max-h-[90vh] overflow-y-auto"
+          <div className="bg-white p-6 rounded-lg shadow-lg w-[700px] max-h-[90vh] overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
           >
             <h2 className="text-2xl font-semibold mb-4">Membership Details</h2>
@@ -180,16 +214,79 @@ const MembersList = () => {
               </p>
             </div>
             <h3 className="mt-4 mb-2 font-semibold bg-gray-200  p-2 rounded">{selectedMembership.membershipType === 'single' ? 'Member Details' : 'Members Details'}</h3>
+
+            {
+              !bookDetails?.length > 0 && bookDetailsGet && (
+                <div
+                  className="no-books warning-bg px-4 py-3 rounded-lg shadow-lg"
+                  style={{ backgroundColor: "", border: "1px solid black", color: "gray", gap: '3px' }}
+                >
+                  <div className="flex flex-row items-start justify-between flex-wrap gap-4"
+                  >
+                    <div>
+                      <p><b>Member Name:</b> {selectedMember.name}</p>
+                      <p><b>Member ID:</b> {selectedMember.memID || 'N/A'} </p>
+                    </div>
+                    <div>
+                      <p style={{ color: 'green' }}>You are Eligible</p>
+                    </div>
+                  </div>
+
+                  <BookSearchComp selectedBook={selectedBook} SetSelectedBook={SetSelectedBook} />
+                  <br />
+
+                  <div className="flex justify-end space-x-2">
+                    <button type="button" className="px-4 py-2  bg-gray-400 text-white rounded-lg hover:bg-gray-500 mr-2" onClick={handleCheckRemove} >Cancel</button>
+                    <button type="button" className="px-4 py-2 bg-green-200 text-black rounded-lg hover:bg-green-300 mr-2" >Issue</button>
+                  </div>
+                </div>
+              )
+            }
+            <div className="book-list">
+              {bookDetails?.length > 0 && (
+                bookDetails.map((data, index) => (
+                  <div
+                    key={data.id || index}
+                    className="book-card warning-bg px-4 py-3 mb-4 rounded-lg shadow-lg"
+                    style={{ backgroundColor: "#ebdcd1", border: "1px solid #FF7043" }}
+                  >
+                    <div className="flex flex-row items-start justify-between flex-wrap gap-4"
+                    >
+                      <div>
+                        <p><b>Member Name:</b> {selectedMember.name}</p>
+                        <p><b>Member ID:</b> {selectedMember.memID || 'N/A'} </p>
+                      </div>
+                      <div>
+                        <p style={{ color: 'red' }}>You are Not Eligible</p>
+                      </div>
+                    </div>
+                    {/* <span>Out Standing Book :</span> */}
+                    <p>
+                      <strong>Book Name: </strong>
+                      <span style={{ color: "#D84315" }}>
+                        {data.Book?.title || "No Title Available"}
+                      </span>
+                    </p>
+                    <div className="flex justify-end space-x-2">
+                      <button type="button" className="px-4 py-2  bg-gray-400 text-white rounded-lg hover:bg-gray-500 mr-2" onClick={handleCheckRemove}>Cancel</button>
+                      <button type="button" className="px-4 py-2 bg-red-200 text-black rounded-lg hover:bg-red-300 mr-2" >Return Book</button>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+
             <hr className="my-2" />
+
             {selectedMembership.MembershipDetails.map((detail) => (
               <div key={detail.id} className="mb-4">
                 <div
-                  className="flex flex-row items-end justify-between px-2"
+                  className="flex flex-row items-end justify-between px-5"
                   style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-end' }}
                 >
                   <div>
                     <p>
-                      <strong>Member-ID:</strong> {detail.Member.memID}
+                      <strong>Member-ID:</strong> {detail.Member.memID || 'N/A'}
                     </p>
                     <p>
                       <strong>Name:</strong> {detail.Member.name}
@@ -203,16 +300,17 @@ const MembersList = () => {
                   </div>
                   <div>
                     <button type="button" className="px-4 py-2 bg-gray-400 text-white rounded-lg hover:bg-gray-500"
-                      onClick={() => { IssueListForMembers(detail.Member.id) }}
-                    // onClick={() => { alert(detail.Member.id) }}
+                      onClick={() => { IssueListForMembers(detail.Member) }}
                     >
-                      View
+                      Check Status
                     </button>
                   </div>
                 </div>
+                <br />
                 <hr className="my-2" />
               </div>
             ))}
+
             <div className="mt-4 flex justify-end">
               <button
                 className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700"

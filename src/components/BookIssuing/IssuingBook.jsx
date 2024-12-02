@@ -2,8 +2,8 @@ import React, { useState, useCallback, useEffect } from 'react';
 import debounce from 'lodash.debounce';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import RouteConstants from '../../constant/Routeconstant';
-import IssuingBookDetails from './IssuingBookDetails';
+import RouteConstants from '../../constant/Routeconstant'; 
+import BookSearchComp from './BookSearchComp';
 
 function IssuingBook() {
     const [searchTerm, setSearchTerm] = useState('');
@@ -84,7 +84,7 @@ function IssuingBook() {
                 </h1>
 
                 {/* <s>hello</s> */}
-                <IssuingBookDetails />
+                {/* <BookSearchComp /> */}
                 {/* <s>hello</s> */}
                 <br />
                 <div

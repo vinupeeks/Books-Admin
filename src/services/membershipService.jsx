@@ -11,7 +11,7 @@ const Token = getAuthToken();
 
 const membershipService = {
 
-    membershipslist: async (id, text) => {  
+    membershipslist: async (id, text) => {
 
         return apiRequest({
             method: "GET",
@@ -31,6 +31,18 @@ const membershipService = {
             headers: {
                 Authorization: "Bearer " + Token
             }
+        });
+    },
+    memberBookDetails: async (id) => { 
+        const memberId = id; 
+        
+        return apiRequest({
+            method: "POST",
+            url: `${RouteConstants.MEMBER_BOOK_ISSUE_DETAILS}`,
+            headers: {
+                Authorization: "Bearer " + Token
+            },
+            data: {memberId},
         });
     },
 }
