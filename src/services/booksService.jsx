@@ -76,6 +76,29 @@ const booksService = {
             // data: book,
         });
     },
+
+    BookIssueSubmit: async (book) => {
+        return apiRequest({
+            method: "POST",
+            url: `${RouteConstants.BOOK_ISSUE_API}`,
+            headers: {
+                Authorization: "Bearer " + Token
+            },
+            data: book,
+        });
+    },
+
+    BookIssueReturn: async (book) => {
+        const issueId = book.returnBookID;
+
+        return apiRequest({
+            method: "PUT",
+            url: `${RouteConstants.BOOK_RETURN_API}/${issueId}`,
+            headers: {
+                Authorization: "Bearer " + Token
+            },
+        });
+    },
 }
 
 export default booksService;

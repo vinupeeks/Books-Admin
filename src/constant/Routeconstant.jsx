@@ -14,7 +14,8 @@ const RouteConstants = {
     MEMBERS_INDIVUDAL: '/members/indivual',
 
     MEMBER_BOOK_ISSUE_DETAILS: '/issues/member',
-
+    BOOK_ISSUE_API: '/issues/issue',
+    BOOK_RETURN_API: '/issues/return',
     BOOK_ISSUING: '/book/issuing',
 
     BOOKCREATE: '/books/create',

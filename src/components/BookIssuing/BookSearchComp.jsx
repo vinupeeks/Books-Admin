@@ -3,14 +3,13 @@ import { getAuthToken } from '../../utils/TokenHelper';
 import { useNavigate } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
 import debounce from 'lodash.debounce';
-import { BsInfoCircle } from 'react-icons/bs';
 import bookQueries from '../../queries/bookQueries';
 import RouteConstants from '../../constant/Routeconstant';
 
 function BookSearchComp(props) {
-    const { selectedBook, SetSelectedBook } = props;
+    const { selectedBook, setSelectedBook } = props;
 
-    const [books, setBooks] = useState([]);
+    // const [books, setBooks] = useState([]);
     const [booksDup, setBooksDup] = useState([]);
     const [filteredBooks, setFilteredBooks] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -26,21 +25,14 @@ function BookSearchComp(props) {
             navigate(RouteConstants.LOGIN);
             return;
         }
-        // fetchLastBooks();
     }, []);
-
-    // const fetchLastBooks = async () => {
-    //     setLoading(true);
-    //     LastBooksDetails.mutateAsync();
-    // };
 
     const LastBooksDetails = bookQueries.LastBooksListMutation(
         (response) => {
             const bookList = response?.data || [];
+
             setBooksDup(bookList);
             setFilteredBooks(bookList);
-            // console.log(`Response of the books details: `, filteredBooks);
-
             setLoading(false);
         },
         {
@@ -53,7 +45,6 @@ function BookSearchComp(props) {
 
     const debouncedSearch = useCallback(
         debounce((text) => {
-            // fetchFilteredBooks(text);
             if (!text) {
                 return;
             }
@@ -71,23 +62,19 @@ function BookSearchComp(props) {
 
         if (value === '') {
             setFilteredBooks('');
-            // setFilteredBooks(booksDup);
         } else {
             debouncedSearch(value);
         }
     };
     const handleSelectBook = (book) => {
-        SetSelectedBook(book);
+        setSelectedBook(book);
         setFilteredBooks([]);
         setBooksDup([]);
         setSearchTerm('')
         console.log(`Selected Book Details: `, selectedBook);
-
     }
     return (
         <div style={{ textAlign: 'center', alignItems: 'flex-start' }}>
-            {/* <h2>Books</h2> */}
-            {/* {loading && <p>Loading...</p>} */}
             {error && <p style={{ color: 'red' }}>{error}</p>}
             {/* {!loading && !error && filteredBooks.length === 0 && <p>No books available.</p>} */}
 
@@ -122,7 +109,7 @@ function BookSearchComp(props) {
                         <div className="mt-4">
                             <button
                                 className="px-4 py-2 bg-red-400 text-white rounded-lg hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-500"
-                                onClick={() => SetSelectedBook(null)}
+                                onClick={() => setSelectedBook(null)}
                             >
                                 Remove Book
                             </button>
@@ -148,8 +135,6 @@ function BookSearchComp(props) {
                 <tbody>
                     {(filteredBooks.length > 0 ? filteredBooks : booksDup)?.map((book, index) => (
                         <tr key={book?.id} style={{ verticalAlign: 'top' }}>
-                            {/* {console.log(`Maping tym details: `, book)
-                            } */}
                             <td style={{ border: '1px solid #ccc', padding: '10px' }}>{index + 1}</td>
                             <td style={{ border: '1px solid #ccc', padding: '10px' }}>{book?.title}</td>
                             <td style={{ border: '1px solid #ccc', padding: '10px' }}>{book?.author}</td>

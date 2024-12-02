@@ -3,6 +3,8 @@ import membershipsQueries from "../../queries/membershipQueries";
 import debounce from "lodash.debounce";
 import LastBooks from "../Books/LastBooks";
 import BookSearchComp from "../BookIssuing/BookSearchComp";
+import bookQueries from "../../queries/bookQueries";
+import { useSnackbar } from "notistack";
 
 const MembersList = () => {
   const [memberships, setMemberships] = useState([]);
@@ -14,23 +16,14 @@ const MembersList = () => {
   const [membershipType, setMembershipType] = useState("single");
   const [bookDetails, setBookDetails] = useState('');
   const [bookDetailsGet, setBookDetailsGet] = useState(false);
-  const [selectedBook, SetSelectedBook] = useState(null);
+  const [selectedBook, setSelectedBook] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
+  const { enqueueSnackbar } = useSnackbar();
 
-  const handleTypeChange = (type) => {
-    setMembershipType(type);
-  };
-
-  useEffect(() => {
-    setLoading(true);
-    fetchMemberships();
-  }, [membershipType]);
 
   const getMemberships = membershipsQueries.membershipListMutation(
     async (response) => {
-      // console.log(`Response from the memberships fetch: `.response)
       setMemberships(response?.data.rows || []);
-      // console.log(memberships); 
       setLoading(false);
     },
     {
@@ -40,14 +33,12 @@ const MembersList = () => {
       }
     }
   );
-
   const fetchMemberships = () => {
     getMemberships.mutate(membershipType);
   };
 
   const getMembershipById = membershipsQueries.membershipByIdMutation(
     async (response) => {
-      // console.log(`Response from the memberships fetch: `.response)
       setSelectedMembership(response?.data?.Details || null);
       setLoading(false);
       setShowModal(true);
@@ -59,16 +50,94 @@ const MembersList = () => {
       }
     }
   );
-
   const handleModalOpen = (membership) => {
     setLoading(true);
     getMembershipById.mutate(membership.membershipId);
   };
 
+  const getMemberBookDetails = membershipsQueries.memberBookDetailsMutation(
+    async (response) => {
+      setBookDetails(response?.data?.rows || null);
+
+      if (bookDetails?.length <= 0) {
+        setBookDetailsGet(true);
+      }
+      setLoading(false);
+    },
+    {
+      onError: (error) => {
+        setError("Error fetching membership details");
+        setLoading(false);
+      }
+    }
+  );
+  const IssueListForMembers = (member) => {
+    setSelectedMember(member);
+    setLoading(true);
+    getMemberBookDetails.mutateAsync(member.id);
+  }
+
+  const BookIssueSubmit = bookQueries.BookIssueSubmitMutation(
+    async (response) => {
+
+      console.log(`Response From The Book Issueing time : `, response);
+      enqueueSnackbar(`${response.data?.message}`, { variant: 'success' });
+      handleCheckRemove();
+
+      setLoading(false);
+    },
+    {
+      onError: (error) => {
+        setError("Error fetching membership details");
+        setLoading(false);
+      }
+    }
+  );
+
+  const handleBookIssueSubmit = () => {
+
+    const isConfirmed = window.confirm("Are you sure you want to issue this book ?");
+    if (!isConfirmed) {
+      return;
+    }
+    const payload = {
+      bookId: selectedBook?.id,
+      memberId: selectedMember?.id
+    }
+    setLoading(true);
+    BookIssueSubmit.mutateAsync(payload);
+  }
+
+  const BookIssueReturn = bookQueries.BookIssueReturnMutation(
+    async (response) => {
+      console.log(`Response From The Book Returning time : `, response.data);
+      enqueueSnackbar(`${response.data?.message}`, { variant: 'success' });
+      handleCheckRemove();
+      setLoading(false);
+    },
+    {
+      onError: (error) => {
+        setError("Error fetching membership details");
+        setLoading(false);
+      }
+    }
+  );
+  const handleBookReturn = () => {
+    const isConfirmed = window.confirm("Are you sure you want to return this book ?");
+
+    if (!isConfirmed) {
+      return;
+    }
+    const returnBookID = bookDetails[0].id;
+    console.log(returnBookID);
+    setLoading(true);
+    BookIssueReturn.mutateAsync({ returnBookID });
+  }
+
+
   const handleSearchChange = async (event) => {
     const value = event.target.value;
     setSearchTerm(value);
-
 
     if (value === '') {
       setSelectedMembership('');
@@ -93,39 +162,26 @@ const MembersList = () => {
     setBookDetailsGet(false);
     setShowModal(false);
     setSelectedMembership(null);
+    setSelectedBook(null)
+    setSelectedMember(null)
   };
   const handleCheckRemove = () => {
     setBookDetails('')
     setBookDetailsGet(false);
     console.log(`selected Book details is : `, selectedBook);
-    SetSelectedBook(null)
-
-    // setShowModal(false);
-    // setSelectedMembership(null);
+    console.log(`selected Member details is : `, selectedMember);
+    setSelectedBook(null)
   };
 
-  const getMemberBookDetails = membershipsQueries.memberBookDetailsMutation(
-    async (response) => {
-      setBookDetails(response?.data?.rows || null);
+  const handleTypeChange = (type) => {
+    setMembershipType(type);
+  };
 
-      if (bookDetails?.length <= 0) {
-        setBookDetailsGet(true);
-      }
-      setLoading(false);
-      // setShowModal(true);
-    },
-    {
-      onError: (error) => {
-        setError("Error fetching membership details");
-        setLoading(false);
-      }
-    }
-  );
-  const IssueListForMembers = (member) => {
-    setSelectedMember(member);
+  useEffect(() => {
     setLoading(true);
-    getMemberBookDetails.mutateAsync(member.id);
-  }
+    fetchMemberships();
+  }, [membershipType]);
+
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
@@ -232,12 +288,19 @@ const MembersList = () => {
                     </div>
                   </div>
 
-                  <BookSearchComp selectedBook={selectedBook} SetSelectedBook={SetSelectedBook} />
+                  <BookSearchComp selectedBook={selectedBook} setSelectedBook={setSelectedBook} />
                   <br />
 
                   <div className="flex justify-end space-x-2">
                     <button type="button" className="px-4 py-2  bg-gray-400 text-white rounded-lg hover:bg-gray-500 mr-2" onClick={handleCheckRemove} >Cancel</button>
-                    <button type="button" className="px-4 py-2 bg-green-200 text-black rounded-lg hover:bg-green-300 mr-2" >Issue</button>
+                    <button
+                      type="button"
+                      className="px-4 py-2 bg-green-200 text-black rounded-lg hover:bg-green-300 mr-2"
+                      // disabled={selectedBook === null} 
+                      onClick={handleBookIssueSubmit}
+                    >
+                      Issue
+                    </button>
                   </div>
                 </div>
               )
@@ -250,6 +313,8 @@ const MembersList = () => {
                     className="book-card warning-bg px-4 py-3 mb-4 rounded-lg shadow-lg"
                     style={{ backgroundColor: "#ebdcd1", border: "1px solid #FF7043" }}
                   >
+                    {console.log(`book details: `, bookDetails)
+                    }
                     <div className="flex flex-row items-start justify-between flex-wrap gap-4"
                     >
                       <div>
@@ -269,7 +334,7 @@ const MembersList = () => {
                     </p>
                     <div className="flex justify-end space-x-2">
                       <button type="button" className="px-4 py-2  bg-gray-400 text-white rounded-lg hover:bg-gray-500 mr-2" onClick={handleCheckRemove}>Cancel</button>
-                      <button type="button" className="px-4 py-2 bg-red-200 text-black rounded-lg hover:bg-red-300 mr-2" >Return Book</button>
+                      <button type="button" className="px-4 py-2 bg-red-200 text-black rounded-lg hover:bg-red-300 mr-2" onClick={handleBookReturn}>Return Book</button>
                     </div>
                   </div>
                 ))
