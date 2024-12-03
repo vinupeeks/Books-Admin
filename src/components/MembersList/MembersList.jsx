@@ -23,7 +23,9 @@ const MembersList = () => {
 
   const getMemberships = membershipsQueries.membershipListMutation(
     async (response) => {
-      setMemberships(response?.data.rows || []);
+      setMemberships(response?.data?.rows || []);
+      console.log(response);
+
       setLoading(false);
     },
     {
@@ -32,10 +34,11 @@ const MembersList = () => {
         setLoading(false);
       }
     }
-  );
+  ); 
   const fetchMemberships = () => {
-    getMemberships.mutate(membershipType);
+    getMemberships.mutate({ membershipType });
   };
+
 
   const getMembershipById = membershipsQueries.membershipByIdMutation(
     async (response) => {
@@ -138,22 +141,19 @@ const MembersList = () => {
   const handleSearchChange = async (event) => {
     const value = event.target.value;
     setSearchTerm(value);
-
-    if (value === '') {
-      setSelectedMembership('');
-    } else {
-      debouncedSearch(value);
-    }
+    debouncedSearch(value);
   };
   const debouncedSearch = useCallback(
     debounce((text) => {
-      if (!text) {
-        return;
-      }
-
+      // if (!text) {
+      //   return;
+      // }
       setLoading(true);
-      getMemberships.mutateAsync({ text });
-    }, 300),
+      if (!text) {
+        getMemberships.mutate({ membershipType });
+      }
+      getMemberships.mutateAsync({ search: text });
+    }, 500),
     []
   );
 
@@ -202,14 +202,16 @@ const MembersList = () => {
           type="text"
           placeholder="Search by Membership ID"
           value={searchTerm}
-          onChange={handleSearchChange}
-          className="border-2 border-sky-500 rounded-lg bg-gray-100 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-sky-500 p-2 w-64"
+          onChange={(event) => {
+            setSearchTerm(event.target.value);
+            handleSearchChange(event);
+          }}
+          className="border-2 border-sky-500 rounded-lg bg-gray-100 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-sky-500 p-2 w-64 uppercase"
         // style={{ padding: '8px', margin: '10px 0', width: '20%' }}
         />
       </div>
       <br />
-
-      {/* Table Layout */}
+ 
       <div className="overflow-x-auto bg-white shadow-lg rounded-lg">
         <table className="min-w-full table-auto">
           <thead className="bg-gray-200">

@@ -170,7 +170,7 @@ const FamilyMemberShip = () => {
               type="date"
               value={member.dateOfBirth}
               onChange={(e) => handleChange(index, "dateOfBirth", e.target.value)}
-              required
+              // required
             />
           </div>
         ))}

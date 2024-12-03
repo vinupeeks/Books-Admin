@@ -11,18 +11,26 @@ const Token = getAuthToken();
 
 const membershipService = {
 
-    membershipslist: async (id, text) => {
+    membershipslist: async ({ membershipType, search }) => {
+        console.log("membershipType:", membershipType);
+        console.log("search:", search);
+
+        // Build the query string
+        const query = membershipType
+            ? `type=${membershipType}` 
+            : search
+                ? `search=${search}`
+                : '';
 
         return apiRequest({
             method: "GET",
-            // url: `${RouteConstants.MEMBER_SHIP}?type=${id}`,
-
-            url: `${RouteConstants.MEMBER_SHIP}?type=${id}`,
+            url: `${RouteConstants.MEMBER_SHIP}?${query}`,
             headers: {
-                Authorization: "Bearer " + Token
-            }
+                Authorization: "Bearer " + Token,
+            },
         });
     },
+
 
     membershipById: async (id) => {
         return apiRequest({
@@ -33,16 +41,16 @@ const membershipService = {
             }
         });
     },
-    memberBookDetails: async (id) => { 
-        const memberId = id; 
-        
+    memberBookDetails: async (id) => {
+        const memberId = id;
+
         return apiRequest({
             method: "POST",
             url: `${RouteConstants.MEMBER_BOOK_ISSUE_DETAILS}`,
             headers: {
                 Authorization: "Bearer " + Token
             },
-            data: {memberId},
+            data: { memberId },
         });
     },
 }
