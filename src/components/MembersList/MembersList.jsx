@@ -122,7 +122,7 @@ const MembersList = () => {
         getMemberships.mutate({ membershipType });
       }
       // getMemberships.mutateAsync({ search: text });
-      getMemberships.mutateAsync({ search: text });
+      getMemberships.mutateAsync({ text });
     }, 500),
     []
   );
@@ -137,7 +137,7 @@ const MembersList = () => {
   };
   const handleCheckRemove = () => {
     setShowModal(false);
-    setBookDetails('');
+    setBookDetails(null);
     setBookDetailsGet(false);
     setSelectedBook(null);
     setSelectedMembership(null);
@@ -166,10 +166,11 @@ const MembersList = () => {
 
       <div className="flex items-center justify-between px-5 ">
         <div>
-          <b>MEMBERSHIP - TYPES:</b>
-          <button onClick={() => handleTypeChange("A")}><i>&nbsp;  All</i></button>&nbsp;/
-          <button onClick={() => handleTypeChange("I")}><i>&nbsp;  Single</i></button> /&nbsp;
-          <button onClick={() => handleTypeChange("F")}><i>Family</i></button>
+          <b class="text-lg font-semibold text-gray-800">MEMBERSHIP - TYPES:</b>
+          <button  class="px-auto py-auto text-sm font-medium text-gray-700 bg-gray-200 border border-gray-300 rounded hover:bg-gray-300 focus:outline-none focus:ring-auto focus:ring-gray-400 transition-all" onClick={() => handleTypeChange("A")}><i>&nbsp;  All </i></button>&nbsp;/
+          <button  class="px-auto py-auto text-sm font-medium text-gray-700 bg-gray-200 border border-gray-300 rounded hover:bg-gray-300 focus:outline-none focus:ring-auto focus:ring-gray-400 transition-all" onClick={() => handleTypeChange("I")}><i>&nbsp;  Single </i></button> /&nbsp;
+          <button  class="px-auto py-auto text-sm font-medium text-gray-700 bg-gray-200 border border-gray-300 rounded hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400 transition-all" onClick={() => handleTypeChange("F")}><i> Family </i></button>
+          
         </div>
         <input
           type="text"

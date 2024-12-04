@@ -11,9 +11,10 @@ const Token = getAuthToken();
 
 const membershipService = {
 
-    membershipslist: async ({ search }) => {
-        const memID = search;
-        console.log(`Api memID: `, memID);
+    membershipslist: async (search) => {
+ 
+        const memType = search?.membershipType;
+        const memID = search?.text; 
 
         return apiRequest({
             method: "POST",
@@ -21,9 +22,8 @@ const membershipService = {
             url: `/members/list`,
             headers: {
                 Authorization: "Bearer " + Token,
-            },
-            data: { memID },
-            // data: { memID, memType },
+            }, 
+            data: { memID, memType },
         });
     },
 
