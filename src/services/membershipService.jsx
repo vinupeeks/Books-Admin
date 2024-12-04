@@ -11,23 +11,19 @@ const Token = getAuthToken();
 
 const membershipService = {
 
-    membershipslist: async ({ membershipType, search }) => {
-        console.log("membershipType:", membershipType);
-        console.log("search:", search);
-
-        // Build the query string
-        const query = membershipType
-            ? `type=${membershipType}` 
-            : search
-                ? `search=${search}`
-                : '';
+    membershipslist: async ({ search }) => {
+        const memID = search;
+        console.log(`Api memID: `, memID);
 
         return apiRequest({
-            method: "GET",
-            url: `${RouteConstants.MEMBER_SHIP}?${query}`,
+            method: "POST",
+            // url: `${RouteConstants.MEMBER_SHIP}?${query}`,
+            url: `/members/list`,
             headers: {
                 Authorization: "Bearer " + Token,
             },
+            data: { memID },
+            // data: { memID, memType },
         });
     },
 
