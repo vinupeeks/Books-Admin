@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useState } from "react";
 import membershipsQueries from "../../queries/membershipQueries";
 import debounce from "lodash.debounce";
-import LastBooks from "../Books/LastBooks";
 import BookSearchComp from "../BookIssuing/BookSearchComp";
 import bookQueries from "../../queries/bookQueries";
 import { useSnackbar } from "notistack";
+import { Dropdown } from 'react-bootstrap';
 
 const MembersList = () => {
   const [memberships, setMemberships] = useState([]);
@@ -145,6 +145,7 @@ const MembersList = () => {
 
   const handleTypeChange = (type) => {
     setMembershipType(type);
+    setSearchTerm('');
     // console.log(`type value: `, membershipType);
 
   };
@@ -166,11 +167,27 @@ const MembersList = () => {
 
       <div className="flex items-center justify-between px-5 ">
         <div>
-          <b class="text-lg font-semibold text-gray-800">MEMBERSHIP - TYPES:</b>
-          <button  class="px-auto py-auto text-sm font-medium text-gray-700 bg-gray-200 border border-gray-300 rounded hover:bg-gray-300 focus:outline-none focus:ring-auto focus:ring-gray-400 transition-all" onClick={() => handleTypeChange("A")}><i>&nbsp;  All </i></button>&nbsp;/
-          <button  class="px-auto py-auto text-sm font-medium text-gray-700 bg-gray-200 border border-gray-300 rounded hover:bg-gray-300 focus:outline-none focus:ring-auto focus:ring-gray-400 transition-all" onClick={() => handleTypeChange("I")}><i>&nbsp;  Single </i></button> /&nbsp;
-          <button  class="px-auto py-auto text-sm font-medium text-gray-700 bg-gray-200 border border-gray-300 rounded hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400 transition-all" onClick={() => handleTypeChange("F")}><i> Family </i></button>
-          
+          <i>Select Membership Type: </i>
+          <Dropdown className="d-inline-block">
+            <Dropdown.Toggle
+              variant="secondary"
+              id="dropdown-custom-components"
+              className="px-auto py-auto text-sm font-medium bg-gray-200 border border-gray-300 rounded hover:bg-gray-300 focus:outline-none focus:ring-auto transition-all"
+            >
+              {searchTerm ? 'SEARCH' : membershipType === 'F' ? 'FAMILY' : membershipType === 'I' ? 'SINGLE' : 'All'}
+            </Dropdown.Toggle>
+            <Dropdown.Menu>
+              <Dropdown.Item active={membershipType === 'A'} onClick={() => handleTypeChange("A")}>
+                <i>&nbsp; All</i>
+              </Dropdown.Item>
+              <Dropdown.Item active={membershipType === 'I'} onClick={() => handleTypeChange("I")}>
+                <i>&nbsp; Single</i>
+              </Dropdown.Item>
+              <Dropdown.Item active={membershipType === 'F'} onClick={() => handleTypeChange("F")}>
+                <i>&nbsp; Family</i>
+              </Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
         </div>
         <input
           type="text"
@@ -184,6 +201,7 @@ const MembersList = () => {
         // style={{ padding: '8px', margin: '10px 0', width: '20%' }}
         />
       </div>
+
       <br />
 
       <div className="overflow-x-auto bg-white shadow-lg rounded-lg">
