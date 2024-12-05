@@ -155,7 +155,7 @@ export default function AppBarWithSideMenu() {
                                         Dashboard
                                     </a>
                                 </li>
-                                <li className="mb-3">
+                                {/* <li className="mb-3">
                                     <a
                                         href={RouteConstants.BOOK_ISSUING}
                                         onClick={() => handleMenuClick('Membership')}
@@ -163,8 +163,8 @@ export default function AppBarWithSideMenu() {
                                     >
                                         Book Issue
                                     </a>
-                                </li>
-                                <li className="mb-3">
+                                </li> */}
+                                {/* <li className="mb-3">
                                     <a
                                         href={RouteConstants.DASHBOARD}
                                         onClick={() => handleMenuClick('Membership')}
@@ -172,7 +172,7 @@ export default function AppBarWithSideMenu() {
                                     >
                                         Memberships List
                                     </a>
-                                </li>
+                                </li> */}
                                 <li className="mb-3">
                                     <a
                                         href={RouteConstants.FAMILY_MEMBERSHIP}
