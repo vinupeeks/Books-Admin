@@ -1,4 +1,5 @@
 import React from 'react';
+import { Dropdown, DropdownButton } from 'react-bootstrap';
 
 const Pagination = ({ totalPages, currentPage, pageSize, setPageSize, onPageChange }) => {
     if (totalPages <= 1) return null;
@@ -11,6 +12,11 @@ const Pagination = ({ totalPages, currentPage, pageSize, setPageSize, onPageChan
     if (endPage - startPage + 1 < visiblePages) {
         startPage = Math.max(1, endPage - visiblePages + 1);
     }
+
+    const handlePageSizeChange = (size) => {
+        setPageSize(size);
+        onPageChange(0);
+    };
 
     return (
         <div className="mt-4 flex justify-center">
@@ -44,8 +50,8 @@ const Pagination = ({ totalPages, currentPage, pageSize, setPageSize, onPageChan
                             key={page}
                             onClick={() => onPageChange(page)}
                             className={`relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium ${currentPage === page
-                                    ? 'z-10 bg-indigo-50 border-indigo-500 text-indigo-600'
-                                    : 'text-gray-500 hover:bg-gray-50'
+                                ? 'z-10 bg-indigo-50 border-indigo-500 text-indigo-600'
+                                : 'text-gray-500 hover:bg-gray-50'
                                 }`}
                         >
                             {page + 1}
@@ -61,8 +67,8 @@ const Pagination = ({ totalPages, currentPage, pageSize, setPageSize, onPageChan
                     <button
                         onClick={() => onPageChange(totalPages - 1)}
                         className={`relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium ${currentPage === totalPages - 1
-                                ? 'z-10 bg-indigo-50 border-indigo-500 text-indigo-600'
-                                : 'text-gray-500 hover:bg-gray-50'
+                            ? 'z-10 bg-indigo-50 border-indigo-500 text-indigo-600'
+                            : 'text-gray-500 hover:bg-gray-50'
                             }`}
                     >
                         {totalPages}
@@ -78,7 +84,20 @@ const Pagination = ({ totalPages, currentPage, pageSize, setPageSize, onPageChan
                     Next
                 </button>
             </nav>
-        </div>
+            <DropdownButton
+                id="dropdown-page-size"
+                title={pageSize}
+                variant="secondary"
+                drop='up'
+                onSelect={handlePageSizeChange}
+            >
+                {[10, 25, 50, 100, 500].map((size) => (
+                    <Dropdown.Item key={size} eventKey={size.toString()}>
+                        {size}
+                    </Dropdown.Item>
+                ))}
+            </DropdownButton>
+        </div >
     );
 };
 
