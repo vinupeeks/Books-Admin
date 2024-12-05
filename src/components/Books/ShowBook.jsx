@@ -36,6 +36,8 @@ const ShowBook = () => {
           try {
             const updatedResponse = await axios.get(`http://localhost:1000/books/${book.id}`);
             setBook(updatedResponse.data);
+            console.log(`Books details: `, book);
+
           } catch (error) {
             enqueueSnackbar('Failed to fetch updated book details.', { variant: 'warning' });
           } finally {
@@ -62,6 +64,7 @@ const ShowBook = () => {
       try {
         const response = await axios.get(`http://localhost:1000/books/${id}`);
         setBook(response.data);
+        console.log(`Books details: `, response.data);
       } catch (error) {
         enqueueSnackbar('Failed to fetch book details.', { variant: 'error' });
       } finally {
@@ -86,25 +89,29 @@ const ShowBook = () => {
               <div>{book.title || 'N/A'}</div>
               <div className="font-semibold">Author:</div>
               <div>{book.author || 'N/A'}</div>
-              <div className="font-semibold">Stock:</div>
+              <div className="font-semibold">Quantity:</div>
               <div>{book.Stock ? `${book.Stock}` : 'N/A'}</div>
               <div className="font-semibold">Price:</div>
               <div>{book.Price ? `$${book.Price.toFixed(2)}` : 'N/A'}</div>
+
+              <div className="font-semibold">Donated By:</div>
+              <div>{book.DonatedBy ? `${book.DonatedBy}` : 'N/A'}</div>
+
               <div className="font-semibold">Status:</div>
               <div>
                 <span
                   className={`px-2 py-1 rounded text-sm ${book.status === 'active'
-                      ? 'bg-green-100 text-green-600'
-                      : 'bg-red-100 text-red-600'
+                    ? 'bg-green-100 text-green-600'
+                    : 'bg-red-100 text-red-600'
                     }`}
                 >
                   {book.status || 'N/A'}
                 </span>
               </div>
-              <div className="font-semibold">Created At:</div>
+              <div className="font-semibold">Book added time:</div>
               <div>{book.createdAt ? new Date(book.createdAt).toLocaleString() : 'N/A'}</div>
             </div>
-            <button
+            {/* <button
               className={`mt-6 px-6 py-2 text-white rounded-lg font-medium ${book.status === 'available'
                   ? 'bg-blue-500 hover:bg-blue-600'
                   : 'bg-gray-400 cursor-not-allowed'
@@ -113,7 +120,7 @@ const ShowBook = () => {
               disabled={book.status !== 'available'}
             >
               {book.status === 'available' ? 'Reserve Book' : 'Sold Out'}
-            </button>
+            </button> */}
           </div>
         )}
       </div>

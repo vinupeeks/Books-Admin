@@ -11,10 +11,19 @@ const Token = getAuthToken();
 
 const booksService = {
 
-    bookslist: async () => {
+    // bookslist: async () => {
+    //     return apiRequest({
+    //         method: "GET",
+    //         url: `${RouteConstants.BOOKS}`,
+    //         headers: { 
+    //             Authorization: "Bearer " + Token
+    //         }
+    //     });
+    // },
+    bookslist: async (params = '') => {
         return apiRequest({
             method: "GET",
-            url: `${RouteConstants.BOOKS}`,
+            url: `${RouteConstants.BOOKS}?${params}`,
             headers: {
                 Authorization: "Bearer " + Token
             }

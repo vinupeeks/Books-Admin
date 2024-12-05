@@ -9,12 +9,12 @@ const BooksTable = ({ books }) => {
       <thead>
         <tr>
           <th className='border border-slate-600 rounded-md'>No</th>
-          <th className='border border-slate-600 rounded-md'>Title</th>
+          <th className='border border-slate-600 rounded-md'>Book Title</th>
           <th className='border border-slate-600 rounded-md max-md:hidden'>
-            Author
+            Author Name
           </th>
           <th className='border border-slate-600 rounded-md max-md:hidden'>
-            Book Stock
+            Book Quantity
           </th>
           <th className='border border-slate-600 rounded-md'>Operations</th>
         </tr>
@@ -23,7 +23,8 @@ const BooksTable = ({ books }) => {
         {books.map((book, index) => (
           <tr key={book.id} className='h-8'>
             <td className='border border-slate-700 rounded-md text-center'>
-              {index + 1}
+              {/* {index + 1} */}
+              {book.id}
             </td>
             <td className='border border-slate-700 rounded-md text-center'>
               {book.title}
