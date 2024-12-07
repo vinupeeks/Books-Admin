@@ -39,8 +39,7 @@ const MembersList = () => {
     },
     {
       onError: (error) => {
-        +
-          setError("Error fetching membership data");
+        setError("Error fetching membership data");
         setLoading(false);
       }
     }
@@ -126,14 +125,11 @@ const MembersList = () => {
 
   const handleSearchChange = async (event) => {
     const value = event.target.value;
-    console.log(`started`);
-    
+
     if (!value) {
       setSearchTerm('');
-      console.log(`if Started`); 
-      return; 
+      return;
     }
-    console.log(`if  not and Started`);
     setSearchTerm(value);
     debouncedSearch(value);
   };
@@ -200,10 +196,10 @@ const MembersList = () => {
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
       <h1 className="text-3xl font-semibold text-left text-gray-800 mb-8">
-        Membership List : {membershipType === 'F' ? 'FAMILY' : membershipType === 'I' ? 'SINGLE' : 'All'}
+        Membership List {searchTerm ? 'SEARCH' : membershipType === 'F' ? 'FAMILY' : membershipType === 'I' ? 'SINGLE' : 'All'}
       </h1>
 
-      <div className="flex items-center justify-between px-5 ">
+      <div className="flex items-center justify-between px-5 rounded-lg border-2 bg-gray-300 ">
         <div>
           <i>Select Membership Type: </i>
           <Dropdown className="d-inline-block">
@@ -250,7 +246,7 @@ const MembersList = () => {
             // setSearchTerm(event.target.value);
             handleSearchChange(event);
           }}
-          className="border-2 border-sky-500 rounded-lg bg-gray-100 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-sky-500 p-2 w-auto uppercase"
+          className="border-2 bg-gray-300 border-sky-500 rounded-lg  text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-sky-500 p-2 w-auto uppercase"
         // style={{ padding: '8px', margin: '10px 0', width: '20%' }}
         />
       </div>

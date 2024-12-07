@@ -15,10 +15,9 @@ const AdminLogin = () => {
     const navigate = useNavigate();
 
     const submitForm = adminQueries.adminLoginMutation(
-        async (response) => {
-            console.log(`Login Response: `, response);
+        async (response) => { 
 
-            if (response.data.token) {
+            if (response?.data?.token) {
                 const token = response.data.token;
                 localStorage.setItem('BooksAdminToken', token);
                 navigate(RouteConstants.DASHBOARD);
