@@ -5,6 +5,7 @@ import BookSearchComp from "../BookIssuing/BookSearchComp";
 import bookQueries from "../../queries/bookQueries";
 import { useSnackbar } from "notistack";
 import { Dropdown } from 'react-bootstrap';
+import Pagination from "../../common/Pagination/Pagination";
 
 const MembersList = () => {
   const [memberships, setMemberships] = useState([]);
@@ -18,25 +19,40 @@ const MembersList = () => {
   const [bookDetailsGet, setBookDetailsGet] = useState(false);
   const [selectedBook, setSelectedBook] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
+
+  const [totalPage, setTotalPage] = useState(0);
+  const [totalCount, setTotalCount] = useState(0);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [pageSize, setPageSize] = useState(10);
+
   const [payload, setPayload] = useState({ memID: "", memType: "", })
   const { enqueueSnackbar } = useSnackbar();
 
 
   const getMemberships = membershipsQueries.membershipListMutation(
     async (response) => {
-      // setMemberships(response?.data?.rows || []);
-      setMemberships(response?.data || []);
+      setMemberships(response?.data?.data?.items);
+      // setMemberships(response?.data || []);
+      setTotalCount(response?.data?.data?.totalItems);
+      setTotalPage(response?.data?.data?.totalPages);
       setLoading(false);
     },
     {
       onError: (error) => {
-        setError("Error fetching membership data");
+        +
+          setError("Error fetching membership data");
         setLoading(false);
       }
     }
   );
   const fetchMemberships = () => {
-    getMemberships.mutate({ membershipType });
+    const payload = {
+      page: currentPage,
+      size: pageSize,
+      memType: membershipType,
+    }
+    // getMemberships.mutate({ membershipType });
+    getMemberships.mutate(payload);
   };
 
   const handleModalOpen = (membership) => {
@@ -110,6 +126,14 @@ const MembersList = () => {
 
   const handleSearchChange = async (event) => {
     const value = event.target.value;
+    console.log(`started`);
+    
+    if (!value) {
+      setSearchTerm('');
+      console.log(`if Started`); 
+      return; 
+    }
+    console.log(`if  not and Started`);
     setSearchTerm(value);
     debouncedSearch(value);
   };
@@ -119,10 +143,20 @@ const MembersList = () => {
       setLoading(true);
       if (!text) {
         // getMemberships.mutate({ membershipType });
-        getMemberships.mutate({ membershipType });
+        const payload = {
+          page: currentPage,
+          size: pageSize,
+          memType: membershipType,
+        }
+        getMemberships.mutate(payload);
       }
       // getMemberships.mutateAsync({ search: text });
-      getMemberships.mutateAsync({ text });
+      const payload = {
+        page: currentPage,
+        size: pageSize,
+        memID: text,
+      }
+      getMemberships.mutateAsync(payload);
     }, 500),
     []
   );
@@ -153,7 +187,11 @@ const MembersList = () => {
   useEffect(() => {
     setLoading(true);
     fetchMemberships();
-  }, [membershipType]);
+  }, [membershipType, currentPage, pageSize, searchTerm]);
+
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+  };
 
 
   if (loading) return <p>Loading...</p>;
@@ -170,31 +208,46 @@ const MembersList = () => {
           <i>Select Membership Type: </i>
           <Dropdown className="d-inline-block">
             <Dropdown.Toggle
+              title="Dropdown button"
               variant="secondary"
               id="dropdown-custom-components"
               className="px-auto py-auto text-sm font-medium bg-gray-200 border border-gray-300 rounded hover:bg-gray-300 focus:outline-none focus:ring-auto transition-all"
             >
               {searchTerm ? 'SEARCH' : membershipType === 'F' ? 'FAMILY' : membershipType === 'I' ? 'SINGLE' : 'All'}
             </Dropdown.Toggle>
-            <Dropdown.Menu>
-              <Dropdown.Item active={membershipType === 'A'} onClick={() => handleTypeChange("A")}>
+            <Dropdown.Menu className="bg-gray-200 border-gray-300">
+              <Dropdown.Item
+                onClick={() => handleTypeChange("A")}
+                className={`bg-gray-200 text-gray-700 hover:bg-gray-300 hover:text-gray-900 ${membershipType === "A" ? "bg-gray-300 text-gray-900" : ""
+                  }`}
+              >
                 <i>&nbsp; All</i>
               </Dropdown.Item>
-              <Dropdown.Item active={membershipType === 'I'} onClick={() => handleTypeChange("I")}>
+              <Dropdown.Item
+                onClick={() => handleTypeChange("I")}
+                className={`bg-gray-200 text-gray-700 hover:bg-gray-300 hover:text-gray-900 ${membershipType === "I" ? "bg-gray-300 text-gray-900" : ""
+                  }`}
+              >
                 <i>&nbsp; Single</i>
               </Dropdown.Item>
-              <Dropdown.Item active={membershipType === 'F'} onClick={() => handleTypeChange("F")}>
+              <Dropdown.Item
+                onClick={() => handleTypeChange("F")}
+                className={`bg-gray-200 text-gray-700 hover:bg-gray-300 hover:text-gray-900 ${membershipType === "F" ? "bg-gray-300 text-gray-900" : ""
+                  }`}
+              >
                 <i>&nbsp; Family</i>
               </Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
+
+
         </div>
         <input
           type="text"
           placeholder="Search by Membership"
           value={searchTerm}
           onChange={(event) => {
-            setSearchTerm(event.target.value);
+            // setSearchTerm(event.target.value);
             handleSearchChange(event);
           }}
           className="border-2 border-sky-500 rounded-lg bg-gray-100 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-sky-500 p-2 w-auto uppercase"
@@ -216,7 +269,7 @@ const MembersList = () => {
             </tr>
           </thead>
           <tbody>
-            {memberships.map((membership, index) => {
+            {memberships?.map((membership, index) => {
               const hasBook = membership.Issues.some((issue) => issue.Book);
               return (
                 <tr
@@ -373,6 +426,12 @@ const MembersList = () => {
           </div>
         </div>
       )}
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPage}
+        pageSize={pageSize}
+        setPageSize={setPageSize}
+        onPageChange={handlePageChange} />
     </div>
   );
 };
