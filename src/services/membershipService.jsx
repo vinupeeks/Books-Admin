@@ -12,14 +12,15 @@ const Token = getAuthToken();
 const membershipService = {
 
     membershipslist: async (search) => {
-        const payload = search;
+
+        const filter = search;
         return apiRequest({
             method: "POST",
             url: `/members/list`,
             headers: {
                 Authorization: "Bearer " + Token,
             },
-            data: payload,
+            data: filter,
         });
     },
 

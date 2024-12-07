@@ -23,9 +23,7 @@ const MembersList = () => {
   const [totalPage, setTotalPage] = useState(0);
   const [totalCount, setTotalCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
-  const [pageSize, setPageSize] = useState(10);
-
-  const [payload, setPayload] = useState({ memID: "", memType: "", })
+  const [pageSize, setPageSize] = useState(10); 
   const { enqueueSnackbar } = useSnackbar();
 
 
@@ -39,8 +37,7 @@ const MembersList = () => {
     },
     {
       onError: (error) => {
-        +
-          setError("Error fetching membership data");
+        setError("Error fetching membership data");
         setLoading(false);
       }
     }
@@ -126,22 +123,18 @@ const MembersList = () => {
 
   const handleSearchChange = async (event) => {
     const value = event.target.value;
-    console.log(`started`);
-    console.log(searchTerm);
-
-
     if (!value) {
       setSearchTerm('');
-      console.log(`if Started`);
+      setMembershipType('A');
       return;
     }
-    console.log(`if  not and Started`);
     setSearchTerm(value);
     debouncedSearch(value);
   };
 
   const debouncedSearch = useCallback(
     debounce((text) => {
+      console.log(searchTerm, membershipType)
       setLoading(true);
       if (!text) {
         // getMemberships.mutate({ membershipType });
@@ -182,8 +175,6 @@ const MembersList = () => {
   const handleTypeChange = (type) => {
     setMembershipType(type);
     setSearchTerm('');
-    // console.log(`type value: `, membershipType);
-
   };
 
   useEffect(() => {
@@ -202,10 +193,10 @@ const MembersList = () => {
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
       <h1 className="text-3xl font-semibold text-left text-gray-800 mb-8">
-        Membership List : {membershipType === 'F' ? 'FAMILY' : membershipType === 'I' ? 'SINGLE' : 'All'}
+        Membership List {searchTerm ? 'SEARCH' : membershipType === 'F' ? 'FAMILY' : membershipType === 'I' ? 'SINGLE' : 'All'}
       </h1>
 
-      <div className="flex items-center justify-between px-5 ">
+      <div className="flex items-center justify-between px-5 rounded-lg border-2 bg-gray-300 ">
         <div>
           <i>Select Membership Type: </i>
           <Dropdown className="d-inline-block">
@@ -252,7 +243,7 @@ const MembersList = () => {
             // setSearchTerm(event.target.value);
             handleSearchChange(event);
           }}
-          className="border-2 border-sky-500 rounded-lg bg-gray-100 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-sky-500 p-2 w-auto uppercase"
+          className="border-2 bg-gray-300 border-sky-500 rounded-lg  text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-sky-500 p-2 w-auto uppercase"
         // style={{ padding: '8px', margin: '10px 0', width: '20%' }}
         />
       </div>

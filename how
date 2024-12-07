@@ -1,0 +1,59 @@
+[33mcommit 245bbf91626bdb85a1987424d4d297f6ef7e2a8f[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m
+Author: vinupeeks <vinupeeks@gmail.com>
+Date:   Sat Dec 7 18:18:20 2024 +0530
+
+    Save changes before revert
+
+[1mdiff --git a/src/components/MembersList/MembersList.jsx b/src/components/MembersList/MembersList.jsx[m
+[1mindex e27201f..3a8589a 100644[m
+[1m--- a/src/components/MembersList/MembersList.jsx[m
+[1m+++ b/src/components/MembersList/MembersList.jsx[m
+[36m@@ -39,7 +39,8 @@[m [mconst MembersList = () => {[m
+     },[m
+     {[m
+       onError: (error) => {[m
+[31m-        setError("Error fetching membership data");[m
+[32m+[m[32m        +[m
+[32m+[m[32m          setError("Error fetching membership data");[m
+         setLoading(false);[m
+       }[m
+     }[m
+[36m@@ -125,11 +126,16 @@[m [mconst MembersList = () => {[m
+ [m
+   const handleSearchChange = async (event) => {[m
+     const value = event.target.value;[m
+[32m+[m[32m    console.log(`started`);[m
+[32m+[m[32m    console.log(searchTerm);[m
+[32m+[m
+ [m
+     if (!value) {[m
+       setSearchTerm('');[m
+[32m+[m[32m      console.log(`if Started`);[m
+       return;[m
+     }[m
+[32m+[m[32m    console.log(`if  not and Started`);[m
+     setSearchTerm(value);[m
+     debouncedSearch(value);[m
+   };[m
+[36m@@ -196,10 +202,10 @@[m [mconst MembersList = () => {[m
+   return ([m
+     <div className="p-6 bg-gray-50 min-h-screen">[m
+       <h1 className="text-3xl font-semibold text-left text-gray-800 mb-8">[m
+[31m-        Membership List {searchTerm ? 'SEARCH' : membershipType === 'F' ? 'FAMILY' : membershipType === 'I' ? 'SINGLE' : 'All'}[m
+[32m+[m[32m        Membership List : {membershipType === 'F' ? 'FAMILY' : membershipType === 'I' ? 'SINGLE' : 'All'}[m
+       </h1>[m
+ [m
+[31m-      <div className="flex items-center justify-between px-5 rounded-lg border-2 bg-gray-300 ">[m
+[32m+[m[32m      <div className="flex items-center justify-between px-5 ">[m
+         <div>[m
+           <i>Select Membership Type: </i>[m
+           <Dropdown className="d-inline-block">[m
+[36m@@ -246,7 +252,7 @@[m [mconst MembersList = () => {[m
+             // setSearchTerm(event.target.value);[m
+             handleSearchChange(event);[m
+           }}[m
+[31m-          className="border-2 bg-gray-300 border-sky-500 rounded-lg  text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-sky-500 p-2 w-auto uppercase"[m
+[32m+[m[32m          className="border-2 border-sky-500 rounded-lg bg-gray-100 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-sky-500 p-2 w-auto uppercase"[m
+         // style={{ padding: '8px', margin: '10px 0', width: '20%' }}[m
+         />[m
+       </div>[m

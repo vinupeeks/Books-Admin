@@ -63,7 +63,9 @@ const FamilyMemberShip = () => {
     e.preventDefault();
     if (!window.confirm("Are you sure you want to continue?")) {
       return;
-    }  
+    }
+    console.log(`Form data: `, formData);
+
 
     try { 
       const response = await fetch("http://localhost:1000/membership/creation", {
@@ -185,7 +187,9 @@ const FamilyMemberShip = () => {
           ) : (
             <option value="family">Family</option>
           )}
-        </select> 
+        </select>
+        {console.log(`form data from checking stage :`, formData)
+        }
 
         <div className="flex items-center justify-between px-5">
 

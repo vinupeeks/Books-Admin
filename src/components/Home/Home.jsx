@@ -24,7 +24,7 @@ const Home = () => {
   const [totalPage, setTotalPage] = useState(0);
   const [totalCount, setTotalCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
-  const [pageSize, setPageSize] = useState(25);
+  const [pageSize, setPageSize] = useState(20);
 
   const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
