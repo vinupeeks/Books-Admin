@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import RouteConstants from "../../constant/Routeconstant";
 import { useNavigate } from "react-router-dom";
+import Modal from 'react-bootstrap/Modal';
+import axios from "axios";
+import { Button } from "react-bootstrap";
 
 const InputField = ({ label, type, value, onChange, required }) => (
   <div>
@@ -17,6 +20,10 @@ const InputField = ({ label, type, value, onChange, required }) => (
 
 const FamilyMemberShip = () => {
   const navigate = useNavigate();
+
+  const [show, setShow] = useState(false);
+  const [familyMemId, setFamilyMemId] = useState('');
+  const [updatedMembers, setUpdatedMembers] = useState([]);
   const [formData, setFormData] = useState({
     members: [
       {
@@ -29,6 +36,9 @@ const FamilyMemberShip = () => {
     ],
     membershipType: "single",
   });
+
+  const handleClose = () => setShow(false);
+  // const handleShow = () => setShow(true);
 
   const handleChange = (index, field, value) => {
     const updatedMembers = [...formData.members];
@@ -67,11 +77,12 @@ const FamilyMemberShip = () => {
     })
   };
   const handleSubmit = async (e) => {
-
     e.preventDefault();
+
     if (!window.confirm("Are you sure you want to continue?")) {
       return;
     }
+
     try {
       const updatedMembershipType =
         formData.members.length > 1 ? "family" : "single";
@@ -79,16 +90,16 @@ const FamilyMemberShip = () => {
         ...formData,
         membershipType: updatedMembershipType,
       };
-      const response = await fetch("http://localhost:1000/membership/creation", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(updatedFormData),
-      });
+      const response = await axios.post(
+        "http://localhost:1000/membership/creation",
+        updatedFormData
+      );
 
-      if (response.ok) {
-        alert("Membership created successfully!");
+      if (response?.status === 201) {
+        // console.log(`Response of the membership creation:`, response?.data);
+        setUpdatedMembers(response?.data?.data?.updatedMembers);
+        setFamilyMemId(response?.data?.data?.membershipId);
+        setShow(true)
         setFormData({
           members: [
             {
@@ -102,14 +113,17 @@ const FamilyMemberShip = () => {
           membershipType: "single",
         });
       } else {
-        const errorData = await response.json();
-        alert(`Error: ${errorData.message}`);
+        console.error("Error: Unexpected response status", response.status);
+        alert("Failed to create membership. Please try again.");
       }
     } catch (error) {
       console.error("Error creating membership:", error);
-      alert("An error occurred while creating the membership.");
+      alert(
+        "An error occurred while creating the membership. Please try again later."
+      );
     }
   };
+
   const handleCancelBtn = () => {
 
     if (!window.confirm("Are you sure you want to continue?")) {
@@ -226,6 +240,38 @@ const FamilyMemberShip = () => {
 
         </div>
       </form>
+      <div>
+        <>
+          <Modal
+            show={show}
+            onHide={handleClose}
+            backdrop="static"
+            keyboard={false}
+          >
+            <Modal.Header closeButton>
+              <Modal.Title>{updatedMembers?.length > 1 ? "Memberships Details" : "Membership Details"}</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <p>Membership Type : &nbsp;{updatedMembers?.length > 1 ? "Family" : "Single"}</p>
+              {updatedMembers?.length > 1 && (
+                <p>Family ID: {familyMemId}</p>)}
+              <ul>
+                {updatedMembers?.map((member) => (
+                  <li key={member.id}>
+                    <strong>Name:</strong> {member.MemberName} - &nbsp;
+                    <strong>Membership ID:</strong> {member.MemberId}
+                  </li>
+                ))}
+              </ul>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={handleClose}>
+                Close
+              </Button>
+            </Modal.Footer>
+          </Modal>
+        </>
+      </div>
     </div>
   );
 };
