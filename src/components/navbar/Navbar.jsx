@@ -237,7 +237,7 @@ export default function AppBarWithSideMenu() {
                                         Profile
                                     </a>
                                 </li>
-                                <li className="mb-3">
+                                {/* <li className="mb-3">
                                     <a
                                         href={RouteConstants.USERSLIST}
                                         onClick={() => handleMenuClick()}
@@ -245,7 +245,7 @@ export default function AppBarWithSideMenu() {
                                     >
                                         Users-List
                                     </a>
-                                </li>
+                                </li> */}
                                 <li className="mb-3">
                                     <a
                                         href={RouteConstants.CONTACT}

@@ -54,34 +54,37 @@ const ProfilePage = () => {
     }
 
     return (
-        <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-            <div className="bg-white p-8 rounded-lg shadow-lg w-96">
-                <h2 className="text-2xl font-semibold text-center text-gray-700 mb-6">Profile</h2>
+        <div>
+            <br />
+            <div className="min-h-screen bg-gray-100 flex  justify-center ">
+                <div className="bg-white p-10 rounded-lg shadow-lg   w-[700px] mx-auto h-[400px]">
+                    <h2 className="text-2xl font-semibold text-center text-gray-700 mb-6">Profile</h2>
+                    <hr className="my-2" />
+                    {user ? (
+                        <div className="space-y-6">
+                            <div className="flex justify-between items-center">
+                                <span className="text-lg text-gray-600">Username:</span>
+                                <span className="font-medium text-gray-800">{user.username}</span>
+                            </div>
 
-                {user ? (
-                    <div className="space-y-4">
-                        <div className="flex justify-between items-center">
-                            <span className="text-lg text-gray-600">Username:</span>
-                            <span className="font-medium text-gray-800">{user.username}</span>
+                            <div className="flex justify-between items-center">
+                                <span className="text-lg text-gray-600">Email:</span>
+                                <span className="font-medium text-gray-800">{user.email}</span>
+                            </div>
+                            <div className="flex justify-center mt-6">
+                                <button
+                                    onClick={handleLogout}
+                                    className="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition duration-200"
+                                >
+                                    Logout
+                                </button>
+                            </div>
+                            <hr className="my-2" />
                         </div>
-
-                        <div className="flex justify-between items-center">
-                            <span className="text-lg text-gray-600">Email:</span>
-                            <span className="font-medium text-gray-800">{user.email}</span>
-                        </div>
-
-                        <div className="flex justify-center mt-6">
-                            <button
-                                onClick={handleLogout}
-                                className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition duration-200"
-                            >
-                                Logout
-                            </button>
-                        </div>
-                    </div>
-                ) : (
-                    <p className="text-center text-gray-600">No user data found.</p>
-                )}
+                    ) : (
+                        <p className="text-center text-gray-600">No user data found.</p>
+                    )}
+                </div>
             </div>
         </div>
     );

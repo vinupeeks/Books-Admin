@@ -100,13 +100,13 @@ function BookSearchComp(props) {
                                 <span className="font-medium text-gray-700">Author:</span>
                                 <span className="text-gray-800">{selectedBook.author}</span>
                             </li>
-                            <li className="flex justify-between items-center">
+                            {/* <li className="flex justify-between items-center">
                                 <span className="font-medium text-gray-700">Price:</span>
                                 <span className="text-gray-800">Rs {selectedBook.Price}</span>
-                            </li>
+                            </li> */}
                         </ul>
 
-                        <div className="mt-4">
+                        <div className="mt-4 flex items-end justify-end">
                             <button
                                 className="px-4 py-2 bg-red-400 text-white rounded-lg hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-500"
                                 onClick={() => setSelectedBook(null)}

@@ -23,7 +23,7 @@ const MembersList = () => {
   const [totalPage, setTotalPage] = useState(0);
   const [totalCount, setTotalCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
-  const [pageSize, setPageSize] = useState(10); 
+  const [pageSize, setPageSize] = useState(10);
   const { enqueueSnackbar } = useSnackbar();
 
 
@@ -66,9 +66,8 @@ const MembersList = () => {
 
   const BookIssueSubmit = bookQueries.BookIssueSubmitMutation(
     async (response) => {
-      enqueueSnackbar(`${response.data?.message}`, { variant: 'success' });
-
       window.location.reload();
+      enqueueSnackbar(`${response.data?.message}`, { variant: 'success' });
       handleCheckRemove();
       setLoading(false);
     },
@@ -97,9 +96,9 @@ const MembersList = () => {
 
   const BookIssueReturn = bookQueries.BookIssueReturnMutation(
     async (response) => {
-      enqueueSnackbar(`${response.data?.message}`, { variant: 'success' });
       handleCheckRemove();
       window.location.reload();
+      enqueueSnackbar(`${response.data?.message}`, { variant: 'success' });
       setLoading(false);
     },
     {
@@ -121,39 +120,41 @@ const MembersList = () => {
   }
 
 
-  const handleSearchChange = async (event) => {
+  const handleSearchChange = (event) => {
     const value = event.target.value;
-    if (!value) {
+    if (value.charAt(0) === ' ') {
+      console.log(`error`);
+
       setSearchTerm('');
       setMembershipType('A');
-      return;
     }
+
     setSearchTerm(value);
+    console.log('Input value:', value);
     debouncedSearch(value);
   };
 
   const debouncedSearch = useCallback(
     debounce((text) => {
-      console.log(searchTerm, membershipType)
-      setLoading(true);
-      if (!text) {
-        // getMemberships.mutate({ membershipType });
+      if (text) {
+        console.log('Searching for:', text);
+        setLoading(true);
+        const payload = {
+          page: currentPage,
+          size: pageSize,
+          memID: text,
+        };
+        getMemberships.mutateAsync(payload);
+      } else {
         const payload = {
           page: currentPage,
           size: pageSize,
           memType: membershipType,
-        }
+        };
         getMemberships.mutate(payload);
       }
-      // getMemberships.mutateAsync({ search: text });
-      const payload = {
-        page: currentPage,
-        size: pageSize,
-        memID: text,
-      }
-      getMemberships.mutateAsync(payload);
-    }, 500),
-    []
+    }, 600),
+    [currentPage, pageSize, membershipType]
   );
 
   const handleModalClose = () => {
@@ -180,7 +181,7 @@ const MembersList = () => {
   useEffect(() => {
     setLoading(true);
     fetchMemberships();
-  }, [membershipType, currentPage, pageSize, searchTerm]);
+  }, [membershipType, currentPage, pageSize]);
 
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
@@ -196,7 +197,7 @@ const MembersList = () => {
         Membership List {searchTerm ? 'SEARCH' : membershipType === 'F' ? 'FAMILY' : membershipType === 'I' ? 'SINGLE' : 'All'}
       </h1>
 
-      <div className="flex items-center justify-between px-5 rounded-lg border-2 bg-gray-300 ">
+      <div className="flex items-center justify-between px-5 rounded-lg border-2 bg-gray-200 ">
         <div>
           <i>Select Membership Type: </i>
           <Dropdown className="d-inline-block">
@@ -243,7 +244,7 @@ const MembersList = () => {
             // setSearchTerm(event.target.value);
             handleSearchChange(event);
           }}
-          className="border-2 bg-gray-300 border-sky-500 rounded-lg  text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-sky-500 p-2 w-auto uppercase"
+          className="border-2 bg-gray-200 border-sky-500 rounded-lg  text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-sky-500 p-2 w-auto uppercase"
         // style={{ padding: '8px', margin: '10px 0', width: '20%' }}
         />
       </div>
@@ -252,7 +253,7 @@ const MembersList = () => {
 
       <div className="overflow-x-auto bg-white shadow-lg rounded-lg">
         <table className="min-w-full table-auto">
-          <thead className="bg-gray-200">
+          <thead className="bg-gray-300">
             <tr>
               <th className="px-4 py-2 text-left">Number</th>
               <th className="px-4 py-2 text-left">Membership ID</th>

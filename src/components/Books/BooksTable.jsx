@@ -6,25 +6,25 @@ import { MdOutlineAddBox, MdOutlineDelete } from 'react-icons/md';
 const BooksTable = ({ books }) => {
   return (
     <table className='w-full border-separate border-spacing-2'>
-      <thead>
+      <thead className="bg-gray-200 text-gray-700">
         <tr>
-          <th className='border border-slate-600 rounded-md'>No</th>
-          <th className='border border-slate-600 rounded-md'>Book Title</th>
-          <th className='border border-slate-600 rounded-md max-md:hidden'>
+          <th className="border border-slate-600 rounded-md px-4 py-2 text-left">No</th>
+          <th className="border border-slate-600 rounded-md px-4 py-2 text-left">Book Title</th>
+          <th className="border border-slate-600 rounded-md px-4 py-2 text-left max-md:hidden">
             Author Name
           </th>
-          <th className='border border-slate-600 rounded-md max-md:hidden'>
+          <th className="border border-slate-600 rounded-md px-4 py-2 text-left max-md:hidden">
             Book Quantity
           </th>
-          <th className='border border-slate-600 rounded-md'>Operations</th>
+          <th className="border border-slate-600 rounded-md px-4 py-2 text-left">Operations</th>
         </tr>
       </thead>
       <tbody>
         {books.map((book, index) => (
-          <tr key={book.id} className='h-8'>
+          <tr key={book.id} className="h-8 hover:bg-gray-200 transition-colors">
             <td className='border border-slate-700 rounded-md text-center'>
-              {/* {index + 1} */}
-              {book.id}
+              {index + 1}
+              {/* {book.id} */}
             </td>
             <td className='border border-slate-700 rounded-md text-center'>
               {book.title}
