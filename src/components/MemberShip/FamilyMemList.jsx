@@ -141,10 +141,7 @@ const FamilyMemList = () => {
         debouncedSearch(value);
     };
     const debouncedSearch = useCallback(
-        debounce((text) => {
-            // if (!text) {
-            //   return;
-            // }
+        debounce((text) => { 
             setLoading(true);
             if (!text) {
                 getMemberships.mutate({ membershipType });
