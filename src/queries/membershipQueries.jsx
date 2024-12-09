@@ -13,6 +13,16 @@ const membershipListMutation = (onmembershipListSuccess, onErrorCallback) => {
     });
 };
 
+const familyMembershipListMutation = (onmembershipListSuccess, onErrorCallback) => {
+
+    return useMutation(membershipService.familyMembershipList, {
+        onSuccess: (data) => {
+            onmembershipListSuccess(data);
+        },
+        onError: onErrorCallback,
+    });
+};
+
 const membershipByIdMutation = (onmembershipListSuccess, onErrorCallback) => {
 
     return useMutation(membershipService.membershipById, {
@@ -35,6 +45,7 @@ const memberBookDetailsMutation = (onmembershipListSuccess, onErrorCallback) => 
 
 const membershipsQueries = {
     membershipListMutation,
+    familyMembershipListMutation,
     membershipByIdMutation,
     memberBookDetailsMutation
 };

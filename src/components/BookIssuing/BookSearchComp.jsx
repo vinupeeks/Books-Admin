@@ -108,7 +108,7 @@ function BookSearchComp(props) {
 
                         <div className="mt-4 flex items-end justify-end">
                             <button
-                                className="px-4 py-2 bg-red-400 text-white rounded-lg hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-500"
+                                className="px-4 py-2 bg-red-200 text-white rounded-lg hover:bg-red-300 focus:outline-none focus:ring-2 focus:ring-red-400"
                                 onClick={() => setSelectedBook(null)}
                             >
                                 Remove Book

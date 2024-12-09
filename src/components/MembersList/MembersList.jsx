@@ -343,7 +343,7 @@ const MembersList = () => {
                       {/* <p><b>Member ID:</b> {selectedMembership.memID || 'N/A'} </p> */}
                     </div>
                     <div>
-                      <p style={{ color: 'green' }}>You are Eligible</p>
+                      {/* <p style={{ color: 'green' }}>You are Eligible</p> */}
                     </div>
                   </div>
 
@@ -370,7 +370,7 @@ const MembersList = () => {
                         {/* <p><b>Member ID:</b> {selectedMembership.memID || 'N/A'} </p> */}
                       </div>
                       <div>
-                        <p style={{ color: 'red' }}>You are Not Eligible</p>
+                        {/* <p style={{ color: 'red' }}>You are Not Eligible</p> */}
                       </div>
                     </div>
                     <p>

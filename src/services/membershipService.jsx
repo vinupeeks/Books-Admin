@@ -11,6 +11,19 @@ const Token = getAuthToken();
 
 const membershipService = {
 
+    familyMembershipList: async (search) => {
+
+        const filter = search;
+        return apiRequest({
+            method: "POST",
+            url: `/membership/details`,
+            headers: {
+                Authorization: "Bearer " + Token,
+            },
+            data: filter,
+        });
+    },
+
     membershipslist: async (search) => {
 
         const filter = search;
@@ -23,7 +36,6 @@ const membershipService = {
             data: filter,
         });
     },
-
 
     membershipById: async (id) => {
         return apiRequest({

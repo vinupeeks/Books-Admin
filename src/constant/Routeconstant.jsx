@@ -8,7 +8,8 @@ const RouteConstants = {
 
     INDIVIDUAL_MEMBERSHIP: '/membership/indivual',
     FAMILY_MEMBERSHIP: '/membership/family',
-    MEMBERS_LIST: '/members',
+    FAMILY_LIST: '/membership/family/list',
+    // MEMBERS_LIST: '/members',
     MEMBER_SHIP: '/membership/details',
     MEMBER_SHIP_BY_ID: '/membership/details/:id',
     MEMBERS_INDIVUDAL: '/members/indivual',

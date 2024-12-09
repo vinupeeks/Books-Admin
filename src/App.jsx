@@ -22,6 +22,7 @@ import CreateBooks from './components/Books/CreateBooks';
 import AdminLogin from './components/Log/Login';
 import RouteConstants from "./constant/Routeconstant.jsx";
 import IssuingBook from './components/BookIssuing/IssuingBook.jsx';
+import FamilyMemList from './components/MemberShip/FamilyMemList.jsx';
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -49,6 +50,7 @@ const App = () => {
 
           <Route path={RouteConstants.INDIVIDUAL_MEMBERSHIP} element={<PrivateRoute element={<IndividualMemberShip />} />} />
           <Route path={RouteConstants.FAMILY_MEMBERSHIP} element={<PrivateRoute element={<FamilyMemberShip />} />} />
+          <Route path={RouteConstants.FAMILY_LIST} element={<PrivateRoute element={<FamilyMemList />} />} />
 
           <Route path={RouteConstants.DASHBOARD} element={<PrivateRoute element={<MembersList />} />} /> 
 

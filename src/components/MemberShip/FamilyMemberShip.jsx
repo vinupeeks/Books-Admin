@@ -37,9 +37,8 @@ const FamilyMemberShip = () => {
   };
 
   const addMember = () => {
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      members: [
+    setFormData((prevFormData) => {
+      const updatedMembers = [
         ...prevFormData.members,
         {
           name: "",
@@ -48,32 +47,44 @@ const FamilyMemberShip = () => {
           flatNumber: "",
           dateOfBirth: "",
         },
-      ],
-      membershipType: "family",
-    }));
+      ];
+      return {
+        ...prevFormData,
+        members: updatedMembers,
+        membershipType: updatedMembers.length > 1 ? "family" : "single",
+      };
+    });
   };
 
   const removeMember = (index) => {
-    const updatedMembers = formData.members.filter((_, i) => i !== index);
-    setFormData({ ...formData, members: updatedMembers });
+    setFormData((prevFormData) => {
+      const updatedMembers = formData.members.filter((_, i) => i !== index);
+      return {
+        ...prevFormData,
+        members: updatedMembers,
+        membershipType: updatedMembers.length > 1 ? "family" : "single",
+      };
+    })
   };
-
   const handleSubmit = async (e) => {
 
     e.preventDefault();
     if (!window.confirm("Are you sure you want to continue?")) {
       return;
     }
-    console.log(`Form data: `, formData);
-
-
-    try { 
+    try {
+      const updatedMembershipType =
+        formData.members.length > 1 ? "family" : "single";
+      const updatedFormData = {
+        ...formData,
+        membershipType: updatedMembershipType,
+      };
       const response = await fetch("http://localhost:1000/membership/creation", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(updatedFormData),
       });
 
       if (response.ok) {
@@ -114,7 +125,7 @@ const FamilyMemberShip = () => {
           dateOfBirth: "",
         },
       ],
-      membershipType: "",
+      membershipType: "single",
     });
     navigate(RouteConstants.DASHBOARD)
   }
@@ -123,6 +134,15 @@ const FamilyMemberShip = () => {
     <div className="max-w-5xl mx-auto mt-10 bg-white shadow-md p-6 rounded-lg">
       <h2 className="text-2xl font-bold text-gray-800 mb-6">Membership Creation</h2>
       <form onSubmit={handleSubmit} className="space-y-6">
+        <label className="block text-sm font-medium text-gray-700">Membership Type</label>
+        <select
+          value={formData.membershipType}
+          onChange={(e) => setFormData({ ...formData, membershipType: e.target.value })}
+          className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+        >
+          <option value="single">Single</option>
+          <option value="family">Family</option>
+        </select>
         {formData.members.map((member, index) => (
           <div key={index} className="px-4 py-2 bg-gray-200 rounded-lg space-y-4 border-b pb-4 mb-4">
             <h3 className="text-lg font-semibold text-gray-700">
@@ -170,29 +190,11 @@ const FamilyMemberShip = () => {
               type="date"
               value={member.dateOfBirth}
               onChange={(e) => handleChange(index, "dateOfBirth", e.target.value)}
-              // required
+            // required
             />
           </div>
         ))}
-        <label className="block text-sm font-medium text-gray-700">Membership Type</label>
-        <select
-          value={formData.membershipType}
-          onChange={(e) => setFormData({ ...formData, membershipType: e.target.value })}
-          className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-        >
-          {/* <option value="single">Single</option> */}
-          {/* <option value="family">Family</option> */}
-          {formData.members.length === 1 ? (
-            <option value="single">Single</option>
-          ) : (
-            <option value="family">Family</option>
-          )}
-        </select>
-        {console.log(`form data from checking stage :`, formData)
-        }
-
         <div className="flex items-center justify-between px-5">
-
           <button
             type="button"
             onClick={handleCancelBtn}
@@ -201,13 +203,17 @@ const FamilyMemberShip = () => {
             Cancel
           </button>
           <div className="flex items-center justify-between gap-1">
-            <button
-              type="button"
-              onClick={addMember}
-              className=" bg-indigo-400 text-white py-2 px-4 rounded-md hover:bg-indigo-500"
-            >
-              Add Another Member
-            </button>
+            {formData.membershipType === "family" && formData.members.length < 5 && (
+              <>
+                <button
+                  type="button"
+                  onClick={addMember}
+                  className=" bg-indigo-400 text-white py-2 px-4 rounded-md hover:bg-indigo-500"
+                >
+                  Add Another Member
+                </button>
+              </>
+            )}
             <div>
             </div>
             <button

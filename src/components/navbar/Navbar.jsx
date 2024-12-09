@@ -155,24 +155,6 @@ export default function AppBarWithSideMenu() {
                                         Dashboard
                                     </a>
                                 </li>
-                                {/* <li className="mb-3">
-                                    <a
-                                        href={RouteConstants.BOOK_ISSUING}
-                                        onClick={() => handleMenuClick('Membership')}
-                                        className="text-black font-semibold block px-4 py-2 rounded hover:bg-blue-300 transition no-underline"
-                                    >
-                                        Book Issue
-                                    </a>
-                                </li> */}
-                                {/* <li className="mb-3">
-                                    <a
-                                        href={RouteConstants.DASHBOARD}
-                                        onClick={() => handleMenuClick('Membership')}
-                                        className="text-black font-semibold block px-4 py-2 rounded hover:bg-blue-300 transition no-underline"
-                                    >
-                                        Memberships List
-                                    </a>
-                                </li> */}
                                 <li className="mb-3">
                                     <a
                                         href={RouteConstants.FAMILY_MEMBERSHIP}
@@ -182,6 +164,15 @@ export default function AppBarWithSideMenu() {
                                         Membership Creation
                                     </a>
                                 </li>
+                                {/* <li className="mb-3">
+                                    <a
+                                        href={RouteConstants.FAMILY_LIST}
+                                        onClick={() => handleMenuClick()}
+                                        className="text-black font-semibold block px-4 py-2 rounded hover:bg-blue-300 transition no-underline"
+                                    >
+                                        Family List
+                                    </a>
+                                </li> */}
                                 <li className="mb-3">
                                     <a
                                         href={RouteConstants.ROOT}
@@ -237,15 +228,6 @@ export default function AppBarWithSideMenu() {
                                         Profile
                                     </a>
                                 </li>
-                                {/* <li className="mb-3">
-                                    <a
-                                        href={RouteConstants.USERSLIST}
-                                        onClick={() => handleMenuClick()}
-                                        className="text-black font-semibold block px-4 py-2 rounded hover:bg-blue-300 transition no-underline"
-                                    >
-                                        Users-List
-                                    </a>
-                                </li> */}
                                 <li className="mb-3">
                                     <a
                                         href={RouteConstants.CONTACT}
