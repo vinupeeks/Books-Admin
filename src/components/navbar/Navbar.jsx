@@ -72,8 +72,8 @@ export default function AppBarWithSideMenu() {
         const Token = localStorage.getItem('BooksAdminToken');
         if (Token) {
             try {
-                const decodedToken = jwtDecode(Token);
-                setName(decodedToken.role);
+                const decodedToken = jwtDecode(Token); 
+                setName(decodedToken.name);
                 setRole(decodedToken.role);
             } catch (error) {
                 console.error('Token decoding failed:', error);
@@ -130,7 +130,8 @@ export default function AppBarWithSideMenu() {
                                 open={Boolean(anchorEl)}
                                 onClose={handleClose}
                             >
-                                <MenuItem onClick={() => { handleClose('admin/profile') }}>Profile</MenuItem>
+                                {/* <MenuItem onClick={() => { handleClose('admin/profile') }}>Profile</MenuItem> */}
+                                <MenuItem onClick={() => { handleClose(); navigate(RouteConstants.ADMINPROFILE) }}>Profile</MenuItem>
                                 <MenuItem onClick={() => { handleClose('account') }}>My account</MenuItem>
                             </Menu>
                         </div>
