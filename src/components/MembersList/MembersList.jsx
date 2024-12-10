@@ -255,11 +255,11 @@ const MembersList = () => {
         <table className="min-w-full table-auto">
           <thead className="bg-gray-300">
             <tr>
-              <th className="px-4 py-2 text-left">Number</th>
-              <th className="px-4 py-2 text-left">Membership ID</th>
-              <th className="px-4 py-2 text-left">Name</th>
-              <th className="px-4 py-2 text-left">Status</th>
-              <th className="px-4 py-2 text-left">Actions</th>
+              <th className="px-4 py-2 text-left w-10">Number</th>
+              <th className="px-4 py-2 text-leftw-10">Membership ID</th>
+              <th className="px-4 py-2 text-left w-auto">Name</th>
+              <th className="px-4 py-2 text-left w-auto">Status</th>
+              <th className="px-4 py-2 text-left w-10">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -398,7 +398,7 @@ const MembersList = () => {
 
             <div className="mt-4 flex justify-end gap-3">
               <button
-                className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700"
+                className="px-6 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700"
                 onClick={handleModalClose}
               >
                 Close
@@ -409,7 +409,7 @@ const MembersList = () => {
                 ) : (
                   <button
                     type="button"
-                    className="px-4 py-2 bg-green-200 text-black rounded-lg hover:bg-green-300 mr-2"
+                    className="px-6 py-2 bg-green-300 text-black rounded-lg hover:bg-green-400 mr-2"
                     onClick={handleBookIssueSubmit}
                   >
                     Issue

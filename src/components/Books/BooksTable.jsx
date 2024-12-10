@@ -19,7 +19,7 @@ const BooksTable = ({ books }) => {
           <th className="border border-slate-600 rounded-md px-4 py-2 text-left max-md:hidden w-24">
             Issued Quantity
           </th>
-          <th className="border border-slate-600 rounded-md px-4 py-2 text-left">Operations</th>
+          <th className="border border-slate-600 rounded-md px-4 py-2 text-left w-20">Operations</th>
         </tr>
       </thead>
       <tbody>

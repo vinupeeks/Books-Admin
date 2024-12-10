@@ -88,7 +88,7 @@ function BookSearchComp(props) {
                         className="p-2 my-2 w-full border rounded-md"
                     />
                 ) : (
-                    <div className="p-4">
+                    <div className="">
                         <hr className="my-2" />
                         <h2 className="text-xl font-semibold text-gray-800 mb-4">Book Details</h2>
                         <ul className="list-none space-y-3">
@@ -108,7 +108,7 @@ function BookSearchComp(props) {
 
                         <div className="mt-4 flex items-end justify-end">
                             <button
-                                className="px-4 py-2 bg-red-200 text-white rounded-lg hover:bg-red-300 focus:outline-none focus:ring-2 focus:ring-red-400"
+                                className="px-1 py-1 bg-red-200 text-white rounded-lg hover:bg-red-300 focus:outline-none focus:ring-2 focus:ring-red-400"
                                 onClick={() => setSelectedBook(null)}
                             >
                                 Remove Book
