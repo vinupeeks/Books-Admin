@@ -59,18 +59,19 @@ const ProfilePage = () => {
             <div className="min-h-screen bg-gray-100 flex  justify-center ">
                 <div className="bg-white p-10 rounded-lg shadow-lg   w-[700px] mx-auto h-[400px]">
                     <h2 className="text-2xl font-semibold text-center text-gray-700 mb-6">Profile</h2>
-                    <hr className="my-2" />
                     {user ? (
-                        <div className="space-y-6">
-                            <div className="flex justify-between items-center">
+                        <div className="space-y-6 px-5">
+                            <hr className="my-2" />
+                            <div className="flex justify-between items-center px-4">
                                 <span className="text-lg text-gray-600">Username:</span>
                                 <span className="font-medium text-gray-800">{user.username}</span>
                             </div>
 
-                            <div className="flex justify-between items-center">
+                            <div className="flex justify-between items-center px-4">
                                 <span className="text-lg text-gray-600">Email:</span>
                                 <span className="font-medium text-gray-800">{user.email}</span>
                             </div>
+                            <hr className="my-2" />
                             <div className="flex justify-center mt-6">
                                 <button
                                     onClick={handleLogout}
@@ -79,7 +80,6 @@ const ProfilePage = () => {
                                     Logout
                                 </button>
                             </div>
-                            <hr className="my-2" />
                         </div>
                     ) : (
                         <p className="text-center text-gray-600">No user data found.</p>
