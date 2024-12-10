@@ -18,8 +18,6 @@ const CreateBooks = () => {
 
   const submitForm = bookQueries.booksAddMutation(
     async (response) => {
-      console.log(`Adding Book Response: `, response);
-
       if (response.status === 201) {
         setLoading(false);
         enqueueSnackbar('Book Created successfully', { variant: 'success' });
@@ -70,7 +68,6 @@ const CreateBooks = () => {
         Price: Number(price),
         DonatedBy: donatedBy,
       };
-      console.log(`Data from front-end: `, datavalues);
 
       setLoading(true);
       submitForm.mutateAsync(datavalues);
@@ -81,65 +78,83 @@ const CreateBooks = () => {
   };
 
   return (
-    <div className="p-4">
-      <h1 className="text-3xl my-4">Create Book</h1>
+    <div className="p-6">
+      <h1 className="text-3xl font-bold text-center mb-6">Create Book</h1>
       {loading && <Spinner />}
-      <div className="flex flex-col border-2 border-sky-400 rounded-xl w-[600px] p-4 mx-auto">
-        <div className="my-4">
-          <label className="text-xl mr-4 text-gray-500">Title</label>
+      <div className="flex flex-col border border-gray-300 rounded-lg shadow-lg w-full max-w-2xl mx-auto p-6 bg-white">
+        {/* Title Field */}
+        <div className="mb-4">
+          <label className="block text-lg font-medium text-gray-600 mb-2">Title</label>
           <input
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="border-2 border-gray-500 px-4 py-2 w-full"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-400 focus:outline-none"
+            placeholder="Enter book title"
           />
         </div>
-        <div className="my-4">
-          <label className="text-xl mr-4 text-gray-500">Author</label>
+        {/* Author Field */}
+        <div className="mb-4">
+          <label className="block text-lg font-medium text-gray-600 mb-2">Author</label>
           <input
             type="text"
             value={author}
             onChange={(e) => setAuthor(e.target.value)}
-            className="border-2 border-gray-500 px-4 py-2 w-full"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-400 focus:outline-none"
+            placeholder="Enter author's name"
           />
         </div>
-        <div className="my-4">
-          <label className="text-xl mr-4 text-gray-500">Stock</label>
+        {/* Stock Field */}
+        <div className="mb-4">
+          <label className="block text-lg font-medium text-gray-600 mb-2">Stock</label>
           <input
             type="number"
             value={stock}
+            min={0}
             onChange={(e) => setStock(e.target.value)}
-            className="border-2 border-gray-500 px-4 py-2 w-full"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-400 focus:outline-none"
+            placeholder="Enter stock quantity"
           />
         </div>
-        <div className="my-4">
-          <label className="text-xl mr-4 text-gray-500">ISBN</label>
+        {/* ISBN Field */}
+        <div className="mb-4">
+          <label className="block text-lg font-medium text-gray-600 mb-2">ISBN</label>
           <input
             type="text"
             value={isbn}
             onChange={(e) => setIsbn(e.target.value)}
-            className="border-2 border-gray-500 px-4 py-2 w-full"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-400 focus:outline-none"
+            placeholder="Enter ISBN"
           />
         </div>
-        <div className="my-4">
-          <label className="text-xl mr-4 text-gray-500">Price</label>
+        {/* Price Field */}
+        <div className="mb-4">
+          <label className="block text-lg font-medium text-gray-600 mb-2">Price</label>
           <input
             type="number"
             value={price}
+            min={0}
             onChange={(e) => setPrice(e.target.value)}
-            className="border-2 border-gray-500 px-4 py-2 w-full"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-400 focus:outline-none"
+            placeholder="Enter price"
           />
         </div>
-        <div className="my-4">
-          <label className="text-xl mr-4 text-gray-500">Donated By</label>
+        {/* Donated By Field */}
+        <div className="mb-4">
+          <label className="block text-lg font-medium text-gray-600 mb-2">Donated By</label>
           <input
             type="text"
             value={donatedBy}
             onChange={(e) => setDonatedBy(e.target.value)}
-            className="border-2 border-gray-500 px-4 py-2 w-full"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-400 focus:outline-none"
+            placeholder="Enter donor's name"
           />
         </div>
-        <button className="p-2 bg-sky-300 m-8" onClick={handleSaveBook}>
+        {/* Save Button */}
+        <button
+          onClick={handleSaveBook}
+          className="w-full py-2 px-4 bg-sky-500 text-white text-lg font-medium rounded-lg hover:bg-sky-600 focus:ring-2 focus:ring-sky-400 focus:outline-none transition"
+        >
           Save
         </button>
       </div>

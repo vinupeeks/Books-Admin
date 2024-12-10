@@ -146,7 +146,7 @@ const FamilyMemberShip = () => {
 
   return (
     <div className="max-w-5xl mx-auto mt-10 bg-white shadow-md p-6 rounded-lg">
-      <h2 className="text-2xl font-bold text-gray-800 mb-6">Membership Creation</h2>
+      <h2 className="text-2xl font-bold text-gray-800 mb-6">Fill And Create Membership</h2>
       <form onSubmit={handleSubmit} className="space-y-6">
         <label className="block text-sm font-medium text-gray-700">Membership Type</label>
         <select

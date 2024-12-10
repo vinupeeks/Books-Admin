@@ -20,7 +20,7 @@ const ShowBook = () => {
       try {
         const response = await axios.get(`http://localhost:1000/books/${id}`);
         setBook(response.data);
-        console.log(`Books details: `, response.data);
+        console.log(response.data);
       } catch (error) {
         enqueueSnackbar('Failed to fetch book details.', { variant: 'error' });
       } finally {
@@ -38,7 +38,8 @@ const ShowBook = () => {
           <Spinner />
         ) : (
           <div className="flex flex-col w-[500px] mx-auto">
-            <h1 className="text-2xl font-bold text-center mb-6 text-blue-600">Book Details</h1>
+            <h1 className="text-2xl font-bold text-center mb-6 text-gray-600">BOOK DETAILS</h1>
+            <hr className="my-2 border-t-2 border-gray-600" />
             <div className="grid grid-cols-2 gap-4 text-gray-700">
               <div className="font-semibold">ID:</div>
               <div>{book.id || 'N/A'}</div>
@@ -46,6 +47,8 @@ const ShowBook = () => {
               <div>{book.title || 'N/A'}</div>
               <div className="font-semibold">Author:</div>
               <div>{book.author || 'N/A'}</div>
+              <div className="font-semibold">ISBN No:</div>
+              <div>{book.ISBN ? `${book.ISBN}` : 'N/A'}</div>
               <div className="font-semibold">Quantity:</div>
               <div>{book.Stock ? `${book.Stock}` : 'N/A'}</div>
               <div className="font-semibold">Price:</div>
@@ -54,7 +57,7 @@ const ShowBook = () => {
               <div className="font-semibold">Donated By:</div>
               <div>{book.DonatedBy ? `${book.DonatedBy}` : 'N/A'}</div>
 
-              <div className="font-semibold">Status:</div>
+              {/* <div className="font-semibold">Status:</div>
               <div>
                 <span
                   className={`px-2 py-1 rounded text-sm ${book.status === 'active'
@@ -64,10 +67,11 @@ const ShowBook = () => {
                 >
                   {book.status || 'N/A'}
                 </span>
-              </div>
+              </div> */}
               <div className="font-semibold">Book added time:</div>
               <div>{book.createdAt ? new Date(book.createdAt).toLocaleString() : 'N/A'}</div>
-            </div>
+            </div> 
+            <hr className="my-2 border-t-2 border-gray-600" />
           </div>
         )}
       </div>

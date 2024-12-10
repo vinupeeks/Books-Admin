@@ -84,9 +84,10 @@ const EditBook = () => {
 
   return (
     <div className="p-6">
-      <h1 className="text-3xl font-bold text-center mb-6">Update Book</h1>
       {loading && <Spinner />}
-      <div className="flex flex-col border border-gray-300 rounded-lg shadow-lg w-full max-w-2xl mx-auto p-6 bg-white"> 
+      <div className="flex flex-col border border-gray-300 rounded-lg shadow-lg w-full max-w-2xl mx-auto p-6 bg-white">
+        <h1 className="text-3xl font-bold text-center mb-6 ">UPDATE BOOK</h1>
+        <hr className="my-2 border-t-2 border-gray-600" />
         {/* Title Field */}
         <div className="mb-4">
           <label className="block text-lg font-medium text-gray-600 mb-2">Title</label>
@@ -154,7 +155,7 @@ const EditBook = () => {
           />
         </div>
         {/* Status Field */}
-        <div className="mb-4">
+        {/* <div className="mb-4">
           <label className="block text-lg font-medium text-gray-600 mb-2">Status</label>
           <input
             type="text"
@@ -163,7 +164,7 @@ const EditBook = () => {
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-400 focus:outline-none"
             placeholder="Enter status"
           />
-        </div>
+        </div> */}
         {/* Save Button */}
         <button
           onClick={handleEditBook}

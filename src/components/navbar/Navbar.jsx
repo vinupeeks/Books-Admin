@@ -192,7 +192,7 @@ export default function AppBarWithSideMenu() {
                                                 Add Product
                                             </a>
                                         </li>
-                                        <li className="mb-3">
+                                        {/* <li className="mb-3">
                                             <a
                                                 className="text-black font-semibold block px-4 py-2 rounded hover:bg-blue-300 transition no-underline"
                                             >
@@ -217,7 +217,7 @@ export default function AppBarWithSideMenu() {
                                                     </a>
                                                 </li>
                                             </ul>
-                                        </li>
+                                        </li> */}
                                     </ul>
                                 </li>
                                 <li className="mb-3">
@@ -229,7 +229,7 @@ export default function AppBarWithSideMenu() {
                                         Profile
                                     </a>
                                 </li>
-                                <li className="mb-3">
+                                {/* <li className="mb-3">
                                     <a
                                         href={RouteConstants.CONTACT}
                                         onClick={() => handleMenuClick('Contact Us')}
@@ -237,7 +237,7 @@ export default function AppBarWithSideMenu() {
                                     >
                                         Contact Us
                                     </a>
-                                </li>
+                                </li> */}
                                 <li className="mb-3">
                                     <div
                                         onClick={() => {

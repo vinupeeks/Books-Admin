@@ -40,6 +40,7 @@ const DeleteBook = () => {
     async (response) => {
       setBook(response?.data || []);
       setLoading(false);
+
     },
     {
       onError: (error) => {
@@ -64,15 +65,24 @@ const DeleteBook = () => {
 
   return (
     <div className='p-4'>
-      <BackButton />
-      <h1 className='text-3xl my-4'>Delete Book</h1>
       {loading && <Spinner />}
-      <div className='flex flex-col items-center border-2 border-sky-400 rounded-xl w-[600px] p-8 mx-auto'>
-        <h6 className='text-2xl'>Are you sure you want to delete this book?</h6>
-        <h3 className=''><b> Book Title:  </b> {book.title ? book.title : 'N/A'}</h3>
-        <h3 className=' '><b> Author Name:  </b> {book.author ? book.author : 'N/A'}</h3>
+      <div className='flex flex-col items-center border-2 border-red-500 rounded-xl w-[600px] p-8 mx-auto shadow-lg'>
+        <h1 className='text-3xl text-center'>DELETE BOOK</h1> 
+        <hr className="my-2 border-t-4 border-red-500 w-full" />
+        <h6 className='text-2xl font-bold text-red-600 mb-4'>
+          Are you sure you want to delete this book?
+        </h6>
+        <div className='text-lg text-gray-700 mb-6'>
+          <p><b>Book Title :</b> {book.title || 'N/A'}</p>
+          <p><b>Author Name :</b> {book.author || 'N/A'}</p>
+          <p><b>ISBN :</b> {book.ISBN || 'N/A'}</p>
+          <p><b>Price :</b> {book.Price && `RS ${book.Price}` || 'N/A'}</p>
+          <p><b>Donated By :</b> {book.DonatedBy || 'N/A'}</p>
+          <p><b>Stock :</b> {book.Stock || 'N/A'}</p>
+        </div> 
+        <hr className="my-2 border-t-4 border-red-500 w-full" />
         <button
-          className='p-4 bg-red-600 text-white m-8 w-full'
+          className='p-4 bg-red-500 text-white font-medium rounded-lg hover:bg-red-600 transition'
           onClick={handleDeleteBook}
         >
           Yes, Delete it
