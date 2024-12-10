@@ -35,7 +35,7 @@ const ShowBook = () => {
       {loading ? (
         <Spinner />
       ) : (
-        <div className="flex flex-col w-[500px] mx-auto">
+        <div className="flex flex-col w-[600px] mx-auto">
           <h1 className="text-2xl font-bold text-center mb-6 text-gray-600">BOOK DETAILS</h1>
           <hr className="my-2 border-t-2 border-gray-600" />
           <div className="grid grid-cols-2 gap-4 text-gray-700">
@@ -50,7 +50,7 @@ const ShowBook = () => {
             <div className="font-semibold">Quantity:</div>
             <div>{book.Stock ? `${book.Stock}` : 'N/A'}</div>
             <div className="font-semibold">Price:</div>
-            <div>{book.Price ? `$${book.Price.toFixed(2)}` : 'N/A'}</div>
+            <div>{book.Price ? `Rs ${book.Price.toFixed(2)}` : 'N/A'}</div>
             <div className="font-semibold">Donated By:</div>
             <div>{book.DonatedBy ? `${book.DonatedBy}` : 'N/A'}</div>
             <div className="font-semibold">Book added time:</div>
@@ -60,30 +60,37 @@ const ShowBook = () => {
           <h2 className="text-xl font-bold text-center mt-4 mb-2 text-gray-600">Book Issued Members Details</h2>
           <div className="overflow-y-auto max-h-48">
             {book.Issues && book.Issues.length > 0 ? (
-              <table className="table-auto w-full text-left border-collapse border border-gray-300">
-                <thead className="bg-gray-100">
-                  <tr>
-                    <th className="border border-gray-300 px-2 py-1">Mem ID</th>
-                    <th className="border border-gray-300 px-2 py-1">Member Name</th>
-                    <th className="border border-gray-300 px-2 py-1">Contact Number</th>
-                    <th className="border border-gray-300 px-2 py-1">Issue Date</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {book?.Issues?.map((issue, index) => (
-                    <tr key={issue.id}>
-                      <td className="border border-gray-300 px-2 py-1">{issue.Member?.memID || 'N/A'}</td>
-                      <td className="border border-gray-300 px-2 py-1">{issue.Member?.name || 'N/A'}</td>
-                      <td className="border border-gray-300 px-2 py-1">{issue.Member?.contactNumber || 'N/A'}</td>
-                      <td className="border border-gray-300 px-2 py-1">
-                        {issue.issueDate ? new Date(issue.issueDate).toLocaleString() : 'N/A'}
-                      </td>
+              <>
+                <table className="table-auto w-full text-left border-collapse border border-gray-300">
+                  <thead className="bg-gray-100">
+                    <tr>
+                      <th className="border border-gray-300 px-2 py-1">Mem ID</th>
+                      <th className="border border-gray-300 px-2 py-1">Member Name</th>
+                      <th className="border border-gray-300 px-2 py-1">Contact Number</th>
+                      <th className="border border-gray-300 px-2 py-1 w-auto">Issue Date</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {book?.Issues?.map((issue, index) => (
+                      <tr key={issue.id}>
+                        <td className="border border-gray-300 px-2 py-1">{issue.Member?.memID || 'N/A'}</td>
+                        <td className="border border-gray-300 px-2 py-1">{issue.Member?.name || 'N/A'}</td>
+                        <td className="border border-gray-300 px-2 py-1">{issue.Member?.contactNumber || 'N/A'}</td>
+                        <td className="border border-gray-300 px-2 py-1">
+                          {issue.issueDate ? new Date(issue.issueDate).toLocaleString() : 'N/A'}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                <br />
+                <hr className="my-2 border-t-2 border-gray-600" />
+              </>
             ) : (
-              <div className="text-center text-gray-500">No members found</div>
+              <>
+                <div className="text-center text-gray-500">No members found</div>
+                <hr className="my-2 border-t-2 border-gray-600" />
+              </>
             )}
           </div>
         </div>
