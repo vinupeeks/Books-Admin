@@ -30,22 +30,16 @@ const MembersList = () => {
   const [bookModal, setBookModal] = useState(false);
   const [selectedIssue, setSelectedIssue] = useState(null);
 
-  const handleShow = (issue) => {
-    console.log(issue[0]);
 
-    setSelectedIssue(issue[0]);
+  const handleShow = (issue) => {
+    setSelectedIssue(issue);
     setBookModal(true);
   };
 
   const handleMouseLeave = () => {
-    setShowModal(false);
-  };
-
-  const handleClose = () => {
     setBookModal(false);
     setSelectedIssue(null);
   };
-
   const getMemberships = membershipsQueries.membershipListMutation(
     async (response) => {
       setMemberships(response?.data?.data?.items);
@@ -298,11 +292,13 @@ const MembersList = () => {
                       membership.Issues.map((issue) => (
                         <div key={issue.id}>
                           <p
-                            onMouseEnter={() =>
-                              handleShow(membership.Issues)
-                            }
-                            onMouseLeave={handleMouseLeave}
-                            style={{ cursor: "pointer", display: "inline-block", width: 'auto' }}
+                            onMouseEnter={() => handleShow(issue)}
+                            // onMouseLeave={handleMouseLeave}
+                            style={{
+                              cursor: "pointer",
+                              display: "inline-block",
+                              width: "auto"
+                            }}
                           >Book: {issue.Book ? issue.Book.title : "No Book"}</p>
                         </div>
                       ))
@@ -328,7 +324,7 @@ const MembersList = () => {
         </table>
       </div>
 
-      <Modal show={bookModal} onHide={handleClose}>
+      <Modal show={bookModal} onHide={handleMouseLeave}>
         <Modal.Header closeButton>
           <Modal.Title>Book Details</Modal.Title>
         </Modal.Header>
@@ -336,13 +332,13 @@ const MembersList = () => {
           {selectedIssue && (
             <div>
               <p>
-                <strong>Title:</strong> {selectedIssue.Book.title}
+                <strong>Title:</strong> {selectedIssue?.Book?.title || "No title"}
               </p>
               <p>
-                <strong>Author:</strong> {selectedIssue.Book.author}
+                <strong>Author:</strong> {selectedIssue?.Book?.author || "No author"}
               </p>
               <p>
-                <strong>ISBN:</strong> {selectedIssue.Book.ISBN}
+                <strong>ISBN:</strong> {selectedIssue?.Book?.ISBN || "No ISBN"}
               </p>
               <p>
                 <strong>Issue Date:</strong>{" "}
@@ -352,7 +348,7 @@ const MembersList = () => {
           )}
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button variant="secondary" onClick={handleMouseLeave}>
             Close
           </Button>
         </Modal.Footer>
