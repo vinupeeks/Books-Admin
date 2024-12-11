@@ -212,7 +212,7 @@ const MembersList = () => {
 
       <div className="flex items-center justify-between px-5 rounded-lg border-2 bg-gray-200 ">
         <div>
-          <i>SELECT MEMBERSHIP TYPE : </i>
+          <i>MEMBERSHIP TYPE : </i>
           <Dropdown className="d-inline-block">
             <Dropdown.Toggle
               title="Dropdown button"
