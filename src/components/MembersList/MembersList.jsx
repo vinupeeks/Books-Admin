@@ -6,6 +6,7 @@ import bookQueries from "../../queries/bookQueries";
 import { useSnackbar } from "notistack";
 import { Dropdown } from 'react-bootstrap';
 import Pagination from "../../common/Pagination/Pagination";
+import { Modal, Button } from "react-bootstrap";
 
 const MembersList = () => {
   const [memberships, setMemberships] = useState([]);
@@ -26,6 +27,24 @@ const MembersList = () => {
   const [pageSize, setPageSize] = useState(10);
   const { enqueueSnackbar } = useSnackbar();
 
+  const [bookModal, setBookModal] = useState(false);
+  const [selectedIssue, setSelectedIssue] = useState(null);
+
+  const handleShow = (issue) => {
+    console.log(issue[0]);
+
+    setSelectedIssue(issue[0]);
+    setBookModal(true);
+  };
+
+  const handleMouseLeave = () => {
+    setShowModal(false);
+  };
+
+  const handleClose = () => {
+    setBookModal(false);
+    setSelectedIssue(null);
+  };
 
   const getMemberships = membershipsQueries.membershipListMutation(
     async (response) => {
@@ -278,7 +297,13 @@ const MembersList = () => {
                     {membership.Issues.length > 0 ? (
                       membership.Issues.map((issue) => (
                         <div key={issue.id}>
-                          <p>Book: {issue.Book ? issue.Book.title : "No Book"}</p>
+                          <p
+                            onMouseEnter={() =>
+                              handleShow(membership.Issues)
+                            }
+                            onMouseLeave={handleMouseLeave}
+                            style={{ cursor: "pointer", display: "inline-block", width: 'auto' }}
+                          >Book: {issue.Book ? issue.Book.title : "No Book"}</p>
                         </div>
                       ))
                     ) : (
@@ -303,65 +328,69 @@ const MembersList = () => {
         </table>
       </div>
 
-      {/* modal */}
-      {showModal && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50"
-          onClick={handleModalClose}
-        >
-          <div className="bg-white p-6 rounded-lg shadow-lg w-[700px] max-h-[90vh] overflow-y-auto"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <h2 className="text-2xl font-semibold mb-4">Membership Details</h2>
-            <div className="mb-2 bg-gray-300 p-2 rounded">
-              <p className="mb-2">
-                <strong>Membership ID:</strong> {selectedMembership.memID}
+      <Modal show={bookModal} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Book Details</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {selectedIssue && (
+            <div>
+              <p>
+                <strong>Title:</strong> {selectedIssue.Book.title}
               </p>
-              <p className="mb-2">
-                <strong>Contact No:</strong> {selectedMembership.contactNumber}
+              <p>
+                <strong>Author:</strong> {selectedIssue.Book.author}
               </p>
-              <p className="mb-2">
-                <strong>Flat No:</strong> {selectedMembership.flatNumber}
+              <p>
+                <strong>ISBN:</strong> {selectedIssue.Book.ISBN}
               </p>
-              <p className="mb-2">
-                <strong>Membership Issued:</strong>{" "}
-                {new Date(selectedMembership.createdAt).toLocaleDateString()}{" "}
-                {new Date(selectedMembership.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+              <p>
+                <strong>Issue Date:</strong>{" "}
+                {new Date(selectedIssue.issueDate).toLocaleDateString()}
               </p>
             </div>
-            <hr />
-            {
-              bookDetails == null && (
-                <div
-                  className="no-books warning-bg px-4 py-3 rounded-lg shadow-lg"
-                  style={{ backgroundColor: "", border: "1px solid black", color: "gray", gap: '3px' }}
-                >
-                  <div className="flex flex-row items-start justify-between flex-wrap gap-4"
-                  >
-                    <div>
-                      <p><b>Member Name:</b> {selectedMembership.name}</p>
-                      {/* <p><b>Member ID:</b> {selectedMembership.memID || 'N/A'} </p> */}
-                    </div>
-                    <div>
-                      {/* <p style={{ color: 'green' }}>You are Eligible</p> */}
-                    </div>
-                  </div>
+          )}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
 
-                  <BookSearchComp selectedBook={selectedBook} setSelectedBook={setSelectedBook} />
-                  <br />
-
-                  <div className="flex justify-end space-x-2">
-                  </div>
-                </div>
-              )
-            }
-            <div className="book-list">
-              {selectedMembership.Issues.length > 0 && (
-                bookDetails?.map((data, index) => (
+      {/* modal */}
+      {
+        showModal && (
+          <div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50"
+            onClick={handleModalClose}
+          >
+            <div className="bg-white p-6 rounded-lg shadow-lg w-[700px] max-h-[90vh] overflow-y-auto"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <h2 className="text-2xl font-semibold mb-4">Membership Details</h2>
+              <div className="mb-2 bg-gray-300 p-2 rounded">
+                <p className="mb-2">
+                  <strong>Membership ID:</strong> {selectedMembership.memID}
+                </p>
+                <p className="mb-2">
+                  <strong>Contact No:</strong> {selectedMembership.contactNumber}
+                </p>
+                <p className="mb-2">
+                  <strong>Flat No:</strong> {selectedMembership.flatNumber}
+                </p>
+                <p className="mb-2">
+                  <strong>Membership Issued:</strong>{" "}
+                  {new Date(selectedMembership.createdAt).toLocaleDateString()}{" "}
+                  {new Date(selectedMembership.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                </p>
+              </div>
+              <hr />
+              {
+                bookDetails == null && (
                   <div
-                    key={data.id || index}
-                    className="book-card warning-bg px-4 py-3 mb-4 rounded-lg shadow-lg"
-                    style={{ backgroundColor: "#ebdcd1", border: "1px solid #FF7043" }}
+                    className="no-books warning-bg px-4 py-3 rounded-lg shadow-lg"
+                    style={{ backgroundColor: "", border: "1px solid black", color: "gray", gap: '3px' }}
                   >
                     <div className="flex flex-row items-start justify-between flex-wrap gap-4"
                     >
@@ -370,63 +399,91 @@ const MembersList = () => {
                         {/* <p><b>Member ID:</b> {selectedMembership.memID || 'N/A'} </p> */}
                       </div>
                       <div>
-                        {/* <p style={{ color: 'red' }}>You are Not Eligible</p> */}
+                        {/* <p style={{ color: 'green' }}>You are Eligible</p> */}
                       </div>
                     </div>
-                    <p>
-                      <strong>Book Name: </strong>
-                      <span style={{ color: "#D84315" }}>
-                        {data.Book?.title || "No Title Available"}
-                      </span>
-                    </p>
-                    <p>
-                      <strong>Book Issued: </strong>
-                      <span style={{ color: "#D84315" }}>
-                        {data?.issueDate
-                          ? new Date(data.issueDate).toLocaleDateString([], { hour: "2-digit", minute: "2-digit" })
-                          : "No Date Available"}
-                      </span>
-                    </p>
+
+                    <BookSearchComp selectedBook={selectedBook} setSelectedBook={setSelectedBook} />
+                    <br />
+
                     <div className="flex justify-end space-x-2">
                     </div>
                   </div>
-                ))
-              )}
-            </div>
-
-            <hr className="my-2" />
-
-            <div className="mt-4 flex justify-end gap-3">
-              <button
-                className="px-6 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700"
-                onClick={handleModalClose}
-              >
-                Close
-              </button>
-              {
-                selectedMembership.Issues.length > 0 ? (
-                  <button type="button" className="px-4 py-2 bg-red-200 text-black rounded-lg hover:bg-red-300 mr-2" onClick={handleBookReturn}>Return Book</button>
-                ) : (
-                  <button
-                    type="button"
-                    className="px-6 py-2 bg-green-300 text-black rounded-lg hover:bg-green-400 mr-2"
-                    onClick={handleBookIssueSubmit}
-                  >
-                    Issue
-                  </button>
                 )
               }
+              <div className="book-list">
+                {selectedMembership.Issues.length > 0 && (
+                  bookDetails?.map((data, index) => (
+                    <div
+                      key={data.id || index}
+                      className="book-card warning-bg px-4 py-3 mb-4 rounded-lg shadow-lg"
+                      style={{ backgroundColor: "#ebdcd1", border: "1px solid #FF7043" }}
+                    >
+                      <div className="flex flex-row items-start justify-between flex-wrap gap-4"
+                      >
+                        <div>
+                          <p><b>Member Name:</b> {selectedMembership.name}</p>
+                          {/* <p><b>Member ID:</b> {selectedMembership.memID || 'N/A'} </p> */}
+                        </div>
+                        <div>
+                          {/* <p style={{ color: 'red' }}>You are Not Eligible</p> */}
+                        </div>
+                      </div>
+                      <p>
+                        <strong>Book Name: </strong>
+                        <span style={{ color: "#D84315" }}>
+                          {data.Book?.title || "No Title Available"}
+                        </span>
+                      </p>
+                      <p>
+                        <strong>Book Issued: </strong>
+                        <span style={{ color: "#D84315" }}>
+                          {data?.issueDate
+                            ? new Date(data.issueDate).toLocaleDateString([], { hour: "2-digit", minute: "2-digit" })
+                            : "No Date Available"}
+                        </span>
+                      </p>
+                      <div className="flex justify-end space-x-2">
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+
+              <hr className="my-2" />
+
+              <div className="mt-4 flex justify-end gap-3">
+                <button
+                  className="px-6 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700"
+                  onClick={handleModalClose}
+                >
+                  Close
+                </button>
+                {
+                  selectedMembership.Issues.length > 0 ? (
+                    <button type="button" className="px-4 py-2 bg-red-200 text-black rounded-lg hover:bg-red-300 mr-2" onClick={handleBookReturn}>Return Book</button>
+                  ) : (
+                    <button
+                      type="button"
+                      className="px-6 py-2 bg-green-300 text-black rounded-lg hover:bg-green-400 mr-2"
+                      onClick={handleBookIssueSubmit}
+                    >
+                      Issue
+                    </button>
+                  )
+                }
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )
+      }
       <Pagination
         currentPage={currentPage}
         totalPages={totalPage}
         pageSize={pageSize}
         setPageSize={setPageSize}
         onPageChange={handlePageChange} />
-    </div>
+    </div >
   );
 };
 
