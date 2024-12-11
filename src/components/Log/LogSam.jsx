@@ -116,18 +116,30 @@ const AdminLogin = () => {
                 </Box>
 
                 {/* Right Section with Form */}
-                <Box sx={{ flex: 1, padding: '32px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                    <Typography variant="h5" sx={{ fontWeight: 'bold', mb: 2, textAlign: 'center' }}>
-                         Welcome Back
+                <Box sx={{ flex: 1, padding: '32px', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 0 }}>
+                    {/* <Typography sx={{ fontWeight: 'bold', mb: 4, textAlign: 'center' }}> */}
+                    <Typography
+                        sx={{
+                            fontWeight: 'bold',
+                            mb: 4,
+                            textAlign: 'center',
+                            background: 'linear-gradient(90deg, #e78e20, #631519)',
+                            WebkitBackgroundClip: 'text',
+                            WebkitTextFillColor: 'transparent',
+                        }}
+                    >
+                        <h2>Skyline IVY-League</h2>
+                        <h3>Library Software</h3>
                     </Typography>
 
-                    <form onSubmit={handleSubmit}>
+                    <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: "column", justifyContent: 'flex-end', alignItems: 'center' }} >
                         {/* Email Input */}
                         <TextField
                             fullWidth
                             name="email"
                             placeholder="Email"
                             variant="outlined"
+                            required="true"
                             value={formData.email}
                             onChange={handleChange}
                             InputProps={{
@@ -147,6 +159,7 @@ const AdminLogin = () => {
                             type={showPassword ? 'text' : 'password'}
                             placeholder="Password"
                             variant="outlined"
+                            required="true"
                             value={formData.password}
                             onChange={handleChange}
                             InputProps={{
@@ -179,8 +192,11 @@ const AdminLogin = () => {
                                 color: 'white',
                                 padding: '10px',
                                 borderRadius: '5px',
+                                width: '35%',
+                                background: 'linear-gradient(45deg, #e78e20, #631519)',
+                                transition: 'background 0.5s ease',
                                 '&:hover': {
-                                    backgroundColor: '#5a53e2',
+                                    background: 'linear-gradient(45deg, #631519, #e78e20)',
                                 },
                             }}
                         >
