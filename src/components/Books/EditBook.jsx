@@ -15,6 +15,7 @@ const EditBook = () => {
   const [price, setPrice] = useState('');
   const [donatedBy, setDonatedBy] = useState('');
   const [status, setStatus] = useState('');
+  const [issuedCount, setIssuedCount] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { id } = useParams();
@@ -22,7 +23,7 @@ const EditBook = () => {
 
   const getBookDetail = bookQueries.bookByIdMutation(
     async (response) => {
-      const { title, author, Stock, ISBN, Price, DonatedBy, status } = response.data;
+      const { title, author, Stock, ISBN, Price, DonatedBy, status, Issues } = response.data;
       setTitle(title);
       setAuthor(author);
       setStock(Stock);
@@ -30,6 +31,7 @@ const EditBook = () => {
       setPrice(Price);
       setDonatedBy(DonatedBy);
       setStatus(status);
+      setIssuedCount(Issues.length);
       setLoading(false);
     },
     {
@@ -116,6 +118,7 @@ const EditBook = () => {
           <input
             type="number"
             value={stock}
+            min={issuedCount}
             onChange={(e) => setStock(e.target.value)}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-400 focus:outline-none"
             placeholder="Enter stock quantity"
@@ -127,6 +130,7 @@ const EditBook = () => {
           <input
             type="text"
             value={ISBN}
+            min={0}
             onChange={(e) => setISBN(e.target.value)}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-400 focus:outline-none"
             placeholder="Enter ISBN"
@@ -138,6 +142,7 @@ const EditBook = () => {
           <input
             type="number"
             value={price}
+            min={0}
             onChange={(e) => setPrice(e.target.value)}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-400 focus:outline-none"
             placeholder="Enter price"

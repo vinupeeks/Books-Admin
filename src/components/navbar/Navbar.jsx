@@ -96,7 +96,8 @@ export default function AppBarWithSideMenu() {
                         <MenuIcon />
                     </IconButton>
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} onClick={() => { navigate(RouteConstants.DASHBOARD) }}>
-                        Sky Line - Library
+                        {/* Sky Line - Library */}
+                        Skyline IVY-League Library Application
                     </Typography>
                     {auth && (
                         <div>

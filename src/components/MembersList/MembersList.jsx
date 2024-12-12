@@ -143,14 +143,12 @@ const MembersList = () => {
     }
 
     setSearchTerm(value);
-    console.log('Input value:', value);
     debouncedSearch(value);
   };
 
   const debouncedSearch = useCallback(
     debounce((text) => {
       if (text) {
-        console.log('Searching for:', text);
         setLoading(true);
         const payload = {
           page: currentPage,
@@ -299,7 +297,7 @@ const MembersList = () => {
                               display: "inline-block",
                               width: "auto"
                             }}
-                          >Book: {issue.Book ? issue.Book.title : "No Book"}</p>
+                          >Book:</p> {issue.Book ? issue.Book.title : "No Book"}
                         </div>
                       ))
                     ) : (
@@ -341,8 +339,16 @@ const MembersList = () => {
                 <strong>ISBN:</strong> {selectedIssue?.Book?.ISBN || "No ISBN"}
               </p>
               <p>
-                <strong>Issue Date:</strong>{" "}
-                {new Date(selectedIssue.issueDate).toLocaleDateString()}
+                <strong>Issue Date: </strong>
+                {new Date(selectedIssue?.issueDate).toLocaleString([], {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  second: "2-digit",
+                  hour12: true,
+                })}
               </p>
             </div>
           )}
@@ -373,7 +379,10 @@ const MembersList = () => {
                   <strong>Contact No:</strong> {selectedMembership.contactNumber}
                 </p>
                 <p className="mb-2">
-                  <strong>Flat No:</strong> {selectedMembership.flatNumber}
+                  <strong>Tower Name:</strong> {selectedMembership.towerName}
+                </p>
+                <p className="mb-2">
+                  <strong>Flat Name:</strong> {selectedMembership.flatType}{selectedMembership.floorNumber}
                 </p>
                 <p className="mb-2">
                   <strong>Membership Issued:</strong>{" "}
@@ -431,14 +440,31 @@ const MembersList = () => {
                           {data.Book?.title || "No Title Available"}
                         </span>
                       </p>
+                      {/* <p>
+                        <strong>Book Issued: </strong>
+                        <span style={{ color: "#D84315" }}>
+                          {data?.issueDate
+                            ? new Date(data.issueDate).toLocaleString([], { hour: "2-digit", minute: "2-digit" })
+                            : "No Date Available"}
+                        </span>
+                      </p> */}
                       <p>
                         <strong>Book Issued: </strong>
                         <span style={{ color: "#D84315" }}>
                           {data?.issueDate
-                            ? new Date(data.issueDate).toLocaleDateString([], { hour: "2-digit", minute: "2-digit" })
+                            ? new Date(data.issueDate).toLocaleString([], {
+                              year: "numeric",
+                              month: "long",
+                              day: "numeric",
+                              hour: "2-digit",
+                              minute: "2-digit",
+                              second: "2-digit",
+                              hour12: true,
+                            })
                             : "No Date Available"}
                         </span>
                       </p>
+
                       <div className="flex justify-end space-x-2">
                       </div>
                     </div>
