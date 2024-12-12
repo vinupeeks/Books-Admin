@@ -5,15 +5,11 @@ import { useSnackbar } from 'notistack';
 import { useNavigate } from 'react-router-dom';
 import RouteConstants from '../../constant/Routeconstant';
 import adminQueries from '../../queries/adminQueries.jsx';
-// import logo from '../../assets/images/skyline-logo.png';
 import logo from '../../assets/images/Logo.jpg';
 import { jwtDecode } from 'jwt-decode';
 
 const AdminLogin = () => {
-    const [formData, setFormData] = useState({
-        email: '',
-        password: '',
-    });
+    const [formData, setFormData] = useState({ email: '', password: '' });
     const [showPassword, setShowPassword] = useState(false);
     const { enqueueSnackbar } = useSnackbar();
     const [isLoading, setIsLoading] = useState(false);
@@ -21,10 +17,7 @@ const AdminLogin = () => {
 
     const handleChange = (event) => {
         const { name, value } = event.target;
-        setFormData((prevData) => ({
-            ...prevData,
-            [name]: value,
-        }));
+        setFormData((prevData) => ({ ...prevData, [name]: value }));
     };
 
     const handleClickShowPassword = () => setShowPassword((prev) => !prev);
@@ -44,7 +37,7 @@ const AdminLogin = () => {
         },
         {
             onError: (error) => {
-                enqueueSnackbar(error.response.data.message || 'Login failed', { variant: 'error' });
+                enqueueSnackbar(error.response?.data?.message || 'Login failed', { variant: 'error' });
                 setIsLoading(false);
             },
         }
@@ -53,13 +46,7 @@ const AdminLogin = () => {
     const handleSubmit = (event) => {
         event.preventDefault();
         setIsLoading(true);
-        try {
-            const { email, password } = formData;
-            submitForm.mutateAsync({ email, password });
-        } catch (error) {
-            enqueueSnackbar('An unexpected error occurred.', { variant: 'error' });
-            setIsLoading(false);
-        }
+        submitForm.mutateAsync(formData).catch(() => setIsLoading(false));
     };
 
     useEffect(() => {
@@ -70,11 +57,11 @@ const AdminLogin = () => {
                 if (decoded.exp * 1000 > Date.now()) {
                     navigate(RouteConstants.DASHBOARD);
                 }
-            } catch (error) {
-                console.error('Invalid token');
+            } catch {
+                localStorage.removeItem('BooksAdminToken');
             }
         }
-    }, []);
+    }, [navigate]);
 
     return (
         <Box
@@ -97,7 +84,6 @@ const AdminLogin = () => {
                     backgroundColor: 'white',
                 }}
             >
-                {/* Left Section with Logo */}
                 <Box
                     sx={{
                         flex: 1,
@@ -108,16 +94,10 @@ const AdminLogin = () => {
                         p: 4,
                     }}
                 >
-                    <img
-                        src={logo}
-                        alt="Skyline Logo"
-                        style={{ width: '100%', maxWidth: '350px' }}
-                    />
+                    <img src={logo} alt="Skyline Logo" style={{ width: '100%', maxWidth: '350px' }} />
                 </Box>
 
-                {/* Right Section with Form */}
                 <Box sx={{ flex: 1, padding: '32px', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 0 }}>
-                    {/* <Typography sx={{ fontWeight: 'bold', mb: 4, textAlign: 'center' }}> */}
                     <Typography
                         sx={{
                             fontWeight: 'bold',
@@ -127,19 +107,18 @@ const AdminLogin = () => {
                             WebkitBackgroundClip: 'text',
                             WebkitTextFillColor: 'transparent',
                         }}
+                        component="div"
                     >
                         <h2>Skyline IVY-League</h2>
-                        <h3>Library Software</h3>
+                        <h3>Library Application</h3>
                     </Typography>
-
-                    <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: "column", justifyContent: 'flex-end', alignItems: 'center' }} >
-                        {/* Email Input */}
+                    <form onSubmit={handleSubmit}>
                         <TextField
                             fullWidth
                             name="email"
                             placeholder="Email"
                             variant="outlined"
-                            required="true"
+                            required
                             value={formData.email}
                             onChange={handleChange}
                             InputProps={{
@@ -151,15 +130,13 @@ const AdminLogin = () => {
                             }}
                             sx={{ mb: 2, backgroundColor: '#F6F6F9', borderRadius: '5px' }}
                         />
-
-                        {/* Password Input */}
                         <TextField
                             fullWidth
                             name="password"
                             type={showPassword ? 'text' : 'password'}
                             placeholder="Password"
                             variant="outlined"
-                            required="true"
+                            required
                             value={formData.password}
                             onChange={handleChange}
                             InputProps={{
@@ -170,7 +147,7 @@ const AdminLogin = () => {
                                 ),
                                 endAdornment: (
                                     <InputAdornment position="end">
-                                        <IconButton onClick={handleClickShowPassword}>
+                                        <IconButton onClick={handleClickShowPassword} aria-label={showPassword ? "Hide password" : "Show password"}>
                                             {showPassword ? <Visibility /> : <VisibilityOff />}
                                         </IconButton>
                                     </InputAdornment>
@@ -178,8 +155,6 @@ const AdminLogin = () => {
                             }}
                             sx={{ mb: 2, backgroundColor: '#F6F6F9', borderRadius: '5px' }}
                         />
-
-                        {/* Login Button */}
                         <Button
                             fullWidth
                             type="submit"
@@ -187,9 +162,7 @@ const AdminLogin = () => {
                             disabled={isLoading}
                             sx={{
                                 mb: 2,
-                                backgroundColor: '#6C63FF',
                                 fontWeight: 'bold',
-                                color: 'white',
                                 padding: '10px',
                                 borderRadius: '5px',
                                 width: '35%',

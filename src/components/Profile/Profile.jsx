@@ -44,6 +44,7 @@ const ProfilePage = () => {
     const handleLogout = () => {
         localStorage.removeItem('BooksAdminToken');
         navigate(RouteConstants.LOGIN);
+        window.location.reload();
         enqueueSnackbar('Admin Logged-Out Successfully', { variant: 'success' });
     };
 

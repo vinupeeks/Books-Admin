@@ -30,7 +30,8 @@ const FamilyMemberShip = () => {
         name: "",
         contactNumber: "",
         towerName: "",
-        flatNumber: "",
+        floorNumber: "",
+        flatType: "",
         dateOfBirth: "",
       },
     ],
@@ -54,7 +55,8 @@ const FamilyMemberShip = () => {
           name: "",
           contactNumber: "",
           towerName: "",
-          flatNumber: "",
+          floorNumber: "",
+          flatType: "",
           dateOfBirth: "",
         },
       ];
@@ -90,6 +92,7 @@ const FamilyMemberShip = () => {
         ...formData,
         membershipType: updatedMembershipType,
       };
+      console.log(`Form Data: `, updatedFormData);
       const response = await axios.post(
         "http://localhost:1000/membership/creation",
         updatedFormData
@@ -106,7 +109,8 @@ const FamilyMemberShip = () => {
               name: "",
               contactNumber: "",
               towerName: "",
-              flatNumber: "",
+              floorNumber: "",
+              flatType: "",
               dateOfBirth: "",
             },
           ],
@@ -135,7 +139,8 @@ const FamilyMemberShip = () => {
           name: "",
           contactNumber: "",
           towerName: "",
-          flatNumber: "",
+          floorNumber: "",
+          flatType: "",
           dateOfBirth: "",
         },
       ],
@@ -145,132 +150,205 @@ const FamilyMemberShip = () => {
   }
 
   return (
-    <div className="max-w-5xl mx-auto mt-10 bg-white shadow-md p-6 rounded-lg">
-      <h2 className="text-2xl font-bold text-gray-800 mb-6">Fill And Create Membership</h2>
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <label className="block text-sm font-medium text-gray-700">Membership Type</label>
-        <select
-          value={formData.membershipType}
-          onChange={(e) => setFormData({ ...formData, membershipType: e.target.value })}
-          className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-        >
-          <option value="single">Single</option>
-          <option value="family">Family</option>
-        </select>
-        {formData.members.map((member, index) => (
-          <div key={index} className="px-4 py-2 bg-gray-200 rounded-lg space-y-4 border-b pb-4 mb-4">
-            <h3 className="text-lg font-semibold text-gray-700">
-              Member {index + 1}
-              {formData.members.length > 1 && (
-                <button
-                  type="button"
-                  onClick={() => removeMember(index)}
-                  className="ml-4 text-red-600 hover:underline"
-                >
-                  Remove
-                </button>
-              )}
-            </h3>
-            <InputField
-              label="Name"
-              type="text"
-              value={member.name}
-              onChange={(e) => handleChange(index, "name", e.target.value)}
-              required
-            />
-            <InputField
-              label="Contact Number"
-              type="tel"
-              value={member.contactNumber}
-              onChange={(e) => handleChange(index, "contactNumber", e.target.value)}
-              required
-            />
-            <InputField
-              label="Tower Name"
-              type="text"
-              value={member.towerName}
-              onChange={(e) => handleChange(index, "towerName", e.target.value)}
-              required
-            />
-            <InputField
-              label="Flat Number"
-              type="text"
-              value={member.flatNumber}
-              onChange={(e) => handleChange(index, "flatNumber", e.target.value)}
-              required
-            />
-            <InputField
-              label="Date of Birth"
-              type="date"
-              value={member.dateOfBirth}
-              onChange={(e) => handleChange(index, "dateOfBirth", e.target.value)}
-            // required
-            />
-          </div>
-        ))}
-        <div className="flex items-center justify-between px-5">
-          <button
-            type="button"
-            onClick={handleCancelBtn}
-            className="flex items-center bg-gray-200 text-gray-700 py-2 px-4 rounded-md hover:bg-gray-300"
+    <div className="p-2 m-5">
+      <div
+        className="max-w-6xl flex flex-col border border-gray-300 rounded-lg shadow-lg mx-auto p-5 bg-white"
+      >
+        <h2 className="text-2xl font-bold text-gray-800 mb-6">Members Creation</h2>
+        <div className="p-2">
+          <div
+            className="max-w-3xl flex flex-col border border-gray-300 rounded-lg shadow-lg mx-auto p-3 bg-white"
           >
-            Cancel
-          </button>
-          <div className="flex items-center justify-between gap-1">
-            {formData.membershipType === "family" && formData.members.length < 5 && (
-              <>
-                <button
-                  type="button"
-                  onClick={addMember}
-                  className=" bg-indigo-400 text-white py-2 px-4 rounded-md hover:bg-indigo-500"
-                >
-                  Add Another Member
-                </button>
-              </>
-            )}
-            <div>
-            </div>
-            <button
-              type="submit"
-              className=" bg-indigo-500 text-white py-2 px-4 rounded-md hover:bg-indigo-600"
-            >
-              Submit
-            </button>
-          </div>
+            {/* <h2 className="text-xl font-bold text-gray-800 mb-4">Members Creation</h2> */}
 
+            <form onSubmit={handleSubmit} className="space-y-4">
+
+              <div className="mb-2">
+                <label className="block text-base font-medium text-gray-600 mb-1"><strong>Membership Type</strong></label>
+                <select
+                  value={formData.membershipType}
+                  onChange={(e) => setFormData({ ...formData, membershipType: e.target.value })}
+                  className="w-half px-3 py-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-400 focus:outline-none"
+                >
+                  <option value="single">Single</option>
+                  <option value="family">Family</option>
+                </select>
+              </div>
+
+              {formData.members.map((member, index) => (
+                <div key={index} className="mb-3 p-2 border border-gray-300 rounded-lg bg-white shadow-sm">
+                  <h3 className="text-lg font-semibold text-gray-700">
+                    Member {index + 1}
+                    {formData.members.length > 1 && (
+                      <button
+                        type="button"
+                        onClick={() => removeMember(index)}
+                        className="ml-3 text-red-600 hover:underline"
+                      >
+                        Remove
+                      </button>
+                    )}
+                  </h3>
+                  {/*  */}
+                  <div className="mb-2">
+                    <label className="block text-sm font-medium text-gray-600 mb-1"><strong>Name</strong></label>
+                    <input
+                      type="text"
+                      value={member.name}
+                      onChange={(e) => handleChange(index, "name", e.target.value)}
+                      className="w-3/4 px-3 py-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-400 focus:outline-none"
+                      required
+                    />
+                  </div>
+                  <div className="mb-2">
+                    <label className="block text-sm font-medium text-gray-600 mb-1"><strong>Contact Number</strong></label>
+                    <input
+                      type="tel"
+                      value={member.contactNumber}
+                      onChange={(e) => handleChange(index, "contactNumber", e.target.value)}
+                      className="w-3/4 px-3 py-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-400 focus:outline-none"
+                      required
+                    />
+                  </div>
+ 
+                  <div className=" flex flex-wrap justify-around items-center gap-4 bg-gray-200 rounded-lg p-2">
+                    <div className="mb-2  flex items-center justify-center">
+                      <label className="block text-sm font-medium text-gray-600 mb-1"><strong>Tower Name</strong></label>
+                      <select
+                        type="text"
+                        value={member.towerName}
+                        onChange={(e) => handleChange(index, "towerName", e.target.value)}
+                        className="w-half px-3 py-1 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-400 focus:outline-none"
+                        required
+                      >
+                        <option value="" disabled>Select Tower</option>
+                        <option value="Brown">Brown</option>
+                        <option value="Columbia">Columbia</option>
+                        <option value="Cornell">Cornell</option>
+                        <option value="Harvard">Harvard</option>
+                        <option value="Princeton">Princeton</option>
+                        <option value="Sylvania">Sylvania</option>
+                        <option value="Yale">Yale</option>
+                      </select>
+                    </div>
+
+                    <div className="mb-2 flex items-center justify-center">
+                      <label className="block text-sm font-medium text-gray-600 mb-1"><strong>Flat Type</strong></label>
+                      <select
+                        type="text"
+                        value={member.flatType}
+                        onChange={(e) => handleChange(index, "flatType", e.target.value)}
+                        className="w-half px-3 py-1 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-400 focus:outline-none"
+                        required
+                      >
+                        <option value="" disabled>Select Flat</option>
+                        <option value="A">A</option>
+                        <option value="B">B</option>
+                        <option value="C">C</option>
+                        <option value="D">D</option>
+                        <option value="E">E</option>
+                        <option value="F">F</option>
+                        <option value="G">G</option>
+                      </select>
+                    </div>
+
+                    <div className="mb-2 flex items-center justify-center">
+                      <label className="block text-sm font-medium text-gray-600 mb-1"><strong>Floor Number </strong></label>
+                      <select
+                        className="w-half px-3 py-1 bg-white bg-whiteborder border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-400 focus:outline-none"
+                        value={member.floorNumber}
+                        onChange={(e) => handleChange(index, "floorNumber", e.target.value)}
+                        required
+                      >
+                        <option
+                          className="max-h-5"
+                          value="" disabled>Select Floor</option>
+                        {Array.from({ length: 23 }, (_, i) => (
+                          <option key={i + 1} value={i + 1}>
+                            {i + 1}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                  </div>
+                  
+                  <div className="mb-2">
+                    <label className="block text-sm font-medium text-gray-600 mb-1"><strong>Date of Birth</strong></label>
+                    <input
+                      type="date"
+                      value={member.dateOfBirth}
+                      onChange={(e) => handleChange(index, "dateOfBirth", e.target.value)}
+                      className="w-half px-3 py-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-400 focus:outline-none"
+                    />
+                  </div>
+                </div>
+              ))}
+
+              <div className="flex items-center justify-between mb-4">
+                {formData.membershipType === "family" && formData.members.length < 4 && (
+                  <button
+                    type="button"
+                    onClick={addMember}
+                    className="bg-indigo-400 text-white py-1 px-3 rounded-md hover:bg-indigo-500"
+                  >
+                    Add Another Member
+                  </button>
+                )}
+              </div>
+
+              <div className="flex items-center justify-end gap-2">
+                <button
+                  type="button"
+                  onClick={handleCancelBtn}
+                  className="w-auto h-10 bg-gray-300 text-gray-700 py-1 px-3 rounded-md hover:bg-gray-400"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="w-auto h-10 bg-indigo-500 text-white py-1 px-3 rounded-md hover:bg-indigo-600"
+                >
+                  Submit
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
-      </form>
-      <div>
-        <>
-          <Modal
-            show={show}
-            onHide={handleClose}
-            backdrop="static"
-            keyboard={false}
-          >
-            <Modal.Header closeButton>
-              <Modal.Title>{updatedMembers?.length > 1 ? "Memberships Details" : "Membership Details"}</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              <p>Membership Type : &nbsp;{updatedMembers?.length > 1 ? "Family" : "Single"}</p>
-              {updatedMembers?.length > 1 && (
-                <p>Family ID: {familyMemId}</p>)}
-              <ul>
-                {updatedMembers?.map((member) => (
-                  <li key={member.id}>
-                    <strong>Name:</strong> {member.MemberName} - &nbsp;
-                    <strong>Membership ID:</strong> {member.MemberId}
-                  </li>
-                ))}
-              </ul>
-            </Modal.Body>
-            <Modal.Footer>
-              <Button variant="secondary" onClick={handleClose}>
-                Close
-              </Button>
-            </Modal.Footer>
-          </Modal>
-        </>
+
+
+        <div>
+          <>
+            <Modal
+              show={show}
+              onHide={handleClose}
+              backdrop="static"
+              keyboard={false}
+            >
+              <Modal.Header closeButton>
+                <Modal.Title>{updatedMembers?.length > 1 ? "Memberships Details" : "Membership Details"}</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <p>Membership Type : &nbsp;{updatedMembers?.length > 1 ? "Family" : "Single"}</p>
+                {updatedMembers?.length > 1 && (
+                  <p>Family ID: {familyMemId}</p>)}
+                <ul>
+                  {updatedMembers?.map((member) => (
+                    <li key={member.id}>
+                      <strong>Name:</strong> {member.MemberName} - &nbsp;
+                      <strong>Membership ID:</strong> {member.MemberId}
+                    </li>
+                  ))}
+                </ul>
+              </Modal.Body>
+              <Modal.Footer>
+                <Button variant="secondary" onClick={handleClose}>
+                  Close
+                </Button>
+              </Modal.Footer>
+            </Modal>
+          </>
+        </div>
       </div>
     </div>
   );
