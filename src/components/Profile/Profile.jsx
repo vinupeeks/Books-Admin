@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from 'react'; 
 import { useNavigate } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
-import Spinner from '../../utils/Spinner';
-import { jwtDecode } from 'jwt-decode';
+import Spinner from '../../utils/Spinner'; 
 import RouteConstants from '../../constant/Routeconstant';
+import adminQueries from '../../queries/adminQueries';
 
 const ProfilePage = () => {
     const navigate = useNavigate();
@@ -13,33 +12,26 @@ const ProfilePage = () => {
     const { enqueueSnackbar } = useSnackbar();
 
     useEffect(() => {
-        const fetchUserData = async () => {
-            try {
-                const token = localStorage.getItem('BooksAdminToken');
-                const decodedToken = jwtDecode(token);
-                const id = decodedToken.id;
-
-                if (!token) {
-                    enqueueSnackbar('No token found, redirecting to login...', { variant: 'warning' });
-                    navigate(RouteConstants.LOGIN);
-                    return;
-                }
-
-                const response = await axios.get(`http://localhost:1000/admin/${id}`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
-                setUser(response.data);
-                setLoading(false);
-            } catch (error) {
-                console.error('Error fetching user data:', error);
-                setLoading(false);
-            }
-        };
-
         fetchUserData();
     }, []);
+
+    const fetchUserData = async () => {
+        setLoading(true);
+        getProfileDetails.mutate();
+    }
+    const getProfileDetails = adminQueries.adminProfileMutation(
+        async (response) => {
+            console.log(response); 
+            setUser(response?.data);
+            setLoading(false);
+        },
+        {
+            onError: (error) => {
+                setError("Error fetching membership data");
+                setLoading(false);
+            }
+        }
+    );
 
     const handleLogout = () => {
         localStorage.removeItem('BooksAdminToken');
@@ -65,12 +57,12 @@ const ProfilePage = () => {
                             <hr className="my-2" />
                             <div className="flex justify-between items-center px-4">
                                 <span className="text-lg text-gray-600">Username:</span>
-                                <span className="font-medium text-gray-800">{user.username}</span>
+                                <span className="font-medium text-gray-800">{user?.username}</span>
                             </div>
 
                             <div className="flex justify-between items-center px-4">
                                 <span className="text-lg text-gray-600">Email:</span>
-                                <span className="font-medium text-gray-800">{user.email}</span>
+                                <span className="font-medium text-gray-800">{user?.email}</span>
                             </div>
                             <hr className="my-2" />
                             <div className="flex justify-center mt-6">

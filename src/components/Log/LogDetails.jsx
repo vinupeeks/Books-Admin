@@ -1,13 +1,10 @@
 import { jwtDecode } from 'jwt-decode';
-import { useSnackbar } from 'notistack';
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import RouteConstants from '../../constant/Routeconstant';
 
-function LogDetails({ handleLOGOUT }) {
+function LogDetails() {
     const [user, setUser] = useState(null);
-    const { enqueueSnackbar } = useSnackbar();
-    const navigate = useNavigate();
 
     useEffect(() => {
         const Token = localStorage.getItem('BooksAdminToken');
@@ -31,7 +28,6 @@ function LogDetails({ handleLOGOUT }) {
                 <button
                     className="w-fit px-4 py-1 rounded-lg text-white hover:bg-[#92C5FC]"
                     style={{ backgroundColor: '#1976D2' }}
-                // onClick={handleLogout}
                 >
                     LogOut
                 </button>

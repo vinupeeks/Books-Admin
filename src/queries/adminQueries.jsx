@@ -12,10 +12,20 @@ const adminLoginMutation = (onAdminLoginSuccess, onErrorCallback) => {
         onError: onErrorCallback,
     });
 };
+const adminProfileMutation = (onAdminLoginSuccess, onErrorCallback) => {
+
+    return useMutation(adminService.adminProfile, {
+        onSuccess: (data) => {
+            onAdminLoginSuccess(data);
+        },
+        onError: onErrorCallback,
+    });
+};
 
 
 const adminQueries = {
     adminLoginMutation,
+    adminProfileMutation
 };
 
 export default adminQueries;

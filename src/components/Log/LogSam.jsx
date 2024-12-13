@@ -154,27 +154,34 @@ const AdminLogin = () => {
                                 ),
                             }}
                             sx={{ mb: 2, backgroundColor: '#F6F6F9', borderRadius: '5px' }}
-                        />
-                        <Button
-                            fullWidth
-                            type="submit"
-                            variant="contained"
-                            disabled={isLoading}
+                        /><Box
                             sx={{
-                                mb: 2,
-                                fontWeight: 'bold',
-                                padding: '10px',
-                                borderRadius: '5px',
-                                width: '35%',
-                                background: 'linear-gradient(45deg, #e78e20, #631519)',
-                                transition: 'background 0.5s ease',
-                                '&:hover': {
-                                    background: 'linear-gradient(45deg, #631519, #e78e20)',
-                                },
+                                display: 'flex',
+                                justifyContent: 'center',
+                                // justifyContent: 'flex-end',
                             }}
                         >
-                            {isLoading ? 'Logging in...' : 'LOGIN'}
-                        </Button>
+                            <Button
+                                fullWidth
+                                type="submit"
+                                variant="contained"
+                                disabled={isLoading}
+                                sx={{
+                                    mb: 2,
+                                    fontWeight: 'bold',
+                                    padding: '10px',
+                                    borderRadius: '5px',
+                                    width: '35%',
+                                    background: 'linear-gradient(45deg, #e78e20, #631519)',
+                                    transition: 'background 0.5s ease',
+                                    '&:hover': {
+                                        background: 'linear-gradient(45deg, #631519, #e78e20)',
+                                    },
+                                }}
+                            >
+                                {isLoading ? 'Logging in...' : 'LOGIN'}
+                            </Button>
+                        </Box>
                     </form>
                 </Box>
             </Box>

@@ -1,32 +1,35 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import Spinner from '../../utils/Spinner';
 import { useSnackbar } from 'notistack';
-import RouteConstants from '../../constant/Routeconstant';
-import { getAuthToken } from '../../utils/TokenHelper';
+import bookQueries from '../../queries/bookQueries';
 
 const ShowBook = () => {
   const [book, setBook] = useState({});
   const [loading, setLoading] = useState(false);
   const { id } = useParams();
-  const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
 
+  const getBookDetail = bookQueries.bookByIdMutation(
+    async (response) => { 
+      setBook(response?.data || []);
+      setLoading(false);
+    },
+    {
+      onError: (error) => {
+        setLoading(false);
+        setError('Failed to fetch Book data. Please try again later.');
+        enqueueSnackbar(error.response.data.message, { variant: 'warning' });
+      }
+    }
+  )
+  const fetchBook = async () => {
+    setLoading(true);
+    getBookDetail.mutate(id);
+  }
 
   useEffect(() => {
-    const fetchBook = async () => {
-      setLoading(true);
-      try {
-        const response = await axios.get(`http://localhost:1000/books/${id}`);
-        setBook(response.data);
-        console.log(response.data);
-      } catch (error) {
-        enqueueSnackbar('Failed to fetch book details.', { variant: 'error' });
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchBook();
   }, [id]);
 
@@ -97,7 +100,6 @@ const ShowBook = () => {
       )}
     </div>
   </div>
-
   );
 };
 

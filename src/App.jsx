@@ -7,7 +7,7 @@ import FamilyMemberShip from './components/MemberShip/FamilyMemberShip';
 import MembersList from './components/MembersList/MembersList';
 import ShowBook from './components/Books/ShowBook';
 import EditBook from './components/Books/EditBook';
-import DeleteBook from './components/Books/DeleteBook'; 
+import DeleteBook from './components/Books/DeleteBook';
 import NotFound from './utils/NotFound';
 import BasicCard from './components/cart/BookCart';
 import PrivateRoute from './utils/PrivateRoute';
@@ -44,17 +44,16 @@ const App = () => {
     <ViewProvider>
       <>
         {isAuthenticated && <Navbar />}
-        <Routes> 
-          {/* <Route path={RouteConstants.LOGIN} element={<AdminLogin />} /> */}
+        <Routes>
+
           <Route path={RouteConstants.LOGIN} element={<LoginPage />} />
-          {/* <Route path={RouteConstants.DASHBOARD} element={<PrivateRoute element={<DashBoard />} />} /> */}
+          <Route path={RouteConstants.DASHBOARD} element={<PrivateRoute element={<MembersList />} />} />
+
           <Route path={RouteConstants.ROOT} element={<PrivateRoute element={<Home />} />} />
 
           <Route path={RouteConstants.INDIVIDUAL_MEMBERSHIP} element={<PrivateRoute element={<IndividualMemberShip />} />} />
           <Route path={RouteConstants.FAMILY_MEMBERSHIP} element={<PrivateRoute element={<FamilyMemberShip />} />} />
           <Route path={RouteConstants.FAMILY_LIST} element={<PrivateRoute element={<FamilyMemList />} />} />
-
-          <Route path={RouteConstants.DASHBOARD} element={<PrivateRoute element={<MembersList />} />} /> 
 
           <Route path={RouteConstants.BOOKCREATE} element={<PrivateRoute element={<CreateBooks />} />} />
           <Route path={RouteConstants.BOKKSDETAILS} element={<ShowBook />} />
@@ -76,3 +75,7 @@ const App = () => {
 };
 
 export default App;
+
+
+{/* <Route path={RouteConstants.DASHBOARD} element={<PrivateRoute element={<DashBoard />} />} /> */ }
+{/* <Route path={RouteConstants.LOGIN} element={<AdminLogin />} /> */ }

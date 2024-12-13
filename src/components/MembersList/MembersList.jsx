@@ -60,8 +60,7 @@ const MembersList = () => {
       page: currentPage,
       size: pageSize,
       memType: membershipType,
-    }
-    // getMemberships.mutate({ membershipType });
+    } 
     getMemberships.mutate(payload);
   };
 
@@ -266,7 +265,7 @@ const MembersList = () => {
         <table className="min-w-full table-auto">
           <thead className="bg-gray-300">
             <tr>
-              <th className="px-4 py-2 text-left w-10">Number</th>
+              <th className="px-4 py-2 text-left w-10">SL.N</th>
               <th className="px-4 py-2 text-leftw-10">Membership ID</th>
               <th className="px-4 py-2 text-left w-auto">Name</th>
               <th className="px-4 py-2 text-left w-auto">Status</th>
