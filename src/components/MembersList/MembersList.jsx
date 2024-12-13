@@ -60,7 +60,7 @@ const MembersList = () => {
       page: currentPage,
       size: pageSize,
       memType: membershipType,
-    }
+    } 
     getMemberships.mutate(payload);
   };
 
@@ -503,8 +503,7 @@ const MembersList = () => {
         totalPages={totalPage}
         pageSize={pageSize}
         setPageSize={setPageSize}
-        onPageChange={handlePageChange}
-      />
+        onPageChange={handlePageChange} />
     </div >
   );
 };
