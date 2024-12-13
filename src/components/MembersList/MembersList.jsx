@@ -498,13 +498,13 @@ const MembersList = () => {
           </div>
         )
       }
-      {/* <Pagination
+      <Pagination
         currentPage={currentPage}
         totalPages={totalPage}
         pageSize={pageSize}
         setPageSize={setPageSize}
         onPageChange={handlePageChange}
-      /> */}
+      />
     </div >
   );
 };
