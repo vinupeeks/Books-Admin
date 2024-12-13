@@ -107,12 +107,10 @@ const Home = () => {
             type="text"
             placeholder="Search by Book-Name"
             value={searchTerm}
-            onChange={(event) => {
-              // setSearchTerm(event.target.value);
+            onChange={(event) => { 
               handleSearchChange(event);
             }}
-            className="border-2 border-sky-500 rounded-lg bg-gray-100 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-sky-500 p-1 w- uppercase"
-          // style={{ padding: '8px', margin: '10px 0', width: '20%' }}
+            className="border-2 border-sky-500 rounded-lg bg-gray-100 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-sky-500 p-1 w- uppercase" 
           />
           <Link to="/books/create">
             <MdOutlineAddBox className="text-sky-800 text-4xl" />
