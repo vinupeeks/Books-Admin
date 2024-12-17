@@ -88,7 +88,7 @@ const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipT
         setLoading(false);
       }
     }
-  );
+  ); 
 
   const handleBookIssueSubmit = () => {
 
@@ -211,62 +211,6 @@ const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipT
 
   return (
     <div className=" bg-gray-50 min-h-screen">
-      {/* <h1 className="text-3xl font-semibold text-left text-gray-800 mb-8">
-        Members List {searchTerm ? 'SEARCH' : membershipType === 'F' ? 'FAMILY' : membershipType === 'I' ? 'SINGLE' : 'All'}
-      </h1> */}
-
-      {/* <div className="flex items-center justify-between px-5 rounded-lg border-2 bg-gray-200 ">
-        <div>
-          <i>MEMBERSHIP TYPE : </i>
-          <Dropdown className="d-inline-block">
-            <Dropdown.Toggle
-              title="Dropdown button"
-              variant="secondary"
-              id="dropdown-custom-components"
-              className="px-auto py-auto text-sm font-medium bg-gray-200 border border-gray-300 rounded hover:bg-gray-300 focus:outline-none focus:ring-auto transition-all"
-            >
-              {searchTerm ? 'SEARCH' : membershipType === 'F' ? 'FAMILY' : membershipType === 'I' ? 'SINGLE' : 'All'}
-            </Dropdown.Toggle>
-            <Dropdown.Menu className="bg-gray-200 border-gray-300">
-              <Dropdown.Item
-                onClick={() => handleTypeChange("A")}
-                className={`bg-gray-200 text-gray-700 hover:bg-gray-300 hover:text-gray-900 ${membershipType === "A" ? "bg-gray-300 text-gray-900" : ""
-                  }`}
-              >
-                <i>&nbsp; All</i>
-              </Dropdown.Item>
-              <Dropdown.Item
-                onClick={() => handleTypeChange("I")}
-                className={`bg-gray-200 text-gray-700 hover:bg-gray-300 hover:text-gray-900 ${membershipType === "I" ? "bg-gray-300 text-gray-900" : ""
-                  }`}
-              >
-                <i>&nbsp; Single</i>
-              </Dropdown.Item>
-              <Dropdown.Item
-                onClick={() => handleTypeChange("F")}
-                className={`bg-gray-200 text-gray-700 hover:bg-gray-300 hover:text-gray-900 ${membershipType === "F" ? "bg-gray-300 text-gray-900" : ""
-                  }`}
-              >
-                <i>&nbsp; Family</i>
-              </Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
-
-
-        </div>
-        <input
-          type="text"
-          placeholder="Search by Membership"
-          value={searchTerm}
-          onChange={(event) => {
-            // setSearchTerm(event.target.value);
-            handleSearchChange(event);
-          }}
-          className="border-2 bg-gray-200 border-sky-500 rounded-lg  text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-sky-500 p-2 w-auto uppercase"
-        // style={{ padding: '8px', margin: '10px 0', width: '20%' }}
-        />
-      </div> */}
-
       <br />
       {/* 
       <div className="overflow-x-auto bg-white shadow-lg rounded-lg">
