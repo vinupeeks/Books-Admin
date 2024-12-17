@@ -125,15 +125,9 @@ const FamilyMemberShip = () => {
         ...formData,
         membershipType: updatedMembershipType,
       };
-      console.log(updatedFormData);
-
-      // createMmbers.mutateAsync({ updatedFormData });
+      console.log(updatedFormData); 
       createMmbers.mutateAsync(updatedFormData);
-
-      // const response = await axios.post(
-      //   "http://localhost:1000/membership/creation",
-      //   updatedFormData
-      // ); 
+ 
     } catch (error) {
       console.log(error);
     }
@@ -169,8 +163,7 @@ const FamilyMemberShip = () => {
         <div className="p-2">
           <div
             className="max-w-3xl flex flex-col border border-gray-300 rounded-lg shadow-lg mx-auto p-3 bg-white"
-          >
-            {/* <h2 className="text-xl font-bold text-gray-800 mb-4">Members Creation</h2> */}
+          > 
 
             <form onSubmit={handleSubmit} className="space-y-4">
 

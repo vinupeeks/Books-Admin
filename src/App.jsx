@@ -23,7 +23,7 @@ import RouteConstants from "./constant/Routeconstant.jsx";
 import IssuingBook from './components/BookIssuing/IssuingBook.jsx';
 import FamilyMemList from './components/MemberShip/FamilyMemList.jsx';
 import AdminLogin from './components/Log/LogSam.jsx';
-import DashBoard from './components/DashBoard/DashBoard.jsx';
+import Dashboard from './components/DashBoard/DashBoard.jsx';
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -45,8 +45,10 @@ const App = () => {
       <>
         {isAuthenticated && <Navbar />}
         <Routes>
-          <Route path={RouteConstants.LOGIN} element={<AdminLogin />} /> 
-          <Route path={RouteConstants.DASHBOARD} element={<PrivateRoute element={<DashBoard />} />} />
+
+          {/* <Route path={RouteConstants.LOGIN} element={<LoginPage />} /> */}
+          <Route path={RouteConstants.LOGIN} element={<AdminLogin />} />
+          <Route path={RouteConstants.DASHBOARD} element={<PrivateRoute element={<Dashboard />} />} />
 
           <Route path={RouteConstants.ROOT} element={<PrivateRoute element={<Home />} />} />
 

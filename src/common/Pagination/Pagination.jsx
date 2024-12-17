@@ -1,7 +1,7 @@
 import React from 'react';
 import { Dropdown, DropdownButton } from 'react-bootstrap';
 
-const Pagination = ({ totalPages, currentPage, pageSize, setPageSize, show, onPageChange }) => {
+const Pagination = ({ totalPages, currentPage, pageSize, setPageSize, onPageChange }) => {
     if (totalPages <= 1) return null;
 
     const visiblePages = 3; // Show 3 pages in the middle for visibility
@@ -84,21 +84,19 @@ const Pagination = ({ totalPages, currentPage, pageSize, setPageSize, show, onPa
                     Next
                 </button>
             </nav>
-            {show && (
-                <DropdownButton
-                    id="dropdown-page-size"
-                    title={pageSize}
-                    variant="secondary"
-                    drop='up'
-                    onSelect={handlePageSizeChange}
-                >
-                    {[10, 25, 50, 100, 500].map((size) => (
-                        <Dropdown.Item key={size} eventKey={size.toString()}>
-                            {size}
-                        </Dropdown.Item>
-                    ))}
-                </DropdownButton>
-            )}
+            <DropdownButton
+                id="dropdown-page-size"
+                title={pageSize}
+                variant="secondary"
+                drop='up'
+                onSelect={handlePageSizeChange}
+            >
+                {[10, 25, 50, 100, 500].map((size) => (
+                    <Dropdown.Item key={size} eventKey={size.toString()}>
+                        {size}
+                    </Dropdown.Item>
+                ))}
+            </DropdownButton>
         </div >
     );
 };

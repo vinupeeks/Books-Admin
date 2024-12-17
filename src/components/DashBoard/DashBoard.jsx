@@ -120,7 +120,7 @@ const MinimalistDashboard = () => {
                 </div>
 
                 {searchTerm && (
-                    <div className="bg-blue-50 border-l-4 border-blue-500 p-2 rounded-r-xl mb-6">
+                    <div className="bg-blue-50 border-l-4 border-blue-500 rounded-r-xl mb-6">
                         <p className="text-blue-700">
                             Searching for: <span className="font-semibold ml-2">{searchTerm}</span>
                         </p>
