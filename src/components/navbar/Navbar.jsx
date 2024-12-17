@@ -157,6 +157,15 @@ export default function AppBarWithSideMenu() {
                                         Dashboard
                                     </a>
                                 </li>
+                                {/* <li className="mb-3">
+                                    <a
+                                        href={RouteConstants.DASHBOARDTEST}
+                                        onClick={() => handleMenuClick('Membership')}
+                                        className="text-black font-semibold block px-4 py-2 rounded hover:bg-blue-300 transition no-underline"
+                                    >
+                                       Test Dash
+                                    </a>
+                                </li> */}
                                 <li className="mb-3">
                                     <a
                                         href={RouteConstants.FAMILY_MEMBERSHIP}

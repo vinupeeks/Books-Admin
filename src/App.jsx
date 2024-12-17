@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import Home from './components/Home/Home'; 
+import Home from './components/Home/Home';
 // import IndividualMemberShip from './components/MemberShip/IndividualMemberShip';
 import FamilyMemberShip from './components/MemberShip/FamilyMemberShip';
 import MembersList from './components/MembersList/MembersList';
@@ -21,8 +21,9 @@ import CreateBooks from './components/Books/CreateBooks';
 // import AdminLogin from './components/Log/Login';
 import RouteConstants from "./constant/Routeconstant.jsx";
 import IssuingBook from './components/BookIssuing/IssuingBook.jsx';
-import FamilyMemList from './components/MemberShip/FamilyMemList.jsx'; 
+import FamilyMemList from './components/MemberShip/FamilyMemList.jsx';
 import AdminLogin from './components/Log/LogSam.jsx';
+import DashBoard from './components/DashBoard/DashBoard.jsx';
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -44,10 +45,8 @@ const App = () => {
       <>
         {isAuthenticated && <Navbar />}
         <Routes>
-
-          {/* <Route path={RouteConstants.LOGIN} element={<LoginPage />} /> */}
-          <Route path={RouteConstants.LOGIN} element={<AdminLogin />} />
-          <Route path={RouteConstants.DASHBOARD} element={<PrivateRoute element={<MembersList />} />} />
+          <Route path={RouteConstants.LOGIN} element={<AdminLogin />} /> 
+          <Route path={RouteConstants.DASHBOARD} element={<PrivateRoute element={<DashBoard />} />} />
 
           <Route path={RouteConstants.ROOT} element={<PrivateRoute element={<Home />} />} />
 

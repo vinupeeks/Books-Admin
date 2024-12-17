@@ -18,3 +18,31 @@ export const getDecodedTokenId = () => {
         }
     }
 };
+
+export const getTokenIsValideOrNot = () => {
+    const Token = getAuthToken();
+
+    if (Token) {
+        let valide = false;
+
+        try {
+            const decodedToken = jwtDecode(Token);
+
+            isAdmin = decodedToken.role;
+            if (!isAdmin === 'admin') {
+                return;
+            }
+
+            const currentTime = Math.floor(Date.now() / 1000);
+            isTokenExpired = decodedToken.exp < currentTime;
+
+            if (isTokenExpired) {
+                return valide = false;
+            }
+            return valide = true;
+
+        } catch (error) {
+            console.error('Error Valide token', error);
+        }
+    }
+}

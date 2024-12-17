@@ -1,6 +1,7 @@
 const RouteConstants = {
     DASHBOARD: '/',
     ROOT: '/home',
+    DASHBOARDTEST: '/dash-board',
     LOGIN: '/auth/admin/login',
     BOOKS: '/books',
     BOOKSLAST: '/books/last',

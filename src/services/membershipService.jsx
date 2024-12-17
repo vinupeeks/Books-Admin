@@ -46,6 +46,7 @@ const membershipService = {
             }
         });
     },
+
     memberBookDetails: async (id) => {
         const memberId = id;
 
@@ -56,6 +57,19 @@ const membershipService = {
                 Authorization: "Bearer " + Token
             },
             data: { memberId },
+        });
+    },
+
+    createMmber: async (data) => {
+        const memberData = data;
+
+        return apiRequest({
+            method: "POST",
+            url: `/membership/creation`,
+            headers: {
+                Authorization: "Bearer " + Token
+            },
+            data: memberData,
         });
     },
 }
