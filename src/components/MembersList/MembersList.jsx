@@ -441,7 +441,7 @@ const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipT
                       className="px-6 py-2 bg-green-300 text-black rounded-lg hover:bg-green-400 mr-2"
                       onClick={handleBookIssueSubmit}
                     >
-                      Issue
+                      Issue 
                     </button>
                   )
                 }
