@@ -34,7 +34,7 @@ function Dashboard() {
                             </div>
                         </Card.Body>
                     </Card>
-                </Col>
+                </Col> 
 
                 <Col md={8} xs={12}>
                     <Row className="g-4">
