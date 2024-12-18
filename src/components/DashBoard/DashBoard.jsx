@@ -98,16 +98,16 @@ const MinimalistDashboard = () => {
             </div>
 
             <div className="col-span-4 p-4">
-                <h1 className="text-3xl font-bold text-gray-800 mb-6">
+                {/* <h1 className="text-3xl font-bold text-gray-800 mb-6">
                     Membership Management
-                </h1>
+                </h1> */}
 
                 {/* Search Section */}
                 <div className="relative mb-6">
                     <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
                     <input
                         type="text"
-                        placeholder="Search members by name, ID, or type"
+                        placeholder="Search members by Name, ID, or Phone number"
                         value={searchTerm}
                         onChange={handleSearchChange}
                         className="w-full pl-12 pr-4 py-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700"
