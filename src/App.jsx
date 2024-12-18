@@ -50,9 +50,8 @@ const App = () => {
           <Route path={RouteConstants.LOGIN} element={<AdminLogin />} />
           <Route path={RouteConstants.DASHBOARD} element={<PrivateRoute element={<Dashboard />} />} />
 
-          <Route path={RouteConstants.ROOT} element={<PrivateRoute element={<Home />} />} />
-
-          {/* <Route path={RouteConstants.INDIVIDUAL_MEMBERSHIP} element={<PrivateRoute element={<IndividualMemberShip />} />} /> */}
+          <Route path={RouteConstants.ROOT} element={<PrivateRoute element={<Home />} />} /> 
+          
           <Route path={RouteConstants.FAMILY_MEMBERSHIP} element={<PrivateRoute element={<FamilyMemberShip />} />} />
           <Route path={RouteConstants.FAMILY_LIST} element={<PrivateRoute element={<FamilyMemList />} />} />
 
@@ -76,7 +75,4 @@ const App = () => {
 };
 
 export default App;
-
-
-{/* <Route path={RouteConstants.DASHBOARD} element={<PrivateRoute element={<DashBoard />} />} /> */ }
-{/* <Route path={RouteConstants.LOGIN} element={<AdminLogin />} /> */ }
+ 
