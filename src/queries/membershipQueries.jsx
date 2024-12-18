@@ -42,12 +42,22 @@ const memberBookDetailsMutation = (onmembershipListSuccess, onErrorCallback) => 
         onError: onErrorCallback,
     });
 };
+const createMmberMutation = (onmembershipListSuccess, onErrorCallback) => {
+
+    return useMutation(membershipService.createMmber, {
+        onSuccess: (data) => {
+            onmembershipListSuccess(data);
+        },
+        onError: onErrorCallback,
+    });
+};
 
 const membershipsQueries = {
     membershipListMutation,
     familyMembershipListMutation,
     membershipByIdMutation,
-    memberBookDetailsMutation
+    memberBookDetailsMutation,
+    createMmberMutation
 };
 
 export default membershipsQueries;

@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import Modal from 'react-bootstrap/Modal';
 import axios from "axios";
 import { Button } from "react-bootstrap";
+import membershipsQueries from "../../queries/membershipQueries";
+import { useSnackbar } from "notistack";
 
 const InputField = ({ label, type, value, onChange, required }) => (
   <div>
@@ -24,6 +26,9 @@ const FamilyMemberShip = () => {
   const [show, setShow] = useState(false);
   const [familyMemId, setFamilyMemId] = useState('');
   const [updatedMembers, setUpdatedMembers] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
+
   const [formData, setFormData] = useState({
     members: [
       {
@@ -38,8 +43,7 @@ const FamilyMemberShip = () => {
     membershipType: "single",
   });
 
-  const handleClose = () => setShow(false);
-  // const handleShow = () => setShow(true);
+  const handleClose = () => setShow(false); 
 
   const handleChange = (index, field, value) => {
     const updatedMembers = [...formData.members];
@@ -78,28 +82,10 @@ const FamilyMemberShip = () => {
       };
     })
   };
-  const handleSubmit = async (e) => {
-    e.preventDefault();
 
-    if (!window.confirm("Are you sure you want to continue?")) {
-      return;
-    }
-
-    try {
-      const updatedMembershipType =
-        formData.members.length > 1 ? "family" : "single";
-      const updatedFormData = {
-        ...formData,
-        membershipType: updatedMembershipType,
-      };
-      console.log(`Form Data: `, updatedFormData);
-      const response = await axios.post(
-        "http://localhost:1000/membership/creation",
-        updatedFormData
-      );
-
+  const createMmbers = membershipsQueries.createMmberMutation(
+    async (response) => {
       if (response?.status === 201) {
-        // console.log(`Response of the membership creation:`, response?.data);
         setUpdatedMembers(response?.data?.data?.updatedMembers);
         setFamilyMemId(response?.data?.data?.membershipId);
         setShow(true)
@@ -116,15 +102,34 @@ const FamilyMemberShip = () => {
           ],
           membershipType: "single",
         });
-      } else {
-        console.error("Error: Unexpected response status", response.status);
-        alert("Failed to create membership. Please try again.");
+        setLoading(false);
+        enqueueSnackbar('Successfully created Memberships..!', { variant: 'success' });
       }
+    },
+    {
+      onError: (error) => {
+        enqueueSnackbar('An error occurred while creating the membership. Please try again later.', { variant: 'error' });
+        setLoading(false);
+      }
+    }
+  );
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!window.confirm("Are you sure you want to continue?")) {
+      return;
+    }
+    try {
+      const updatedMembershipType =
+        formData.members.length > 1 ? "family" : "single";
+      const updatedFormData = {
+        ...formData,
+        membershipType: updatedMembershipType,
+      };
+      console.log(updatedFormData); 
+      createMmbers.mutateAsync(updatedFormData);
+ 
     } catch (error) {
-      console.error("Error creating membership:", error);
-      alert(
-        "An error occurred while creating the membership. Please try again later."
-      );
+      console.log(error);
     }
   };
 
@@ -158,8 +163,7 @@ const FamilyMemberShip = () => {
         <div className="p-2">
           <div
             className="max-w-3xl flex flex-col border border-gray-300 rounded-lg shadow-lg mx-auto p-3 bg-white"
-          >
-            {/* <h2 className="text-xl font-bold text-gray-800 mb-4">Members Creation</h2> */}
+          > 
 
             <form onSubmit={handleSubmit} className="space-y-4">
 
@@ -210,7 +214,7 @@ const FamilyMemberShip = () => {
                       required
                     />
                   </div>
- 
+
                   <div className=" flex flex-wrap justify-around items-center gap-4 bg-gray-200 rounded-lg p-2">
                     <div className="mb-2  flex items-center justify-center">
                       <label className="block text-sm font-medium text-gray-600 mb-1"><strong>Tower Name</strong></label>
@@ -272,7 +276,7 @@ const FamilyMemberShip = () => {
                     </div>
 
                   </div>
-                  
+
                   <div className="mb-2">
                     <label className="block text-sm font-medium text-gray-600 mb-1"><strong>Date of Birth</strong></label>
                     <input
