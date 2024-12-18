@@ -1,6 +1,6 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-import {jwtDecode} from 'jwt-decode'; 
+import { jwtDecode } from 'jwt-decode';
 import { getAuthToken } from './TokenHelper';
 import RouteConstants from '../constant/Routeconstant';
 
@@ -14,9 +14,9 @@ const PrivateRoute = ({ element }) => {
             const decodedToken = jwtDecode(token);
             console.log(decodedToken);
 
- 
-            const currentTime = Math.floor(Date.now() / 1000); 
-            isTokenExpired = decodedToken.exp < currentTime; 
+
+            const currentTime = Math.floor(Date.now() / 1000);
+            isTokenExpired = decodedToken.exp < currentTime;
 
             if (!isTokenExpired) {
                 isAdmin = decodedToken.role === 'admin';
@@ -27,6 +27,8 @@ const PrivateRoute = ({ element }) => {
     }
 
     if (isTokenExpired || !token) {
+        localStorage.removeItem('BooksAdminToken');
+        // window.location.reload();
         return <Navigate to={RouteConstants.LOGIN} />;
     }
 

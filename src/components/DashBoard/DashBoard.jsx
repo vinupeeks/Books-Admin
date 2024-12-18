@@ -9,10 +9,9 @@ const MinimalistDashboard = () => {
 
     const handleSearchChange = (event) => {
         const value = event.target.value;
-        if (value.charAt(0) === ' ') {
-            console.log(`error`);
+        if (value.charAt(0) === ' ') { 
             setSearchTerm('');
-            setMembershipType('A');
+            setMembershipType('');
             return;
         }
         setSearchTerm(value);
