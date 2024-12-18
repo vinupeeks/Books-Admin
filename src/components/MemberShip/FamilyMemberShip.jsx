@@ -43,7 +43,7 @@ const FamilyMemberShip = () => {
     membershipType: "single",
   });
 
-  const handleClose = () => setShow(false); 
+  const handleClose = () => setShow(false);
 
   const handleChange = (index, field, value) => {
     const updatedMembers = [...formData.members];
@@ -125,9 +125,9 @@ const FamilyMemberShip = () => {
         ...formData,
         membershipType: updatedMembershipType,
       };
-      console.log(updatedFormData); 
+      console.log(updatedFormData);
       createMmbers.mutateAsync(updatedFormData);
- 
+
     } catch (error) {
       console.log(error);
     }
@@ -163,7 +163,7 @@ const FamilyMemberShip = () => {
         <div className="p-2">
           <div
             className="max-w-3xl flex flex-col border border-gray-300 rounded-lg shadow-lg mx-auto p-3 bg-white"
-          > 
+          >
 
             <form onSubmit={handleSubmit} className="space-y-4">
 
@@ -180,112 +180,115 @@ const FamilyMemberShip = () => {
               </div>
 
               {formData.members.map((member, index) => (
-                <div key={index} className="mb-3 p-2 border border-gray-300 rounded-lg bg-white shadow-sm">
-                  <h3 className="text-lg font-semibold text-gray-700">
-                    Member {index + 1}
-                    {formData.members.length > 1 && (
-                      <button
-                        type="button"
-                        onClick={() => removeMember(index)}
-                        className="ml-3 text-red-600 hover:underline"
-                      >
-                        Remove
-                      </button>
-                    )}
-                  </h3>
-                  {/*  */}
-                  <div className="mb-2">
-                    <label className="block text-sm font-medium text-gray-600 mb-1"><strong>Name</strong></label>
-                    <input
-                      type="text"
-                      value={member.name}
-                      onChange={(e) => handleChange(index, "name", e.target.value)}
-                      className="w-3/4 px-3 py-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-400 focus:outline-none"
-                      required
-                    />
-                  </div>
-                  <div className="mb-2">
-                    <label className="block text-sm font-medium text-gray-600 mb-1"><strong>Contact Number</strong></label>
-                    <input
-                      type="tel"
-                      value={member.contactNumber}
-                      onChange={(e) => handleChange(index, "contactNumber", e.target.value)}
-                      className="w-3/4 px-3 py-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-400 focus:outline-none"
-                      required
-                    />
-                  </div>
-
-                  <div className=" flex flex-wrap justify-around items-center gap-4 bg-gray-200 rounded-lg p-2">
-                    <div className="mb-2  flex items-center justify-center">
-                      <label className="block text-sm font-medium text-gray-600 mb-1"><strong>Tower Name</strong></label>
-                      <select
+                <div key={index}>
+                  <div className="mb-3 p-2 border border-gray-300 rounded-lg bg-white shadow-sm ">
+                    <h3 className="text-lg font-semibold text-gray-700">
+                      Member {index + 1}
+                      {formData.members.length > 1 && (
+                        <button
+                          type="button"
+                          onClick={() => removeMember(index)}
+                          className="ml-3 text-red-600 hover:underline"
+                        >
+                          Remove
+                        </button>
+                      )}
+                    </h3>
+                    {/*  */}
+                    <div className="mb-2">
+                      <label className="block text-sm font-medium text-gray-600 mb-1"><strong>Name</strong></label>
+                      <input
                         type="text"
-                        value={member.towerName}
-                        onChange={(e) => handleChange(index, "towerName", e.target.value)}
-                        className="w-half px-3 py-1 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-400 focus:outline-none"
+                        value={member.name}
+                        onChange={(e) => handleChange(index, "name", e.target.value)}
+                        className="w-3/4 px-3 py-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-400 focus:outline-none"
                         required
-                      >
-                        <option value="" disabled>Select Tower</option>
-                        <option value="Brown">Brown</option>
-                        <option value="Columbia">Columbia</option>
-                        <option value="Cornell">Cornell</option>
-                        <option value="Harvard">Harvard</option>
-                        <option value="Princeton">Princeton</option>
-                        <option value="Sylvania">Sylvania</option>
-                        <option value="Yale">Yale</option>
-                      </select>
+                      />
+                    </div>
+                    <div className="mb-2">
+                      <label className="block text-sm font-medium text-gray-600 mb-1"><strong>Contact Number</strong></label>
+                      <input
+                        type="tel"
+                        value={member.contactNumber}
+                        onChange={(e) => handleChange(index, "contactNumber", e.target.value)}
+                        className="w-3/4 px-3 py-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-400 focus:outline-none"
+                        required
+                      />
                     </div>
 
-                    <div className="mb-2 flex items-center justify-center">
-                      <label className="block text-sm font-medium text-gray-600 mb-1"><strong>Flat Type</strong></label>
-                      <select
-                        type="text"
-                        value={member.flatType}
-                        onChange={(e) => handleChange(index, "flatType", e.target.value)}
-                        className="w-half px-3 py-1 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-400 focus:outline-none"
-                        required
-                      >
-                        <option value="" disabled>Select Flat</option>
-                        <option value="A">A</option>
-                        <option value="B">B</option>
-                        <option value="C">C</option>
-                        <option value="D">D</option>
-                        <option value="E">E</option>
-                        <option value="F">F</option>
-                        <option value="G">G</option>
-                      </select>
+                    <div className=" flex flex-wrap justify-around items-center gap-4 bg-gray-200 rounded-lg p-2">
+                      <div className="mb-2  flex items-center justify-center">
+                        <label className="block text-sm font-medium text-gray-600 mb-1"><strong>Tower Name</strong></label>
+                        <select
+                          type="text"
+                          value={member.towerName}
+                          onChange={(e) => handleChange(index, "towerName", e.target.value)}
+                          className="w-half px-3 py-1 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-400 focus:outline-none"
+                          required
+                        >
+                          <option value="" disabled>Select Tower</option>
+                          <option value="Brown">Brown</option>
+                          <option value="Columbia">Columbia</option>
+                          <option value="Cornell">Cornell</option>
+                          <option value="Harvard">Harvard</option>
+                          <option value="Princeton">Princeton</option>
+                          <option value="Sylvania">Sylvania</option>
+                          <option value="Yale">Yale</option>
+                        </select>
+                      </div>
+
+                      <div className="mb-2 flex items-center justify-center">
+                        <label className="block text-sm font-medium text-gray-600 mb-1"><strong>Flat Type</strong></label>
+                        <select
+                          type="text"
+                          value={member.flatType}
+                          onChange={(e) => handleChange(index, "flatType", e.target.value)}
+                          className="w-half px-3 py-1 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-400 focus:outline-none"
+                          required
+                        >
+                          <option value="" disabled>Select Flat</option>
+                          <option value="A">A</option>
+                          <option value="B">B</option>
+                          <option value="C">C</option>
+                          <option value="D">D</option>
+                          <option value="E">E</option>
+                          <option value="F">F</option>
+                          <option value="G">G</option>
+                        </select>
+                      </div>
+
+                      <div className="mb-2 flex items-center justify-center">
+                        <label className="block text-sm font-medium text-gray-600 mb-1"><strong>Floor Number </strong></label>
+                        <select
+                          className="w-half px-3 py-1 bg-white bg-whiteborder border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-400 focus:outline-none"
+                          value={member.floorNumber}
+                          onChange={(e) => handleChange(index, "floorNumber", e.target.value)}
+                          required
+                        >
+                          <option
+                            className="max-h-5"
+                            value="" disabled>Select Floor</option>
+                          {Array.from({ length: 23 }, (_, i) => (
+                            <option key={i + 1} value={i + 1}>
+                              {i + 1}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+
                     </div>
 
-                    <div className="mb-2 flex items-center justify-center">
-                      <label className="block text-sm font-medium text-gray-600 mb-1"><strong>Floor Number </strong></label>
-                      <select
-                        className="w-half px-3 py-1 bg-white bg-whiteborder border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-400 focus:outline-none"
-                        value={member.floorNumber}
-                        onChange={(e) => handleChange(index, "floorNumber", e.target.value)}
-                        required
-                      >
-                        <option
-                          className="max-h-5"
-                          value="" disabled>Select Floor</option>
-                        {Array.from({ length: 23 }, (_, i) => (
-                          <option key={i + 1} value={i + 1}>
-                            {i + 1}
-                          </option>
-                        ))}
-                      </select>
+                    <div className="mb-2">
+                      <label className="block text-sm font-medium text-gray-600 mb-1"><strong>Date of Birth</strong></label>
+                      <input
+                        type="date"
+                        value={member.dateOfBirth}
+                        onChange={(e) => handleChange(index, "dateOfBirth", e.target.value)}
+                        className="w-half px-3 py-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-400 focus:outline-none"
+                      />
                     </div>
-
                   </div>
-
-                  <div className="mb-2">
-                    <label className="block text-sm font-medium text-gray-600 mb-1"><strong>Date of Birth</strong></label>
-                    <input
-                      type="date"
-                      value={member.dateOfBirth}
-                      onChange={(e) => handleChange(index, "dateOfBirth", e.target.value)}
-                      className="w-half px-3 py-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-400 focus:outline-none"
-                    />
-                  </div>
+                  <br />
                 </div>
               ))}
 

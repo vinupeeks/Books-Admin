@@ -59,11 +59,7 @@ const MinimalistDashboard = () => {
 
     return (
         <div className="w-full h-screen bg-gray rounded-3xl shadow-2xl overflow-hidden grid md:grid-cols-5 p-3">
-            <div className="col-span-1 bg-gray-100 rounded-2xl p-6 h-auto">
-                <div className="flex items-center mb-8">
-                    <Sliders className="mr-3 text-gray-600" />
-                    <h2 className="text-2xl font-bold text-gray-800">Filters</h2>
-                </div>
+            <div className="col-span-1 bg-gray-100 rounded-2xl p-6 h-auto"> 
                 <div className="space-y-4">
                     <div className="space-y-4 h-full">
                         {membershipTypes.map((type) => (
