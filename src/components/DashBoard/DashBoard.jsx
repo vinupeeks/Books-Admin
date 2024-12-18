@@ -145,8 +145,7 @@ const MinimalistDashboard = () => {
                             <p className="text-gray-500 text-center max-w-md">
                                 Your search results, book issue / return, and other activities will be displayed here. Start exploring the tools and features available to you.
                             </p>
-                        </div>
-
+                        </div> 
                     )}
                 </div>
             </div>
