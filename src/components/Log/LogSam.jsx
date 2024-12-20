@@ -29,7 +29,6 @@ const AdminLogin = () => {
                 localStorage.setItem('BooksAdminToken', token);
                 enqueueSnackbar('Login successful', { variant: 'success' });
                 navigate(RouteConstants.DASHBOARD);
-                window.location.reload();
             } else {
                 enqueueSnackbar('Invalid email or password', { variant: 'error' });
             }
@@ -109,8 +108,8 @@ const AdminLogin = () => {
                         }}
                         component="div"
                     >
-                        <h2>Skyline IVY-League</h2>
-                        <h3>Library Application</h3>
+                        {/* <h2>Skyline IVY-League</h2> */}
+                        <h1>Library Application</h1>
                     </Typography>
                     <form onSubmit={handleSubmit}>
                         <TextField

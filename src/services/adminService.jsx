@@ -28,6 +28,15 @@ const adminService = {
             }
         });
     },
+    CountsOfBooksAndMembers: async () => {
+        return apiRequest({
+            method: "GET",
+            url: `/admin/count`,
+            headers: {
+                Authorization: "Bearer " + Token
+            }
+        });
+    },
 
 }
 

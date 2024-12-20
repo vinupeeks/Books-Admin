@@ -7,7 +7,7 @@ const RouteConstants = {
     SEARCHEDBOOKS: '/books/searchedBook',
 
     INDIVIDUAL_MEMBERSHIP: '/membership/indivual',
-    FAMILY_MEMBERSHIP: '/membership/family',
+    FAMILY_MEMBERSHIP: 'membership/family',
     FAMILY_LIST: '/membership/family/list',
     // MEMBERS_LIST: '/members',
     MEMBER_SHIP: '/membership/details',

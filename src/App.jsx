@@ -24,6 +24,7 @@ import IssuingBook from './components/BookIssuing/IssuingBook.jsx';
 import FamilyMemList from './components/MemberShip/FamilyMemList.jsx';
 import AdminLogin from './components/Log/LogSam.jsx';
 import Dashboard from './components/DashBoard/DashBoard.jsx';
+import SideMenu from './components/navbar/sideMenu.jsx';
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -43,31 +44,31 @@ const App = () => {
   return (
     <ViewProvider>
       <>
-        {isAuthenticated && <Navbar />}
         <Routes>
-
-          {/* <Route path={RouteConstants.LOGIN} element={<LoginPage />} /> */}
           <Route path={RouteConstants.LOGIN} element={<AdminLogin />} />
-          <Route path={RouteConstants.DASHBOARD} element={<PrivateRoute element={<Dashboard />} />} />
 
-          <Route path={RouteConstants.ROOT} element={<PrivateRoute element={<Home />} />} /> 
-          
-          <Route path={RouteConstants.FAMILY_MEMBERSHIP} element={<PrivateRoute element={<FamilyMemberShip />} />} />
-          <Route path={RouteConstants.FAMILY_LIST} element={<PrivateRoute element={<FamilyMemList />} />} />
+          <Route path={RouteConstants.DASHBOARD} element={<SideMenu />}>
+            <Route path={RouteConstants.DASHBOARD} element={<PrivateRoute element={<Dashboard />} />} />
 
-          <Route path={RouteConstants.BOOKCREATE} element={<PrivateRoute element={<CreateBooks />} />} />
-          <Route path={RouteConstants.BOKKSDETAILS} element={<ShowBook />} />
-          <Route path={RouteConstants.BOOKSEDIT} element={<PrivateRoute element={<EditBook />} />} />
-          <Route path={RouteConstants.BOOKSDELETE} element={<PrivateRoute element={<DeleteBook />} />} />
-          <Route path={RouteConstants.BOOK_ISSUING} element={<PrivateRoute element={<IssuingBook />} />} />
+            <Route path={RouteConstants.ROOT} element={<PrivateRoute element={<Home />} />} />
+
+            <Route path={RouteConstants.FAMILY_MEMBERSHIP} element={<PrivateRoute element={<FamilyMemberShip />} />} />
+            <Route path={RouteConstants.FAMILY_LIST} element={<PrivateRoute element={<FamilyMemList />} />} />
+
+            <Route path={RouteConstants.BOOKCREATE} element={<PrivateRoute element={<CreateBooks />} />} />
+            <Route path={RouteConstants.BOKKSDETAILS} element={<ShowBook />} />
+            <Route path={RouteConstants.BOOKSEDIT} element={<PrivateRoute element={<EditBook />} />} />
+            <Route path={RouteConstants.BOOKSDELETE} element={<PrivateRoute element={<DeleteBook />} />} />
+            <Route path={RouteConstants.BOOK_ISSUING} element={<PrivateRoute element={<IssuingBook />} />} />
 
 
-          <Route path={RouteConstants.USERSLIST} element={<PrivateRoute element={<UsersList />} />} />
-          <Route path={RouteConstants.ADMINPROFILE} element={<PrivateRoute element={<Profile />} />} />
-          <Route path={RouteConstants.CART} element={<PrivateRoute element={<BasicCard />} />} />
-          <Route path={RouteConstants.CONTACT} element={<PrivateRoute element={<ContactPage />} />} />
-          <Route path={RouteConstants.LOGOUT} element={<LogDetails handleLogout={handleLogout} />} />
-          <Route path={RouteConstants.NOTFOUND} element={<NotFound />} />
+            <Route path={RouteConstants.USERSLIST} element={<PrivateRoute element={<UsersList />} />} />
+            <Route path={RouteConstants.ADMINPROFILE} element={<PrivateRoute element={<Profile />} />} />
+            <Route path={RouteConstants.CART} element={<PrivateRoute element={<BasicCard />} />} />
+            <Route path={RouteConstants.CONTACT} element={<PrivateRoute element={<ContactPage />} />} />
+            <Route path={RouteConstants.LOGOUT} element={<LogDetails handleLogout={handleLogout} />} />
+            <Route path={RouteConstants.NOTFOUND} element={<NotFound />} />
+          </Route>
         </Routes>
       </>
     </ViewProvider>
@@ -75,4 +76,3 @@ const App = () => {
 };
 
 export default App;
- 
