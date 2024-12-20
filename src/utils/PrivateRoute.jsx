@@ -12,9 +12,6 @@ const PrivateRoute = ({ element }) => {
     if (token) {
         try {
             const decodedToken = jwtDecode(token);
-            console.log(decodedToken);
-
-
             const currentTime = Math.floor(Date.now() / 1000);
             isTokenExpired = decodedToken.exp < currentTime;
 

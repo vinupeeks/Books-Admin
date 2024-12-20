@@ -25,6 +25,7 @@ const Home = () => {
   const [totalCount, setTotalCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
   const [pageSize, setPageSize] = useState(20);
+  const [show, setShow] = useState(true);
 
   const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
@@ -107,10 +108,10 @@ const Home = () => {
             type="text"
             placeholder="Search by Book-Name"
             value={searchTerm}
-            onChange={(event) => { 
+            onChange={(event) => {
               handleSearchChange(event);
             }}
-            className="border-2 border-sky-500 rounded-lg bg-gray-100 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-sky-500 p-1 w- uppercase" 
+            className="border-2 border-sky-500 rounded-lg bg-gray-100 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-sky-500 p-1 w- uppercase"
           />
           <Link to="/books/create">
             <MdOutlineAddBox className="text-sky-800 text-4xl" />
@@ -148,6 +149,7 @@ const Home = () => {
         currentPage={currentPage}
         totalPages={totalPage}
         pageSize={pageSize}
+        show={show}
         setPageSize={setPageSize}
         onPageChange={handlePageChange}
       />
