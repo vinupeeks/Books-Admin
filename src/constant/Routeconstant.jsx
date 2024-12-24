@@ -1,13 +1,13 @@
 const RouteConstants = {
-    DASHBOARD: '/',
-    ROOT: '/home',
-    LOGIN: '/auth/admin/login',
+    ROOT: '/',
+    DASHBOARD: '/dashboard',
+    LOGIN: '/',
     BOOKS: '/books',
     BOOKSLAST: '/books/last',
     SEARCHEDBOOKS: '/books/searchedBook',
 
     INDIVIDUAL_MEMBERSHIP: '/membership/indivual',
-    FAMILY_MEMBERSHIP: 'membership/family',
+    FAMILY_MEMBERSHIP: 'membership/creation',
     FAMILY_LIST: '/membership/family/list',
     // MEMBERS_LIST: '/members',
     MEMBER_SHIP: '/membership/details',

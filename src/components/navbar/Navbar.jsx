@@ -6,12 +6,14 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import MenuItem from '@mui/material/MenuItem';
-import Menu from '@mui/material/Menu';
-import {jwtDecode} from 'jwt-decode';
+import Menu from '@mui/material/Menu'; 
 import { useNavigate } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
 import { useViewContext } from '../../context/ViewContext';
 import RouteConstants from '../../constant/Routeconstant';
+import { getDecodedToken } from '../../utils/TokenHelper';
+import { useDispatch } from 'react-redux';
+import { setLogout } from '../../redux/reducers/authReducers';
 
 export default function AppBarWithSideMenu() {
     const { setViewFormat } = useViewContext();
@@ -19,6 +21,7 @@ export default function AppBarWithSideMenu() {
     const [anchorEl, setAnchorEl] = useState(null);
     const [name, setName] = useState('Guest');
     const [role, setRole] = useState('');
+    const dispatch = useDispatch()
     const navigate = useNavigate();
 
     const handleClose = () => {
@@ -27,7 +30,12 @@ export default function AppBarWithSideMenu() {
 
     const handleLogOut = () => {
         localStorage.removeItem('BooksAdminToken');
+        if (!window.confirm("Are you sure you want to logout?")) {
+            return;
+        }
+        localStorage.removeItem('BooksAdminToken');
         navigate(RouteConstants.LOGIN);
+        dispatch(setLogout())
         enqueueSnackbar('Logged out successfully', { variant: 'success' });
     };
 
@@ -36,21 +44,21 @@ export default function AppBarWithSideMenu() {
     };
 
     useEffect(() => {
-        const Token = localStorage.getItem('BooksAdminToken');
+        // const Token = localStorage.getItem('BooksAdminToken');
+        const Token = getDecodedToken();
         if (Token) {
             try {
-                const decodedToken = jwtDecode(Token);
-                setName(decodedToken.name);
-                setRole(decodedToken.role);
+                setName(Token.name);
+                setRole(Token.role);
             } catch (error) {
                 enqueueSnackbar('Session expired. Please log in again.', { variant: 'error' });
                 handleLogOut();
             }
         }
     }, [enqueueSnackbar, navigate]);
-    
+
     return (
-        <Box sx={{ flexGrow: 1 }}>
+        <Box sx={{ flexGrow: 1, marginTop: '80px' }}>
             <AppBar position="fixed" sx={{ height: 80 }}>
                 <Toolbar>
                     <Typography

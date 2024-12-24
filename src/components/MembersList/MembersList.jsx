@@ -77,10 +77,11 @@ const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipT
 
   const BookIssueSubmit = bookQueries.BookIssueSubmitMutation(
     async (response) => {
-      window.location.reload();
-      enqueueSnackbar(`${response.data?.message}`, { variant: 'success' });
+      // window.location.reload();
+      fetchMemberships();
       handleCheckRemove();
       setLoading(false);
+      enqueueSnackbar(`${response.data?.message}`, { variant: 'success' });
     },
     {
       onError: (error) => {
@@ -88,7 +89,7 @@ const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipT
         setLoading(false);
       }
     }
-  ); 
+  );
 
   const handleBookIssueSubmit = () => {
 
@@ -112,10 +113,10 @@ const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipT
 
   const BookIssueReturn = bookQueries.BookIssueReturnMutation(
     async (response) => {
-      handleCheckRemove();
-      window.location.reload();
-      enqueueSnackbar(`${response.data?.message}`, { variant: 'success' });
+      handleCheckRemove(); 
+      fetchMemberships();
       setLoading(false);
+      enqueueSnackbar(`${response.data?.message}`, { variant: 'success' });
     },
     {
       onError: (error) => {
@@ -212,68 +213,8 @@ const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipT
   return (
     <div className=" bg-gray-50 min-h-screen">
       <br />
-      {/* 
-      <div className="overflow-x-auto bg-white shadow-lg rounded-lg">
-        <table className="min-w-full table-auto">
-          <thead className="bg-gray-300">
-            <tr>
-              <th className="px-4 py-2 text-left w-10">SL.N</th>
-              <th className="px-4 py-2 text-leftw-10">Membership ID</th>
-              <th className="px-4 py-2 text-left w-auto">Name</th>
-              <th className="px-4 py-2 text-left w-auto">Status</th>
-              <th className="px-4 py-2 text-left w-10">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {memberships?.map((membership, index) => {
-              const hasBook = membership.Issues.some((issue) => issue.Book);
-              return (
-                <tr
-                  key={membership.id}
-                  className={`border-b hover:bg-gray-100 ${hasBook ? "bg-red-100" : "bg-gray-200"
-                    }`}
-                >
-                  <td className="px-4 py-2">{index + 1}</td>
-                  <td className="px-4 py-2">{membership.memID}</td>
-                  <td className="px-4 py-2">{membership.name}</td>
-                  <td className="px-4 py-2">
-                    {membership.Issues.length > 0 ? (
-                      membership.Issues.map((issue) => (
-                        <div key={issue.id}>
-                          <p
-                            onMouseEnter={() => handleShow(issue)}
-                            // onMouseLeave={handleMouseLeave}
-                            style={{
-                              cursor: "pointer",
-                              display: "inline-block",
-                              width: "auto"
-                            }}
-                          >Book:</p> {issue.Book ? issue.Book.title : "No Book"}
-                        </div>
-                      ))
-                    ) : (
-                      <p>---</p>
-                    )}
-                  </td>
-                  <td className="px-4 py-2 text-center">
-                    <button
-                      type="button"
-                      className={`px-4 py-2 rounded-lg mr-2 ${hasBook ? "bg-red-200 hover:bg-red-100" : "bg-gray-300 hover:bg-gray-200"
-                        }`}
-                      onClick={() => handleModalOpen(membership)}
-                    >
-                      {hasBook ? "Return" : "Issue"}
-                    </button>
-                  </td>
-                </tr>
-              );
-            })}
-
-          </tbody>
-        </table>
-      </div> */}
-
-      <Modal show={bookModal} onHide={handleMouseLeave}>
+      <Modal show={bookModal} onHide={handleMouseLeave}
+        centered>
         <Modal.Header closeButton>
           <Modal.Title>Book Details</Modal.Title>
         </Modal.Header>
@@ -441,7 +382,7 @@ const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipT
                       className="px-6 py-2 bg-green-300 text-black rounded-lg hover:bg-green-400 mr-2"
                       onClick={handleBookIssueSubmit}
                     >
-                      Issue 
+                      Issue
                     </button>
                   )
                 }

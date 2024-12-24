@@ -1,17 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { Search, Users, UserCheck, UserPlus, Sliders, X } from 'lucide-react';
+import { Search, Users, UserCheck, UserPlus, Sliders, X, Library, CornerDownLeft, LibraryBig } from 'lucide-react';
 import MembersList from '../MembersList/MembersList';
 import SideMenu from '../navbar/sideMenu';
 import adminQueries from '../../queries/adminQueries';
 import { useSnackbar } from 'notistack';
+import { useNavigate } from 'react-router-dom';
 
 const DashBoard = () => {
     const [searchTerm, setSearchTerm] = useState('');
+    const [selectTerm, setSelectTerm] = useState('');
     const [membershipType, setMembershipType] = useState('');
     const [showList, setShowList] = useState(false);
     const [count, setCount] = useState(false);
+    const [booksCount, setBooksCount] = useState(null);
     const [loading, setLoading] = useState(false);
     const { enqueueSnackbar } = useSnackbar();
+    const navigate = useNavigate();
 
     const handleSearchChange = (event) => {
         const value = event.target.value;
@@ -21,6 +25,8 @@ const DashBoard = () => {
             return;
         }
         setSearchTerm(value);
+        console.log(searchTerm, selectTerm);
+
     };
     useEffect(() => {
         if (searchTerm === '' && membershipType === '') {
@@ -36,10 +42,12 @@ const DashBoard = () => {
         async (response) => {
             if (response?.data) {
                 setCount(response?.data);
+                console.log(response?.data);
+                setLoading(false);
             } else {
                 enqueueSnackbar('Error Fetching the Books And Members count..!', { variant: 'error' });
+                setLoading(false);
             }
-            setLoading(false);
         },
         {
             onError: (error) => {
@@ -48,7 +56,6 @@ const DashBoard = () => {
             },
         }
     );
-
 
     const membershipTypes = [
         // {
@@ -59,19 +66,29 @@ const DashBoard = () => {
         //     description: "View all membership types"
         // },
         {
-            key: "MC",
-            label: `Members: ${count.MembersCount} || N/A`,
-            icon: UserCheck,
+            key: "IBC",
+            label: `Issued Books: ${count.IssuedBooksCount ?? 'N/A'}`,
+            action: false,
+            icon: Library,
             background: "bg-gradient-to-r from-blue-500 to-cyan-500",
-            description: "TotalMembers Count",
+            description: "Total Issued Books Count",
             click: false,
         },
         {
             key: "BC",
-            label: `Books: ${count.BooksCount} || N/A`,
-            icon: UserCheck,
+            label: `Books: ${count.BooksCount ?? 'N/A'}`,
+            action: true,
+            icon: LibraryBig,
             background: "bg-gradient-to-r from-blue-500 to-cyan-500",
             description: "Total Books Count",
+            click: true,
+        },
+        {
+            key: "MC",
+            label: `Members: ${count.MembersCount ?? 'N/A'}`,
+            icon: Users,
+            background: "bg-gradient-to-r from-blue-500 to-cyan-500",
+            description: "Total Members Count",
             click: false,
         },
         {
@@ -99,8 +116,19 @@ const DashBoard = () => {
 
     const handleTypeChange = (type) => {
         if (type.click) {
+            if (type.action) {
+                console.log('working');
+
+                navigate('/books');
+                return;
+            }
             setMembershipType(type.key);
-            setSearchTerm(type.key);
+            if (type.key === 'I') {
+                setSelectTerm('Individual List');
+            } else {
+                setSelectTerm('family List');
+            }
+            // setSearchTerm(type.key);
         }
         return;
     };
@@ -112,7 +140,6 @@ const DashBoard = () => {
                     Membership Management
                     </h1> */}
 
-                    {/* Search Section */}
                     <div className="relative mb-6">
                         <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
                         <input
@@ -127,15 +154,24 @@ const DashBoard = () => {
                             onClick={() => {
                                 setSearchTerm('');
                                 setMembershipType('');
+                                setSelectTerm('');
                             }}
                         />
                     </div>
 
-                    {searchTerm && (
-                        <div className="bg-blue-50 border-l-4 border-blue-500 rounded-r-xl mb-6">
+                    {(searchTerm || selectTerm) && (
+                        <div className="bg-blue-50 border-l-4 border-blue-500 rounded-r-xl mb-6 flex items-center justify-between px-4 py-2">
                             <p className="text-blue-700">
-                                Searching for: <span className="font-semibold ml-2">{searchTerm}</span>
+                                Searching for: <span className="font-semibold ml-2">{searchTerm || selectTerm}</span>
                             </p>
+                            <CornerDownLeft
+                                className="text-gray-500 cursor-pointer"
+                                onClick={() => {
+                                    setSearchTerm('');
+                                    setMembershipType('');
+                                    setSelectTerm('');
+                                }}
+                            />
                         </div>
                     )}
 
@@ -151,42 +187,42 @@ const DashBoard = () => {
                             </div>
                         ) : (
                             <div className="space-y-4">
-                                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                                    {membershipTypes.map((type, index) => (
+                                {<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
+                                    {membershipTypes?.map((type, index) => (
                                         <div
                                             key={index}
                                             onClick={() => handleTypeChange(type)}
-                                            className={`w-[400px] cursor-pointer p-6 rounded-lg border-2 transition-all duration-300 ${membershipType === type.key
-                                                ? `border-${type.background.split(' ')[1]} text-${type.background.split(' ')[1]} bg-${type.background.split(' ')[0]}`
-                                                : 'border-gray-300 bg-gray-200  text-gray-800 hover:border-gray-400'
+                                            className={`relative p-6 rounded-xl shadow-lg border transition-transform transform hover:scale-105 duration-300 cursor-pointer ${membershipType === type.key
+                                                ? `border-${type.background.split(' ')[1]} bg-gradient-to-br from-cyan-500 to-blue-500 text-white`
+                                                : 'border-gray-300 bg-gray-100 text-gray-700 hover:border-gray-400 hover:shadow-md'
                                                 }`}
                                         >
-                                            <div className="flex flex-col items-center bg-gray-200 rounded-lg space-y-4">
+                                            <div className="flex flex-col items-center space-y-4">
                                                 <div
-                                                    className={`flex items-center justify-center w-20 h-20 rounded-full border ${membershipType === type.key
-                                                        ? `bg-${type.background.split(' ')[1]} text-white border-white`
-                                                        : 'bg-gray-100 text-gray-600 border-gray-300'
+                                                    className={`flex items-center justify-center w-16 h-16 rounded-full shadow-inner border-2 ${membershipType === type.key
+                                                        ? 'bg-white text-blue-500 border-white'
+                                                        : 'bg-gray-200 text-gray-600 border-gray-300'
                                                         }`}
                                                 >
-                                                    <type.icon className="w-10 h-10" />
+                                                    <type.icon className="w-8 h-8 text-black-400" />
                                                 </div>
                                                 <div className="text-center">
-                                                    <h3 className="font-semibold text-xl">{type.label}</h3>
-                                                    <p
-                                                        className={`mt-2 text-sm ${membershipType === type.key ? 'text-white' : 'text-gray-500'
-                                                            }`}
-                                                    >
+                                                    <h3 className="font-bold text-lg">{type.label}</h3>
+                                                    <p className="mt-2 text-sm text-blue-900">
                                                         {type.description}
                                                     </p>
                                                 </div>
                                             </div>
+                                            {type.click && (
+                                                <div className="absolute bottom-4 right-4 text-xs font-semibold text-gray-500">
+                                                    Clickable
+                                                </div>
+                                            )}
                                         </div>
-
-
                                     ))}
                                 </div>
+                                }
                                 {membershipType && (
-                                    // <button className="flex justify-end mt-4 w-auto p-2 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-xl hover:bg-blue-600 transition duration-300 ml-auto"
                                     <button className="w-full mt-4 p-2 bg-gradient-to-r  rounded-xl from-blue-500 to-cyan-500 transition duration-300 ml-auto"
                                         onClick={rmvBtnCase}>
                                         CLEAR

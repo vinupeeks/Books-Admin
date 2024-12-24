@@ -31,11 +31,11 @@ const CountsOfBooksAndMembersMutation = (onAdminLoginSuccess, onErrorCallback) =
         onError: onErrorCallback,
     });
 };
-
+ 
 const adminQueries = {
     adminLoginMutation,
     adminProfileMutation,
-    CountsOfBooksAndMembersMutation
+    CountsOfBooksAndMembersMutation, 
 };
 
 export default adminQueries;
