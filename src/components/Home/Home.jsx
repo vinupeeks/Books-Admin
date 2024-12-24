@@ -120,7 +120,7 @@ const Home = () => {
       </div>
       {loading ? (
         <Spinner />
-      ) : books.length > 0 ? (
+      ) : books?.length > 0 ? (
         viewFormat === 'table' ? <BooksTable books={books} /> : <BooksCard books={books} />
       ) : (
         <div className="flex flex-col items-center justify-center h-40 bg-gray-100 rounded-md shadow-md">

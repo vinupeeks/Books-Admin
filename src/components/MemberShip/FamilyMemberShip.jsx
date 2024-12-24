@@ -155,7 +155,7 @@ const FamilyMemberShip = () => {
   }
 
   return (
-    <div className="p-2 m-5">
+    <div className="p-2 m-5 mt-[80px]">
       <div
         className="max-w-6xl flex flex-col border border-gray-300 rounded-lg shadow-lg mx-auto p-5 bg-white"
       >
@@ -331,6 +331,8 @@ const FamilyMemberShip = () => {
               onHide={handleClose}
               backdrop="static"
               keyboard={false}
+              centered
+              className="shadow-2xl"
             >
               <Modal.Header closeButton>
                 <Modal.Title>{updatedMembers?.length > 1 ? "Memberships Details" : "Membership Details"}</Modal.Title>

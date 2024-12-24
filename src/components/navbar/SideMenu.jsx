@@ -4,9 +4,13 @@ import AppBarWithSideMenu from './Navbar';
 import RouteConstants from '../../constant/Routeconstant';
 import { useSnackbar } from 'notistack';
 import adminQueries from '../../queries/adminQueries';
+import { Layout, BookOpen, Users, UserCircle, LogOut, Home, NotebookPen } from 'lucide-react';
+import { useDispatch } from 'react-redux';
+import { setLogout } from '../../redux/reducers/authReducers';
 
 function SideMenu() {
     const navigate = useNavigate();
+    const dispatch = useDispatch()
     const { enqueueSnackbar } = useSnackbar();
     const handleLogOut = () => {
 
@@ -15,6 +19,7 @@ function SideMenu() {
         }
         localStorage.removeItem('BooksAdminToken');
         navigate(RouteConstants.LOGIN);
+        dispatch(setLogout())
         enqueueSnackbar('Logged out successfully', { variant: 'success' });
     };
 
@@ -23,120 +28,88 @@ function SideMenu() {
             <AppBarWithSideMenu />
 
             <div
-                className="fixed h-full border shadow-md"
-                style={{ backgroundColor: '#2D82D6', width: '300px' }}
+                className="fixed top-[80px] h-[calc(100%-80px)] border-r shadow-lg"
+                style={{
+                    backgroundColor: '#2D82D6',
+                    width: '300px',
+                    zIndex: 1100
+                }}
             >
-                <nav className="mt-3 w-[300px]">
-                    <ul className="list-none space-y-3">
+                <nav className="flex flex-col h-full py-6">
+                    <div className="px-4 mb-6">
+                        <div className="flex items-center gap-3 text-white mb-2">
+                            <Layout className="w-5 h-5" />
+                            <span className="font-semibold text-lg">Navigation</span>
+                        </div>
+                    </div>
+
+                    <ul className="list-none space-y-1 px-3 flex-1">
                         <li>
                             <a
-                                // href={RouteConstants.DASHBOARD}
                                 onClick={() => navigate(RouteConstants.DASHBOARD)}
-                                className="text-white font-semibold block px-4 py-2 rounded hover:bg-blue-300 transition no-underline"
+                                className="flex items-center gap-3 text-white font-medium px-4 py-3 rounded-lg hover:bg-blue-400/30 transition-colors duration-200 no-underline"
                             >
-                                Dashboard
+                                <Home className="w-5 h-5" />
+                                <span>Dashboard</span>
                             </a>
                         </li>
 
                         <li>
                             <a
-                                // href={RouteConstants.FAMILY_MEMBERSHIP}
                                 onClick={() => navigate(RouteConstants.FAMILY_MEMBERSHIP)}
-                                className="text-white font-semibold block px-4 py-2 rounded hover:bg-blue-300 transition no-underline"
+                                className="flex items-center gap-3 text-white font-medium px-4 py-3 rounded-lg hover:bg-blue-400/30 transition-colors duration-200 no-underline"
                             >
-                                Membership Creation
+                                <Users className="w-5 h-5" />
+                                <span>Membership Creation</span>
                             </a>
                         </li>
 
-                        <li>
-                            <div>
-                                <a
-                                    // href={RouteConstants.ROOT}
-                                    onClick={() => navigate(RouteConstants.ROOT)}
-                                    className="text-white font-semibold block px-4 py-2 rounded hover:bg-blue-300 transition no-underline"
-                                >
-                                    Manage Books
-                                </a>
-                                <ul className="pl-6 mt-2 space-y-2">
-                                    <li>
-                                        <a
-                                            // href={RouteConstants.BOOKCREATE}
-                                            onClick={() => navigate(RouteConstants.BOOKCREATE)}
-                                            className="text-white font-semibold block px-4 py-2 rounded hover:bg-blue-300 transition no-underline"
-                                        >
-                                            Add Product
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
+                        <li className="space-y-1">
+                            <a
+                                onClick={() => navigate(RouteConstants.BOOKS)}
+                                className="flex items-center gap-3 text-white font-medium px-4 py-3 rounded-lg hover:bg-blue-400/30 transition-colors duration-200 no-underline"
+                            >
+                                <BookOpen className="w-5 h-5" />
+                                <span>Manage Books</span>
+                            </a>
+                            <ul className="pl-12 space-y-1">
+                                <li>
+                                    <a
+                                        onClick={() => navigate(RouteConstants.BOOKCREATE)}
+                                        className="flex items-center text-white/90 font-medium px-4 py-2 rounded-lg hover:bg-blue-400/30 transition-colors duration-200 text-sm no-underline"
+                                    >
+                                        <NotebookPen className="w-5 h-5" />
+                                        <span>&nbsp;Add Book</span>
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
 
-
-                        {/* <li>
-                            <div>
-                                <a
-                                    // href={RouteConstants.ROOT}
-                                    onClick={() => navigate(RouteConstants.DASHBOARD)}
-                                    className="text-white font-semibold block px-4 py-2 rounded hover:bg-blue-300 transition no-underline"
-                                >
-                                    Members List
-                                </a>
-                                <ul className="pl-6 mt-2 space-y-2">
-                                    <li>
-                                        <a
-                                            // href={RouteConstants.BOOKCREATE}
-                                            // onClick={() => navigate(RouteConstants.BOOKCREATE)}
-                                            className="text-white font-semibold block px-4 py-2 rounded hover:bg-blue-300 transition no-underline"
-                                        >
-                                            All
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a
-                                            // href={RouteConstants.BOOKCREATE}
-                                            // onClick={() => navigate(RouteConstants.BOOKCREATE)}
-                                            className="text-white font-semibold block px-4 py-2 rounded hover:bg-blue-300 transition no-underline"
-                                        >
-                                            Individual
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a
-                                            // href={RouteConstants.BOOKCREATE}
-                                            // onClick={() => navigate(RouteConstants.BOOKCREATE)}
-                                            className="text-white font-semibold block px-4 py-2 rounded hover:bg-blue-300 transition no-underline"
-                                        >
-                                            Family
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li> */}
                         <li>
                             <a
-                                // href={RouteConstants.ADMINPROFILE}
                                 onClick={() => navigate(RouteConstants.ADMINPROFILE)}
-                                className="text-white font-semibold block px-4 py-2 rounded hover:bg-blue-300 transition no-underline"
+                                className="flex items-center gap-3 text-white font-medium px-4 py-3 rounded-lg hover:bg-blue-400/30 transition-colors duration-200 no-underline"
                             >
-                                Profile
+                                <UserCircle className="w-5 h-5" />
+                                <span>Profile</span>
                             </a>
-                        </li>
-
-                        <li>
-                            <div
-                                onClick={handleLogOut}
-                                className="text-white font-semibold block px-4 py-2 rounded hover:bg-blue-300 transition no-underline cursor-pointer"
-                            >
-                                Log Out
-                            </div>
                         </li>
                     </ul>
+
+                    <div className="px-3 mt-auto">
+                        <button
+                            onClick={handleLogOut}
+                            className="flex items-center gap-3 text-white font-medium px-4 py-3 rounded-lg hover:bg-blue-400/30 transition-colors duration-200 w-full"
+                        >
+                            <LogOut className="w-5 h-5" />
+                            <span>Log Out</span>
+                        </button>
+                    </div>
                 </nav>
             </div>
 
-
-            {/* Scrollable Main Content */}
-            <div className="flex-1 overflow-y-auto ml-[300px] mt-[80px]">
+            {/* Main Content */}
+            <div className="flex-1 overflow-y-auto ml-[280px] mt-[80px] relative z-10">
                 <Outlet />
             </div>
         </div>

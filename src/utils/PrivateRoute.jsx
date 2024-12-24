@@ -29,7 +29,8 @@ const PrivateRoute = ({ element }) => {
         return <Navigate to={RouteConstants.LOGIN} />;
     }
 
-    return isAdmin ? element : <Navigate to={RouteConstants.LOGIN} />;
+    // return isAdmin ? element : <Navigate to={RouteConstants.LOGIN} />;
+    return isAdmin ? element : <Navigate to={'/'} />;
 };
 
 export default PrivateRoute;
