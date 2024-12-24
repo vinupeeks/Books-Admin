@@ -1,11 +1,15 @@
-import React, { useState, useEffect } from 'react'; 
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
-import Spinner from '../../utils/Spinner'; 
+import Spinner from '../../utils/Spinner';
 import RouteConstants from '../../constant/Routeconstant';
 import adminQueries from '../../queries/adminQueries';
+import { useDispatch } from 'react-redux';
+import { setLogout } from '../../redux/reducers/authReducers';
 
 const ProfilePage = () => {
+    const dispatch = useDispatch()
+
     const navigate = useNavigate();
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -20,8 +24,7 @@ const ProfilePage = () => {
         getProfileDetails.mutate();
     }
     const getProfileDetails = adminQueries.adminProfileMutation(
-        async (response) => {
-            console.log(response); 
+        async (response) => { 
             setUser(response?.data);
             setLoading(false);
         },
@@ -33,12 +36,23 @@ const ProfilePage = () => {
         }
     );
 
+    // const handleLogout = () => {
+    //     localStorage.removeItem('BooksAdminToken');
+    //     navigate(RouteConstants.LOGIN);
+    //     window.location.reload();
+    //     enqueueSnackbar('Admin Logged-Out Successfully', { variant: 'success' });
+    // };
+
     const handleLogout = () => {
+
+        if (!window.confirm("Are you sure you want to logout?")) {
+            return;
+        }
         localStorage.removeItem('BooksAdminToken');
         navigate(RouteConstants.LOGIN);
-        window.location.reload();
-        enqueueSnackbar('Admin Logged-Out Successfully', { variant: 'success' });
-    };
+        dispatch(setLogout())
+        enqueueSnackbar('Logged out successfully', { variant: 'success' });
+    }
 
     if (loading) {
         return (
@@ -75,7 +89,7 @@ const ProfilePage = () => {
                             </div>
                         </div>
                     ) : (
-                        <p className="text-center text-gray-600">No user data found.</p>
+                        <p className="text-center text-gray-600">No Admin data found.</p>
                     )}
                 </div>
             </div>

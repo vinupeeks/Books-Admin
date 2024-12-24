@@ -7,6 +7,8 @@ import RouteConstants from '../../constant/Routeconstant';
 import adminQueries from '../../queries/adminQueries.jsx';
 import logo from '../../assets/images/Logo.jpg';
 import { jwtDecode } from 'jwt-decode';
+import { useDispatch } from 'react-redux';
+import { setLogin } from '../../redux/reducers/authReducers.js';
 
 const AdminLogin = () => {
     const [formData, setFormData] = useState({ email: '', password: '' });
@@ -14,6 +16,8 @@ const AdminLogin = () => {
     const { enqueueSnackbar } = useSnackbar();
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
+
+    const dispatch = useDispatch()
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -26,7 +30,8 @@ const AdminLogin = () => {
         async (response) => {
             if (response?.data?.token) {
                 const token = response.data.token;
-                localStorage.setItem('BooksAdminToken', token);
+                // localStorage.setItem('BooksAdminToken', token);
+                dispatch(setLogin(token));
                 enqueueSnackbar('Login successful', { variant: 'success' });
                 navigate(RouteConstants.DASHBOARD);
             } else {
@@ -54,7 +59,7 @@ const AdminLogin = () => {
             try {
                 const decoded = jwtDecode(token);
                 if (decoded.exp * 1000 > Date.now()) {
-                    navigate(RouteConstants.DASHBOARD);
+                    navigate(RouteConstants.ROOT);
                 }
             } catch {
                 localStorage.removeItem('BooksAdminToken');
