@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import MenuItem from '@mui/material/MenuItem';
-import Menu from '@mui/material/Menu'; 
+import Menu from '@mui/material/Menu';
 import { useNavigate } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
 import { useViewContext } from '../../context/ViewContext';
@@ -14,6 +14,7 @@ import RouteConstants from '../../constant/Routeconstant';
 import { getDecodedToken } from '../../utils/TokenHelper';
 import { useDispatch } from 'react-redux';
 import { setLogout } from '../../redux/reducers/authReducers';
+import { LogOut } from 'lucide-react';
 
 export default function AppBarWithSideMenu() {
     const { setViewFormat } = useViewContext();
@@ -97,8 +98,9 @@ export default function AppBarWithSideMenu() {
                         open={Boolean(anchorEl)}
                         onClose={handleClose}
                     >
-                        <MenuItem onClick={() => navigate(RouteConstants.ADMINPROFILE)}>Profile</MenuItem>
-                        <MenuItem onClick={handleLogOut}>Log Out</MenuItem>
+                        {/* <MenuItem onClick={() => navigate(RouteConstants.ADMINPROFILE)}>Profile</MenuItem> */}
+                        <MenuItem onClick={handleLogOut}>
+                            Log Out &nbsp;<LogOut className="w-5 h-5" /></MenuItem>
                     </Menu>
                 </Toolbar>
             </AppBar>

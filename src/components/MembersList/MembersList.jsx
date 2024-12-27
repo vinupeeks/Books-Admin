@@ -42,10 +42,11 @@ const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipT
   const getMemberships = membershipsQueries.membershipListMutation(
     async (response) => {
       setMemberships(response?.data?.data?.items);
-      // setMemberships(response?.data || []);
+      // setMemberships(response?.data || []); 
       setTotalCount(response?.data?.data?.totalItems);
       setTotalPage(response?.data?.data?.totalPages);
       setLoading(false);
+
     },
     {
       onError: (error) => {
@@ -113,7 +114,7 @@ const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipT
 
   const BookIssueReturn = bookQueries.BookIssueReturnMutation(
     async (response) => {
-      handleCheckRemove(); 
+      handleCheckRemove();
       fetchMemberships();
       setLoading(false);
       enqueueSnackbar(`${response.data?.message}`, { variant: 'success' });
@@ -391,74 +392,83 @@ const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipT
           </div>
         )
       }
+      {memberships?.length > 0 ? (
+        <div className="overflow-x-auto bg-white shadow-lg rounded-lg">
+          <table className="min-w-full table-auto">
+            <thead className="bg-gray-300">
+              <tr>
+                <th className="px-4 py-2 text-left w-10">SL.N</th>
+                <th className="px-4 py-2 text-leftw-10">Membership ID</th>
+                <th className="px-4 py-2 text-left w-auto">Name</th>
+                <th className="px-4 py-2 text-left w-auto">Status</th>
+                <th className="px-4 py-2 text-left w-10">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {memberships?.map((membership, index) => {
+                const hasBook = membership.Issues.some((issue) => issue.Book);
+                return (
+                  <tr
+                    key={membership.id}
+                    // className={`border-b hover:bg-gray-100 ${hasBook ? "bg-red-100" : "bg-gray-200"
+                    className={`border-b hover:bg-gray-100 ${hasBook ? "bg-gradient-to-r from-cyan-100 to-blue-100" : "bg-gray-200"
+                      }`}
+                  >
+                    <td className="px-4 py-2">{index + 1}</td>
+                    <td className="px-4 py-2">{membership.memID}</td>
+                    <td className="px-4 py-2">{membership.name}</td>
+                    <td className="px-4 py-2">
+                      {membership.Issues.length > 0 ? (
+                        membership.Issues.map((issue) => (
+                          <div key={issue.id}>
+                            <p
+                              onMouseEnter={() => handleShow(issue)}
+                              // onMouseLeave={handleMouseLeave}
+                              style={{
+                                cursor: "pointer",
+                                display: "inline-block",
+                                width: "auto"
+                              }}
+                            >Book:</p> {issue.Book ? issue.Book.title : "No Book"}
+                          </div>
+                        ))
+                      ) : (
+                        <p>---</p>
+                      )}
+                    </td>
+                    <td className="px-4 py-2 text-center">
+                      <button
+                        type="button"
+                        className={`px-4 py-2 rounded-lg mr-2 ${hasBook ? "bg-gradient-to-r from-cyan-200 to-blue-200 hover:bg-red-100" : "bg-gray-300 hover:bg-gray-200"
+                          }`}
+                        onClick={() => handleModalOpen(membership)}
+                      >
+                        {hasBook ? "Return" : "Issue"}
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
 
-      <div className="overflow-x-auto bg-white shadow-lg rounded-lg">
-        <table className="min-w-full table-auto">
-          <thead className="bg-gray-300">
-            <tr>
-              <th className="px-4 py-2 text-left w-10">SL.N</th>
-              <th className="px-4 py-2 text-leftw-10">Membership ID</th>
-              <th className="px-4 py-2 text-left w-auto">Name</th>
-              <th className="px-4 py-2 text-left w-auto">Status</th>
-              <th className="px-4 py-2 text-left w-10">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {memberships?.map((membership, index) => {
-              const hasBook = membership.Issues.some((issue) => issue.Book);
-              return (
-                <tr
-                  key={membership.id}
-                  // className={`border-b hover:bg-gray-100 ${hasBook ? "bg-red-100" : "bg-gray-200"
-                  className={`border-b hover:bg-gray-100 ${hasBook ? "bg-gradient-to-r from-cyan-100 to-blue-100" : "bg-gray-200"
-                    }`}
-                >
-                  <td className="px-4 py-2">{index + 1}</td>
-                  <td className="px-4 py-2">{membership.memID}</td>
-                  <td className="px-4 py-2">{membership.name}</td>
-                  <td className="px-4 py-2">
-                    {membership.Issues.length > 0 ? (
-                      membership.Issues.map((issue) => (
-                        <div key={issue.id}>
-                          <p
-                            onMouseEnter={() => handleShow(issue)}
-                            // onMouseLeave={handleMouseLeave}
-                            style={{
-                              cursor: "pointer",
-                              display: "inline-block",
-                              width: "auto"
-                            }}
-                          >Book:</p> {issue.Book ? issue.Book.title : "No Book"}
-                        </div>
-                      ))
-                    ) : (
-                      <p>---</p>
-                    )}
-                  </td>
-                  <td className="px-4 py-2 text-center">
-                    <button
-                      type="button"
-                      className={`px-4 py-2 rounded-lg mr-2 ${hasBook ? "bg-gradient-to-r from-cyan-200 to-blue-200 hover:bg-red-100" : "bg-gray-300 hover:bg-gray-200"
-                        }`}
-                      onClick={() => handleModalOpen(membership)}
-                    >
-                      {hasBook ? "Return" : "Issue"}
-                    </button>
-                  </td>
-                </tr>
-              );
-            })}
-
-          </tbody>
-        </table>
-      </div>
-      <Pagination
-        currentPage={currentPage}
-        totalPages={totalPage}
-        pageSize={pageSize}
-        setPageSize={setPageSize}
-        show={show}
-        onPageChange={handlePageChange} />
+            </tbody>
+          </table>
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPage}
+            pageSize={pageSize}
+            setPageSize={setPageSize}
+            show={show}
+            onPageChange={handlePageChange} />
+          <br />
+        </div>
+      ) : (
+        <div className="flex flex-col items-center justify-center h-40 bg-gray-100 rounded-md shadow-md"> 
+          <h2 className="mt-4 text-lg font-semibold text-gray-700">No Members Found</h2>
+          <p className="mt-2 text-sm text-gray-500">
+            We couldn't find any members matching your search. Try modifying your criteria.
+          </p>
+        </div>
+      )}
     </div >
   );
 };

@@ -20,7 +20,7 @@ const DeleteBook = () => {
 
       setLoading(false);
       enqueueSnackbar(`${response.data.message} successfully..!`, { variant: 'success' });
-      navigate(RouteConstants.ROOT);
+      navigate(RouteConstants.BOOKS);
     },
     {
       onError: (error) => {
@@ -64,10 +64,11 @@ const DeleteBook = () => {
 
 
   return (
-    <div className='p-4'>
+    <div className="p-6 px-10">
+      <BackButton destination='/books' />
       {loading && <Spinner />}
       <div className='flex flex-col items-center border-2 border-red-500 rounded-xl w-[600px] p-8 mx-auto shadow-lg'>
-        <h1 className='text-3xl text-center'>DELETE BOOK</h1> 
+        <h1 className='text-3xl text-center'>DELETE BOOK</h1>
         <hr className="my-2 border-t-4 border-red-500 w-full" />
         <h6 className='text-2xl font-bold text-red-600 mb-4'>
           Are you sure you want to delete this book?
@@ -79,7 +80,7 @@ const DeleteBook = () => {
           <p><b>Price :</b> {book.Price && `RS ${book.Price}` || 'N/A'}</p>
           <p><b>Donated By :</b> {book.DonatedBy || 'N/A'}</p>
           <p><b>Stock :</b> {book.Stock || 'N/A'}</p>
-        </div> 
+        </div>
         <hr className="my-2 border-t-4 border-red-500 w-full" />
         <button
           className='p-4 bg-red-500 text-white font-medium rounded-lg hover:bg-red-600 transition'
