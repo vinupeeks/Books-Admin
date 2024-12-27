@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import Spinner from '../../utils/Spinner';
 import { useSnackbar } from 'notistack';
 import bookQueries from '../../queries/bookQueries';
+import BackButton from '../../utils/BackButton';
 
 const ShowBook = () => {
   const [book, setBook] = useState({});
@@ -12,7 +13,7 @@ const ShowBook = () => {
   const { enqueueSnackbar } = useSnackbar();
 
   const getBookDetail = bookQueries.bookByIdMutation(
-    async (response) => { 
+    async (response) => {
       setBook(response?.data || []);
       setLoading(false);
     },
@@ -33,7 +34,8 @@ const ShowBook = () => {
     fetchBook();
   }, [id]);
 
-  return (<div className="p-6 flex justify-center items-center h-full bg-gray-50">
+  return (<div className="p-6 px-10 flex-row justify-center items-center h-full bg-gray-50">
+    <BackButton destination='/books' />
     <div className="flex flex-col w-[800px] mx-auto h-auto bg-white shadow-lg rounded-lg p-6">
       {loading ? (
         <Spinner />

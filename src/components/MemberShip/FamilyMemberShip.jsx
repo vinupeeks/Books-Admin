@@ -6,6 +6,7 @@ import axios from "axios";
 import { Button } from "react-bootstrap";
 import membershipsQueries from "../../queries/membershipQueries";
 import { useSnackbar } from "notistack";
+import BackButton from "../../utils/BackButton";
 
 const InputField = ({ label, type, value, onChange, required }) => (
   <div>
@@ -133,10 +134,41 @@ const FamilyMemberShip = () => {
     }
   };
 
-  const handleCancelBtn = () => {
+  // const handleCancelBtn = () => {
 
-    if (!window.confirm("Are you sure you want to continue?")) {
-      return;
+  //   if (!window.confirm("Are you sure you want to continue?")) {
+  //     return;
+  //   }
+  //   setFormData({
+  //     members: [
+  //       {
+  //         name: "",
+  //         contactNumber: "",
+  //         towerName: "",
+  //         floorNumber: "",
+  //         flatType: "",
+  //         dateOfBirth: "",
+  //       },
+  //     ],
+  //     membershipType: "single",
+  //   });
+  //   navigate(RouteConstants.DASHBOARD)
+  // }
+  const handleCancelBtn = () => {
+    const hasDataLoaded = formData.members.some(
+      (member) =>
+        member.name ||
+        member.contactNumber ||
+        member.towerName ||
+        member.floorNumber ||
+        member.flatType ||
+        member.dateOfBirth
+    );
+
+    if (hasDataLoaded) {
+      if (!window.confirm("Are you sure you want to continue?")) {
+        return;
+      }
     }
     setFormData({
       members: [
@@ -151,11 +183,13 @@ const FamilyMemberShip = () => {
       ],
       membershipType: "single",
     });
-    navigate(RouteConstants.DASHBOARD)
-  }
+    navigate(RouteConstants.DASHBOARD);
+  };
+
 
   return (
     <div className="p-2 m-5 mt-[80px]">
+      {/* <BackButton destination='/dashboard' /><br /> */}
       <div
         className="max-w-6xl flex flex-col border border-gray-300 rounded-lg shadow-lg mx-auto p-5 bg-white"
       >

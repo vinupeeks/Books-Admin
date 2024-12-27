@@ -85,7 +85,7 @@ function SideMenu() {
                             </ul>
                         </li>
 
-                        <li>
+                        {/* <li>
                             <a
                                 onClick={() => navigate(RouteConstants.ADMINPROFILE)}
                                 className="flex items-center gap-3 text-white font-medium px-4 py-3 rounded-lg hover:bg-blue-400/30 transition-colors duration-200 no-underline"
@@ -93,10 +93,10 @@ function SideMenu() {
                                 <UserCircle className="w-5 h-5" />
                                 <span>Profile</span>
                             </a>
-                        </li>
+                        </li> */}
                     </ul>
 
-                    <div className="px-3 mt-auto">
+                    {/* <div className="px-3 mt-auto">
                         <button
                             onClick={handleLogOut}
                             className="flex items-center gap-3 text-white font-medium px-4 py-3 rounded-lg hover:bg-blue-400/30 transition-colors duration-200 w-full"
@@ -104,7 +104,7 @@ function SideMenu() {
                             <LogOut className="w-5 h-5" />
                             <span>Log Out</span>
                         </button>
-                    </div>
+                    </div> */}
                 </nav>
             </div>
 

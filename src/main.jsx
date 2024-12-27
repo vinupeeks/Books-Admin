@@ -13,7 +13,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 const queryClient = new QueryClient();
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <BrowserRouter>
+  <BrowserRouter basename="/library/">
     <QueryClientProvider client={queryClient}>
       <SnackbarProvider>
         <Provider store={store}>

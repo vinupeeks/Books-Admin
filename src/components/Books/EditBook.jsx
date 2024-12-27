@@ -58,7 +58,7 @@ const EditBook = () => {
     async (response) => {
       setLoading(false);
       enqueueSnackbar(`${response.data.message} successfully..!`, { variant: 'success' });
-      navigate(RouteConstants.ROOT);
+      navigate(RouteConstants.BOOKS);
     },
     {
       onError: (error) => {
@@ -80,87 +80,90 @@ const EditBook = () => {
       DonatedBy: donatedBy,
       status
     };
-    setLoading(true);
+    // setLoading(true);
     editBook.mutateAsync(data);
   };
 
   return (
-    <div className="p-6">
-      {loading && <Spinner />}
-      <div className="flex flex-col border border-gray-300 rounded-lg shadow-lg w-full max-w-2xl mx-auto p-6 bg-white">
-        <h1 className="text-3xl font-bold text-center mb-6 ">UPDATE BOOK</h1>
-        <hr className="my-2 border-t-2 border-gray-600" />
-        {/* Title Field */}
-        <div className="mb-4">
-          <label className="block text-lg font-medium text-gray-600 mb-2">Title</label>
-          <input
-            type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-400 focus:outline-none"
-            placeholder="Enter book title"
-          />
-        </div>
-        {/* Author Field */}
-        <div className="mb-4">
-          <label className="block text-lg font-medium text-gray-600 mb-2">Author</label>
-          <input
-            type="text"
-            value={author}
-            onChange={(e) => setAuthor(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-400 focus:outline-none"
-            placeholder="Enter author's name"
-          />
-        </div>
-        {/* Stock Field */}
-        <div className="mb-4">
-          <label className="block text-lg font-medium text-gray-600 mb-2">Stock</label>
-          <input
-            type="number"
-            value={stock}
-            min={issuedCount}
-            onChange={(e) => setStock(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-400 focus:outline-none"
-            placeholder="Enter stock quantity"
-          />
-        </div>
-        {/* ISBN Field */}
-        <div className="mb-4">
-          <label className="block text-lg font-medium text-gray-600 mb-2">ISBN</label>
-          <input
-            type="text"
-            value={ISBN}
-            min={0}
-            onChange={(e) => setISBN(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-400 focus:outline-none"
-            placeholder="Enter ISBN"
-          />
-        </div>
-        {/* Price Field */}
-        <div className="mb-4">
-          <label className="block text-lg font-medium text-gray-600 mb-2">Price</label>
-          <input
-            type="number"
-            value={price}
-            min={0}
-            onChange={(e) => setPrice(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-400 focus:outline-none"
-            placeholder="Enter price"
-          />
-        </div>
-        {/* Donated By Field */}
-        <div className="mb-4">
-          <label className="block text-lg font-medium text-gray-600 mb-2">Donated By</label>
-          <input
-            type="text"
-            value={donatedBy}
-            onChange={(e) => setDonatedBy(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-400 focus:outline-none"
-            placeholder="Enter donor's name"
-          />
-        </div>
-        {/* Status Field */}
-        {/* <div className="mb-4">
+    <div className="p-6 px-10">
+      {loading ? <Spinner />
+        : (
+          <div>
+            <BackButton destination='/books' />
+            <div className="flex flex-col border border-gray-300 rounded-lg shadow-lg w-full max-w-2xl mx-auto p-6 bg-white">
+              <h1 className="text-3xl font-bold text-center mb-6 ">UPDATE BOOK</h1>
+              <hr className="my-2 border-t-2 border-gray-600" />
+              {/* Title Field */}
+              <div className="mb-4">
+                <label className="block text-lg font-medium text-gray-600 mb-2">Title</label>
+                <input
+                  type="text"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-400 focus:outline-none"
+                  placeholder="Enter book title"
+                />
+              </div>
+              {/* Author Field */}
+              <div className="mb-4">
+                <label className="block text-lg font-medium text-gray-600 mb-2">Author</label>
+                <input
+                  type="text"
+                  value={author}
+                  onChange={(e) => setAuthor(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-400 focus:outline-none"
+                  placeholder="Enter author's name"
+                />
+              </div>
+              {/* Stock Field */}
+              <div className="mb-4">
+                <label className="block text-lg font-medium text-gray-600 mb-2">Stock</label>
+                <input
+                  type="number"
+                  value={stock}
+                  min={issuedCount}
+                  onChange={(e) => setStock(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-400 focus:outline-none"
+                  placeholder="Enter stock quantity"
+                />
+              </div>
+              {/* ISBN Field */}
+              <div className="mb-4">
+                <label className="block text-lg font-medium text-gray-600 mb-2">ISBN</label>
+                <input
+                  type="text"
+                  value={ISBN}
+                  min={0}
+                  onChange={(e) => setISBN(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-400 focus:outline-none"
+                  placeholder="Enter ISBN"
+                />
+              </div>
+              {/* Price Field */}
+              <div className="mb-4">
+                <label className="block text-lg font-medium text-gray-600 mb-2">Price</label>
+                <input
+                  type="number"
+                  value={price}
+                  min={0}
+                  onChange={(e) => setPrice(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-400 focus:outline-none"
+                  placeholder="Enter price"
+                />
+              </div>
+              {/* Donated By Field */}
+              <div className="mb-4">
+                <label className="block text-lg font-medium text-gray-600 mb-2">Donated By</label>
+                <input
+                  type="text"
+                  value={donatedBy}
+                  onChange={(e) => setDonatedBy(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-400 focus:outline-none"
+                  placeholder="Enter donor's name"
+                />
+              </div>
+              {/* Status Field */}
+              {/* <div className="mb-4">
           <label className="block text-lg font-medium text-gray-600 mb-2">Status</label>
           <input
             type="text"
@@ -170,14 +173,16 @@ const EditBook = () => {
             placeholder="Enter status"
           />
         </div> */}
-        {/* Save Button */}
-        <button
-          onClick={handleEditBook}
-          className="w-full py-2 px-4 bg-sky-500 text-white text-lg font-medium rounded-lg hover:bg-sky-600 focus:ring-2 focus:ring-sky-400 focus:outline-none transition"
-        >
-          Save
-        </button>
-      </div>
+              {/* Save Button */}
+              <button
+                onClick={handleEditBook}
+                className="w-full py-2 px-4 bg-sky-500 text-white text-lg font-medium rounded-lg hover:bg-sky-600 focus:ring-2 focus:ring-sky-400 focus:outline-none transition"
+              >
+                Save
+              </button>
+            </div>
+          </div>
+        )}
     </div>
 
   );

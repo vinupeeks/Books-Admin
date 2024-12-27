@@ -41,8 +41,7 @@ const DashBoard = () => {
     const CountsOfBooksAndMembers = adminQueries.CountsOfBooksAndMembersMutation(
         async (response) => {
             if (response?.data) {
-                setCount(response?.data);
-                console.log(response?.data);
+                setCount(response?.data); 
                 setLoading(false);
             } else {
                 enqueueSnackbar('Error Fetching the Books And Members count..!', { variant: 'error' });
@@ -84,12 +83,12 @@ const DashBoard = () => {
             click: true,
         },
         {
-            key: "MC",
+            key: "A",
             label: `Members: ${count.MembersCount ?? 'N/A'}`,
             icon: Users,
             background: "bg-gradient-to-r from-blue-500 to-cyan-500",
-            description: "Total Members Count",
-            click: false,
+            description: "All membership accounts",
+            click: true,
         },
         {
             key: "I",
@@ -125,9 +124,13 @@ const DashBoard = () => {
             setMembershipType(type.key);
             if (type.key === 'I') {
                 setSelectTerm('Individual List');
-            } else {
-                setSelectTerm('family List');
             }
+            else if (type.key === 'A') {
+                setSelectTerm('All Members List');
+            } else {
+                setSelectTerm('Family List');
+            }
+
             // setSearchTerm(type.key);
         }
         return;
