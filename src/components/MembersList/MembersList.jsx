@@ -260,7 +260,7 @@ const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipT
             className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50"
             onClick={handleModalClose}
           >
-            <div className="bg-white p-6 rounded-lg shadow-lg w-[700px] max-h-[90vh] overflow-y-auto"
+            <div className="bg-white p-6 rounded-lg shadow-lg w-[700px] max-h-[75vh] overflow-y-auto"
               onClick={(e) => e.stopPropagation()}
             >
               <h2 className="text-2xl font-semibold mb-4">Membership Details</h2>

@@ -138,14 +138,14 @@ const DashBoard = () => {
     return (
         <div className="w-full ms-1 min-h-screen bg-gray shadow-2xl overflow-y-auto grid md:grid-cols-6">
             <div className="col-span-6 p-4">
-                <div className="relative mb-6">
+                <div className="relative mb-3">
                     <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
                     <input
                         type="text"
                         placeholder="Search members by Name, ID, or Phone number"
                         value={searchTerm}
                         onChange={handleSearchChange}
-                        className="w-full pl-12 pr-4 py-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700"
+                        className="w-full h-5 pl-12 pr-4 py-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700"
                     />
                     <X
                         className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 cursor-pointer"
@@ -190,7 +190,7 @@ const DashBoard = () => {
                                     <div
                                         key={index}
                                         onClick={() => handleTypeChange(type)}
-                                        className={`relative p-6 rounded-xl shadow-lg border transition-transform transform hover:scale-105 duration-300 cursor-pointer ${membershipType === type.key
+                                        className={`relative p-6 rounded-xl h-fit shadow-lg border transition-transform transform hover:scale-105 duration-300 cursor-pointer ${membershipType === type.key
                                                 ? `border-${type.background.split(' ')[1]} bg-gradient-to-br from-cyan-500 to-blue-500 text-white`
                                                 : 'border-gray-300 bg-gray-100 text-gray-700 hover:border-gray-400 hover:shadow-md'
                                             }`}
