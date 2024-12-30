@@ -30,7 +30,7 @@ const AdminLogin = () => {
         async (response) => {
             if (response?.data?.token) {
                 const token = response.data.token;
-                // localStorage.setItem('BooksAdminToken', token);
+                localStorage.setItem('BooksAdminToken', token);
                 dispatch(setLogin(token));
                 enqueueSnackbar('Login successful', { variant: 'success' });
                 navigate(RouteConstants.DASHBOARD);

@@ -36,12 +36,12 @@ function SideMenu() {
                 }}
             >
                 <nav className="flex flex-col h-full py-6">
-                    <div className="px-4 mb-6">
+                    {/* <div className="px-4 mb-6">
                         <div className="flex items-center gap-3 text-white mb-2">
                             <Layout className="w-5 h-5" />
                             <span className="font-semibold text-lg">Navigation</span>
                         </div>
-                    </div>
+                    </div> */}
 
                     <ul className="list-none space-y-1 px-3 flex-1">
                         <li>
