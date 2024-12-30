@@ -394,10 +394,13 @@ const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipT
       }
       {memberships?.length > 0 ? (
         <div className="overflow-x-auto bg-white shadow-lg rounded-lg">
+          <div className="mb-4 text-black dark:text-gray-300">
+            {currentPage * pageSize + 1} To {currentPage * pageSize + memberships.length} out of {totalCount} List.
+          </div>
           <table className="min-w-full table-auto">
             <thead className="bg-gray-300">
               <tr>
-                <th className="px-4 py-2 text-left w-10">SL.N</th>
+                <th className="px-4 py-2 text-left w-10">SLN</th>
                 <th className="px-4 py-2 text-leftw-10">Membership ID</th>
                 <th className="px-4 py-2 text-left w-auto">Name</th>
                 <th className="px-4 py-2 text-left w-auto">Status</th>
@@ -414,7 +417,9 @@ const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipT
                     className={`border-b hover:bg-gray-100 ${hasBook ? "bg-gradient-to-r from-cyan-100 to-blue-100" : "bg-gray-200"
                       }`}
                   >
-                    <td className="px-4 py-2">{index + 1}</td>
+                    <td className="px-4 py-2">
+                      {currentPage * pageSize + index + 1}
+                    </td>
                     <td className="px-4 py-2">{membership.memID}</td>
                     <td className="px-4 py-2">{membership.name}</td>
                     <td className="px-4 py-2">
@@ -462,7 +467,7 @@ const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipT
           <br />
         </div>
       ) : (
-        <div className="flex flex-col items-center justify-center h-40 bg-gray-100 rounded-md shadow-md"> 
+        <div className="flex flex-col items-center justify-center h-40 bg-gray-100 rounded-md shadow-md">
           <h2 className="mt-4 text-lg font-semibold text-gray-700">No Members Found</h2>
           <p className="mt-2 text-sm text-gray-500">
             We couldn't find any members matching your search. Try modifying your criteria.

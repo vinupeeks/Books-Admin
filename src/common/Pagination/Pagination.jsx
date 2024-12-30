@@ -2,7 +2,8 @@ import React from 'react';
 import { Dropdown, DropdownButton } from 'react-bootstrap';
 
 const Pagination = ({ totalPages, currentPage, pageSize, setPageSize, show, onPageChange }) => {
-    if (totalPages <= 1) return null;
+    const [rowCount, setRowCount] = React.useState(null);
+    if (totalPages <= 0) return null;
 
     const visiblePages = 3; // Show 3 pages in the middle for visibility
     let startPage = Math.max(1, currentPage - Math.floor(visiblePages / 2));
@@ -15,6 +16,7 @@ const Pagination = ({ totalPages, currentPage, pageSize, setPageSize, show, onPa
 
     const handlePageSizeChange = (size) => {
         setPageSize(size);
+        setRowCount(size)
         onPageChange(0);
     };
 
@@ -84,12 +86,12 @@ const Pagination = ({ totalPages, currentPage, pageSize, setPageSize, show, onPa
                     Next
                 </button>
             </nav>
-            {show && ( 
+            {show && (
                 <DropdownButton
                     id="dropdown-page-size"
-                    title={pageSize}
+                    title={rowCount === null ? 'Select Rows Size' : rowCount}
                     variant="secondary"
-                    drop='up'
+                    drop="up"
                     onSelect={handlePageSizeChange}
                 >
                     {[10, 25, 50, 100, 500].map((size) => (
@@ -98,6 +100,7 @@ const Pagination = ({ totalPages, currentPage, pageSize, setPageSize, show, onPa
                         </Dropdown.Item>
                     ))}
                 </DropdownButton>
+
             )}
         </div >
     );
