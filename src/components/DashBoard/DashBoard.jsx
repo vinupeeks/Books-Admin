@@ -41,7 +41,7 @@ const DashBoard = () => {
     const CountsOfBooksAndMembers = adminQueries.CountsOfBooksAndMembersMutation(
         async (response) => {
             if (response?.data) {
-                setCount(response?.data); 
+                setCount(response?.data);
                 setLoading(false);
             } else {
                 enqueueSnackbar('Error Fetching the Books And Members count..!', { variant: 'error' });
@@ -136,24 +136,34 @@ const DashBoard = () => {
         return;
     };
     return (
-        <>
-            <div className="w-full h-screen bg-gray  shadow-2xl overflow-hidden grid md:grid-cols-6">
-                <div className="col-span-6 p-4">
-                    {/* <h1 className="text-3xl font-bold text-gray-800 mb-6">
-                    Membership Management
-                    </h1> */}
+        <div className="w-full ms-1 min-h-screen bg-gray shadow-2xl overflow-y-auto grid md:grid-cols-6">
+            <div className="col-span-6 p-4">
+                <div className="relative mb-3">
+                    <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                    <input
+                        type="text"
+                        placeholder="Search members by Name, ID, or Phone number"
+                        value={searchTerm}
+                        onChange={handleSearchChange}
+                        className="w-full h-5 pl-12 pr-4 py-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700"
+                    />
+                    <X
+                        className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 cursor-pointer"
+                        onClick={() => {
+                            setSearchTerm('');
+                            setMembershipType('');
+                            setSelectTerm('');
+                        }}
+                    />
+                </div>
 
-                    <div className="relative mb-6">
-                        <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                        <input
-                            type="text"
-                            placeholder="Search members by Name, ID, or Phone number"
-                            value={searchTerm}
-                            onChange={handleSearchChange}
-                            className="w-full pl-12 pr-4 py-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700"
-                        />
-                        <X
-                            className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 cursor-pointer"
+                {(searchTerm || selectTerm) && (
+                    <div className="bg-blue-50 border-l-4 border-blue-500 rounded-r-xl flex items-center justify-between px-4 py-2">
+                        <p className="text-blue-700">
+                            Searching for: <span className="font-semibold ml-2">{searchTerm || selectTerm}</span>
+                        </p>
+                        <CornerDownLeft
+                            className="text-gray-500 cursor-pointer"
                             onClick={() => {
                                 setSearchTerm('');
                                 setMembershipType('');
@@ -161,83 +171,66 @@ const DashBoard = () => {
                             }}
                         />
                     </div>
+                )}
 
-                    {(searchTerm || selectTerm) && (
-                        <div className="bg-blue-50 border-l-4 border-blue-500 rounded-r-xl mb-6 flex items-center justify-between px-4 py-2">
-                            <p className="text-blue-700">
-                                Searching for: <span className="font-semibold ml-2">{searchTerm || selectTerm}</span>
-                            </p>
-                            <CornerDownLeft
-                                className="text-gray-500 cursor-pointer"
-                                onClick={() => {
-                                    setSearchTerm('');
-                                    setMembershipType('');
-                                    setSelectTerm('');
-                                }}
+                <div>
+                    {showList ? (
+                        <div className="bg-gray-100 rounded-xl">
+                            <MembersList
+                                searchTerm={searchTerm}
+                                setSearchTerm={setSearchTerm}
+                                membershipType={membershipType}
+                                setMembershipType={setMembershipType}
                             />
                         </div>
-                    )}
-
-                    <div>
-                        {showList ? (
-                            < div className="bg-gray-100 rounded-xl">
-                                <MembersList
-                                    searchTerm={searchTerm}
-                                    setSearchTerm={setSearchTerm}
-                                    membershipType={membershipType}
-                                    setMembershipType={setMembershipType}
-                                />
-                            </div>
-                        ) : (
-                            <div className="space-y-4">
-                                {<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
-                                    {membershipTypes?.map((type, index) => (
-                                        <div
-                                            key={index}
-                                            onClick={() => handleTypeChange(type)}
-                                            className={`relative p-6 rounded-xl shadow-lg border transition-transform transform hover:scale-105 duration-300 cursor-pointer ${membershipType === type.key
+                    ) : (
+                        <div className="space-y-4">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
+                                {membershipTypes?.map((type, index) => (
+                                    <div
+                                        key={index}
+                                        onClick={() => handleTypeChange(type)}
+                                        className={`relative p-6 rounded-xl h-fit shadow-lg border transition-transform transform hover:scale-105 duration-300 cursor-pointer ${membershipType === type.key
                                                 ? `border-${type.background.split(' ')[1]} bg-gradient-to-br from-cyan-500 to-blue-500 text-white`
                                                 : 'border-gray-300 bg-gray-100 text-gray-700 hover:border-gray-400 hover:shadow-md'
-                                                }`}
-                                        >
-                                            <div className="flex flex-col items-center space-y-4">
-                                                <div
-                                                    className={`flex items-center justify-center w-16 h-16 rounded-full shadow-inner border-2 ${membershipType === type.key
+                                            }`}
+                                    >
+                                        <div className="flex flex-col items-center space-y-4">
+                                            <div
+                                                className={`flex items-center justify-center w-16 h-16 rounded-full shadow-inner border-2 ${membershipType === type.key
                                                         ? 'bg-white text-blue-500 border-white'
                                                         : 'bg-gray-200 text-gray-600 border-gray-300'
-                                                        }`}
-                                                >
-                                                    <type.icon className="w-8 h-8 text-black-400" />
-                                                </div>
-                                                <div className="text-center">
-                                                    <h3 className="font-bold text-lg">{type.label}</h3>
-                                                    <p className="mt-2 text-sm text-blue-900">
-                                                        {type.description}
-                                                    </p>
-                                                </div>
+                                                    }`}
+                                            >
+                                                <type.icon className="w-8 h-8 text-black-400" />
                                             </div>
-                                            {type.click && (
-                                                <div className="absolute bottom-4 right-4 text-xs font-semibold text-gray-500">
-                                                    Clickable
-                                                </div>
-                                            )}
+                                            <div className="text-center">
+                                                <h3 className="font-bold text-lg">{type.label}</h3>
+                                                <p className="mt-2 text-sm text-blue-900">{type.description}</p>
+                                            </div>
                                         </div>
-                                    ))}
-                                </div>
-                                }
-                                {membershipType && (
-                                    <button className="w-full mt-4 p-2 bg-gradient-to-r  rounded-xl from-blue-500 to-cyan-500 transition duration-300 ml-auto"
-                                        onClick={rmvBtnCase}>
-                                        CLEAR
-                                    </button>
-                                )}
+                                        {type.click && (
+                                            <div className="absolute bottom-4 right-4 text-xs font-semibold text-gray-500">
+                                                Clickable
+                                            </div>
+                                        )}
+                                    </div>
+                                ))}
                             </div>
-                            // </div>
-                        )}
-                    </div>
+                            {membershipType && (
+                                <button
+                                    className="w-full mt-4 p-2 bg-gradient-to-r rounded-xl from-blue-500 to-cyan-500 transition duration-300 ml-auto"
+                                    onClick={rmvBtnCase}
+                                >
+                                    CLEAR
+                                </button>
+                            )}
+                        </div>
+                    )}
                 </div>
-            </div >
-        </>
+            </div>
+        </div>
+
     );
 };
 

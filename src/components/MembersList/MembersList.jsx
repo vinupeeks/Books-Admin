@@ -260,7 +260,7 @@ const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipT
             className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50"
             onClick={handleModalClose}
           >
-            <div className="bg-white p-6 rounded-lg shadow-lg w-[700px] max-h-[90vh] overflow-y-auto"
+            <div className="bg-white p-6 rounded-lg shadow-lg w-[700px] max-h-[75vh] overflow-y-auto"
               onClick={(e) => e.stopPropagation()}
             >
               <h2 className="text-2xl font-semibold mb-4">Membership Details</h2>
@@ -394,9 +394,10 @@ const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipT
       }
       {memberships?.length > 0 ? (
         <div className="overflow-x-auto bg-white shadow-lg rounded-lg">
-          <div className="mb-4 text-black dark:text-gray-300">
-            {currentPage * pageSize + 1} To {currentPage * pageSize + memberships.length} out of {totalCount} List.
-          </div>
+        <div className="mb-4 text-black dark:text-gray-300">
+          {currentPage * pageSize + 1} To {currentPage * pageSize + memberships.length} out of {totalCount} books.
+  
+        </div>
           <table className="min-w-full table-auto">
             <thead className="bg-gray-300">
               <tr>
