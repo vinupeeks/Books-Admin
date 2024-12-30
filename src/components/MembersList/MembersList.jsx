@@ -394,9 +394,10 @@ const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipT
       }
       {memberships?.length > 0 ? (
         <div className="overflow-x-auto bg-white shadow-lg rounded-lg">
-          <div className="mb-4 text-black dark:text-gray-300">
-            {currentPage * pageSize + 1} To {currentPage * pageSize + memberships.length} out of {totalCount} List.
-          </div>
+        <div className="mb-4 text-black dark:text-gray-300">
+          {currentPage * pageSize + 1} To {currentPage * pageSize + memberships.length} out of {totalCount} books.
+  
+        </div>
           <table className="min-w-full table-auto">
             <thead className="bg-gray-300">
               <tr>
