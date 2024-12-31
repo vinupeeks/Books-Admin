@@ -5,6 +5,7 @@ import SideMenu from '../navbar/sideMenu';
 import adminQueries from '../../queries/adminQueries';
 import { useSnackbar } from 'notistack';
 import { useNavigate } from 'react-router-dom';
+import RouteConstants from '../../constant/Routeconstant';
 
 const DashBoard = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -67,16 +68,18 @@ const DashBoard = () => {
         {
             key: "IBC",
             label: `Issued Books: ${count.IssuedBooksCount ?? 'N/A'}`,
-            action: false,
+            action: true,
+            navigate: RouteConstants.ISSUEDLIST,
             icon: Library,
             background: "bg-gradient-to-r from-blue-500 to-cyan-500",
             description: "Total Issued Books Count",
-            click: false,
+            click: true,
         },
         {
             key: "BC",
             label: `Books: ${count.BooksCount ?? 'N/A'}`,
             action: true,
+            navigate: RouteConstants.BOOKS,
             icon: LibraryBig,
             background: "bg-gradient-to-r from-blue-500 to-cyan-500",
             description: "Total Books Count",
@@ -115,10 +118,8 @@ const DashBoard = () => {
 
     const handleTypeChange = (type) => {
         if (type.click) {
-            if (type.action) {
-                console.log('working');
-
-                navigate('/books');
+            if (type.action) { 
+                navigate(type.navigate);
                 return;
             }
             setMembershipType(type.key);
@@ -190,30 +191,30 @@ const DashBoard = () => {
                                     <div
                                         key={index}
                                         onClick={() => handleTypeChange(type)}
-                                        className={`relative p-6 rounded-xl h-fit shadow-lg border transition-transform transform hover:scale-105 duration-300 cursor-pointer ${membershipType === type.key
-                                                ? `border-${type.background.split(' ')[1]} bg-gradient-to-br from-cyan-500 to-blue-500 text-white`
-                                                : 'border-gray-300 bg-gray-100 text-gray-700 hover:border-gray-400 hover:shadow-md'
+                                        className={`relative p-3 rounded-xl h-fit shadow-lg border transition-transform transform hover:scale-105 duration-300 cursor-pointer ${membershipType === type.key
+                                            ? `border-${type.background.split(' ')[1]} bg-gradient-to-br from-cyan-500 to-blue-500 text-white`
+                                            : 'border-gray-300 bg-gray-100 text-gray-700 hover:border-gray-400 hover:shadow-md'
                                             }`}
                                     >
-                                        <div className="flex flex-col items-center space-y-4">
+                                        <div className="flex flex-col items-center space-y-2">
                                             <div
-                                                className={`flex items-center justify-center w-16 h-16 rounded-full shadow-inner border-2 ${membershipType === type.key
-                                                        ? 'bg-white text-blue-500 border-white'
-                                                        : 'bg-gray-200 text-gray-600 border-gray-300'
+                                                className={`flex items-center justify-center w-8 h-8 rounded-full shadow-inner border-2 ${membershipType === type.key
+                                                    ? 'bg-white text-blue-500 border-white'
+                                                    : 'bg-gray-200 text-gray-600 border-gray-300'
                                                     }`}
                                             >
-                                                <type.icon className="w-8 h-8 text-black-400" />
+                                                <type.icon className="w-4 h-4 text-black-400" />
                                             </div>
                                             <div className="text-center">
                                                 <h3 className="font-bold text-lg">{type.label}</h3>
-                                                <p className="mt-2 text-sm text-blue-900">{type.description}</p>
+                                                <p className="mt-1 text-sm text-blue-900">{type.description}</p>
                                             </div>
                                         </div>
-                                        {type.click && (
+                                        {/* {type.click && (
                                             <div className="absolute bottom-4 right-4 text-xs font-semibold text-gray-500">
                                                 Clickable
                                             </div>
-                                        )}
+                                        )} */}
                                     </div>
                                 ))}
                             </div>

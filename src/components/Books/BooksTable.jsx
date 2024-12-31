@@ -8,7 +8,7 @@ const BooksTable = ({ books, currentPage, pageSize, totalCount }) => {
   return (
     <>
       <div className="mb-4 text-black dark:text-gray-300">
-        {currentPage * pageSize + 1} To {currentPage * pageSize + books.length} out of {totalCount} books.
+        {currentPage * pageSize + 1} - {currentPage * pageSize + books.length} out of {totalCount} books.
       </div>
       <table className='w-full border-separate border-spacing-2'>
         <thead className="bg-gray-200 text-gray-700">
