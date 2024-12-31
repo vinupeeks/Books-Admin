@@ -109,7 +109,7 @@ function SideMenu() {
             </div>
 
             {/* Main Content */}
-            <div className="flex-1 overflow-y-auto ml-[280px] mt-[80px] relative z-10">
+            <div className="flex-1 overflow-y-auto ml-[300px] mt-[80px] relative z-10">
                 <Outlet />
             </div>
         </div>

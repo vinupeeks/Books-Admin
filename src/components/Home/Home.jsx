@@ -25,7 +25,7 @@ const Home = () => {
   const [totalPage, setTotalPage] = useState(0);
   const [totalCount, setTotalCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
-  const [pageSize, setPageSize] = useState(20);
+  const [pageSize, setPageSize] = useState(25);
   const [show, setShow] = useState(true);
 
   const { enqueueSnackbar } = useSnackbar();
@@ -82,6 +82,7 @@ const Home = () => {
       size: pageSize,
       // filter: dateFilter, 
     });
+    setCurrentPage(0);
     return params.toString();
   };
 
@@ -101,7 +102,7 @@ const Home = () => {
   };
 
   return (
-    <div className="p-4">
+    <div className="px-3 pb-5">
       {/* <BackButton destination='/dashboard' /> */}
       <div className="flex justify-between items-center">
         <h1 className="text-3xl my-8">Books List</h1>

@@ -5,6 +5,7 @@ const RouteConstants = {
     BOOKS: '/books',
     BOOKSLAST: '/books/last',
     SEARCHEDBOOKS: '/books/searchedBook',
+    ISSUEDLIST: '/issues',
 
     INDIVIDUAL_MEMBERSHIP: '/membership/indivual',
     FAMILY_MEMBERSHIP: 'membership/creation',
