@@ -51,8 +51,8 @@ const Pagination = ({ totalPages, currentPage, pageSize, setPageSize, show, onPa
                         <button
                             key={page}
                             onClick={() => onPageChange(page)}
-                            className={`relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium ${currentPage === page
-                                ? 'z-10 bg-indigo-50 border-indigo-500 text-indigo-600'
+                            className={`relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium ${currentPage === page
+                                ? 'z-10 bg-gray-400 text-white !important' // Use !important to force styles
                                 : 'text-gray-500 hover:bg-gray-50'
                                 }`}
                         >
@@ -60,6 +60,7 @@ const Pagination = ({ totalPages, currentPage, pageSize, setPageSize, show, onPa
                         </button>
                     );
                 })}
+
 
                 {/* Ellipsis if necessary */}
                 {endPage < totalPages - 2 && <span className="px-4 py-2">...</span>}
@@ -105,5 +106,4 @@ const Pagination = ({ totalPages, currentPage, pageSize, setPageSize, show, onPa
         </div >
     );
 };
-
 export default Pagination;
