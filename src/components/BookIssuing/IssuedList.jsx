@@ -95,10 +95,9 @@ const IssuedList = () => {
     };
 
     const toggleVisibility = (index) => {
-        setVisibleIndex(index); // Set the clicked index
-        setShowFullNumber(true); // Initially show masked number
+        setVisibleIndex(index);
+        setShowFullNumber(true);
 
-        // Set a timeout to reveal the full number after 5 seconds
         setTimeout(() => {
             setShowFullNumber(false);
         }, 3000);

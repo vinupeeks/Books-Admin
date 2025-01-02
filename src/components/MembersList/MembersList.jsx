@@ -26,9 +26,17 @@ const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipT
   const [show, setShow] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
 
+  const [isRevealed, setIsRevealed] = useState(false);
+
   const [bookModal, setBookModal] = useState(false);
   const [selectedIssue, setSelectedIssue] = useState(null);
 
+  const handlePhoneClick = () => {
+    setIsRevealed(true);
+    setTimeout(() => {
+      setIsRevealed(false);
+    }, 3000);
+  };
 
   const handleShow = (issue) => {
     setSelectedIssue(issue);
@@ -268,8 +276,17 @@ const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipT
                 <p className="mb-2">
                   <strong>Membership ID:</strong> {selectedMembership.memID}
                 </p>
-                <p className="mb-2">
+                {/* <p className="mb-2">
                   <strong>Contact No:</strong> {selectedMembership.contactNumber}
+                </p> */}
+                <p className="mb-2">
+                  <strong>Contact No:</strong>{' '}
+                  <span
+                    onClick={handlePhoneClick}
+                    // className="cursor-pointer text-blue-500 hover:underline"
+                  >
+                    {isRevealed ? selectedMembership.contactNumber : `******${selectedMembership.contactNumber.slice(-4)}`}
+                  </span>
                 </p>
                 <p className="mb-2">
                   <strong>Tower Name:</strong> {selectedMembership.towerName}
