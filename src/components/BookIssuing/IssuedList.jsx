@@ -5,6 +5,7 @@ import { getAuthToken } from '../../utils/TokenHelper';
 import debounce from 'lodash.debounce';
 import issuesQueries from '../../queries/issuesQueries';
 import Pagination from '../../common/Pagination/Pagination';
+import Spinner from '../../utils/Spinner';
 
 const IssuedList = () => {
     const [issues, setIssues] = useState([]);
@@ -94,6 +95,11 @@ const IssuedList = () => {
         setCurrentPage(newPage);
     };
 
+    const handleRemoveAndGo = () => {
+        setSearchTerm('')
+        getIssues.mutateAsync();
+    }
+
     const toggleVisibility = (index) => {
         setVisibleIndex(index);
         setShowFullNumber(true);
@@ -121,11 +127,12 @@ const IssuedList = () => {
             </div>
             {error && <p className="text-red-500">{error}</p>}
             {loading ? (
-                <p>Loading...</p>
-            ) : (
+                // <p>Loading...</p>
+                <Spinner />
+            ) : issues?.length > 0 ? (
                 <>
                     <div className="mb-4 text-black dark:text-gray-300">
-                        {currentPage * pageSize + 1} - {currentPage * pageSize + issues.length} out of {totalCount} issues.
+                        {currentPage * pageSize + 1} - {currentPage * pageSize + issues?.length} out of {totalCount} issues.
                     </div>
                     <table
                         // className="table-auto w-full border-collapse border border-gray-200"
@@ -172,6 +179,28 @@ const IssuedList = () => {
                         </tbody>
                     </table>
                 </>
+            ) : (
+                <div className="flex flex-col items-center justify-center h-40 bg-gray-100 rounded-md shadow-md">
+                    <svg
+                        className="w-16 h-16 text-gray-400"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        onClick={handleRemoveAndGo}
+                    >
+                        <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M8 16l-4-4m0 0l4-4m-4 4h16"
+                        />
+                    </svg>
+                    <h2 className="mt-4 text-lg font-semibold text-gray-700">No Issues Found</h2>
+                    <p className="mt-2 text-sm text-gray-500">
+                        We couldn't find any Issues matching your search. Try modifying your criteria.
+                    </p>
+                </div>
             )}
             <Pagination
                 currentPage={currentPage}
