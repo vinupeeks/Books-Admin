@@ -24,14 +24,14 @@ const CreateBooks = () => {
         enqueueSnackbar('Book Created successfully', { variant: 'success' });
         navigate(RouteConstants.BOOKS);
       } else {
-        setLoading(false);
-        enqueueSnackbar('Error creating book. Check console for details.', { variant: 'error' });
+        setLoading(false); 
+        enqueueSnackbar(response.response?.data?.message || 'Error creating book. Check console for details.', { variant: 'error' });
       }
     },
     {
       onError: (error) => {
         setLoading(false);
-        enqueueSnackbar('Error creating book. Check console for details.', { variant: 'error' });
+        enqueueSnackbar(error.response?.data?.message || 'Error creating book. Check console for details.', { variant: 'error' });
       }
     }
   );

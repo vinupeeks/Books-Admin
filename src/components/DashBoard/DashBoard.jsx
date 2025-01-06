@@ -7,8 +7,15 @@ import { useSnackbar } from 'notistack';
 import { useNavigate } from 'react-router-dom';
 import RouteConstants from '../../constant/Routeconstant';
 
+import { useDispatch, useSelector } from 'react-redux';
+import { clearSearchTerm, selectSearchTerm, setSearchTerm } from '../../redux/reducers/searchReducers';
+
 const DashBoard = () => {
-    const [searchTerm, setSearchTerm] = useState('');
+
+    const dispatch = useDispatch();
+    const searchTerm = useSelector(selectSearchTerm);
+
+    // const [searchTerm, setSearchTerm] = useState('');
     const [selectTerm, setSelectTerm] = useState('');
     const [membershipType, setMembershipType] = useState('');
     const [showList, setShowList] = useState(false);
@@ -18,14 +25,22 @@ const DashBoard = () => {
     const { enqueueSnackbar } = useSnackbar();
     const navigate = useNavigate();
 
+    const [selectedOption, setSelectedOption] = useState(null);
+
+    const handleClearSearchTerm = () => {
+        dispatch(clearSearchTerm());
+    };
+
     const handleSearchChange = (event) => {
         const value = event.target.value;
         if (value.charAt(0) === ' ') {
-            setSearchTerm('');
+            // setSearchTerm('');
+            dispatch(clearSearchTerm());
             setMembershipType('');
             return;
         }
-        setSearchTerm(value);
+        // setSearchTerm(value);
+        dispatch(setSearchTerm(value));
         console.log(searchTerm, selectTerm);
 
     };
@@ -58,13 +73,6 @@ const DashBoard = () => {
     );
 
     const membershipTypes = [
-        // {
-        //     key: "A",
-        //     label: "All Members",
-        //     icon: Users,
-        //     background: "bg-gradient-to-r from-cyan-500 to-blue-500",
-        //     description: "View all membership types"
-        // },
         {
             key: "IBC",
             label: `Issued Books: ${count.IssuedBooksCount ?? 'N/A'}`,
@@ -113,12 +121,13 @@ const DashBoard = () => {
 
     const rmvBtnCase = () => {
         setMembershipType('');
-        setSearchTerm('');
+        // setSearchTerm('');
+        dispatch(clearSearchTerm());
     }
 
     const handleTypeChange = (type) => {
         if (type.click) {
-            if (type.action) { 
+            if (type.action) {
                 navigate(type.navigate);
                 return;
             }
@@ -128,6 +137,7 @@ const DashBoard = () => {
             }
             else if (type.key === 'A') {
                 setSelectTerm('All Members List');
+                setSelectedOption('A');
             } else {
                 setSelectTerm('Family List');
             }
@@ -136,6 +146,13 @@ const DashBoard = () => {
         }
         return;
     };
+
+    const handleSortClick = (option) => {
+        setSelectedOption(option);
+        setMembershipType(option);
+        // console.log(`Selected: ${option}`);
+    };
+
     return (
         <div className="w-full ms-1 min-h-screen bg-gray shadow-2xl overflow-y-auto grid md:grid-cols-6">
             <div className="col-span-6 p-4">
@@ -151,7 +168,9 @@ const DashBoard = () => {
                     <X
                         className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 cursor-pointer"
                         onClick={() => {
-                            setSearchTerm('');
+                            // setSearchTerm('');
+                            dispatch(clearSearchTerm());
+                            setSelectedOption('');
                             setMembershipType('');
                             setSelectTerm('');
                         }}
@@ -160,20 +179,48 @@ const DashBoard = () => {
 
                 {(searchTerm || selectTerm) && (
                     <div className="bg-blue-50 border-l-4 border-blue-500 rounded-r-xl flex items-center justify-between px-4 py-2">
-                        <p className="text-blue-700">
+                        <p className="text-blue-700 flex-grow">
                             Searching for: <span className="font-semibold ml-2">{searchTerm || selectTerm}</span>
                         </p>
-                        <CornerDownLeft
-                            className="text-gray-500 cursor-pointer"
-                            onClick={() => {
-                                setSearchTerm('');
-                                setMembershipType('');
-                                setSelectTerm('');
-                            }}
-                        />
+                        <div className="flex items-center space-x-4">
+                            {
+                                selectTerm === 'All Members List' && (
+                                    <div className="flex items-center">
+                                        <span className="font-semibold ml-2">Sort:</span>
+                                        <button
+                                            className={`ml-2 px-3 py-1 rounded-lg ${selectedOption === 'A' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+                                            onClick={() => handleSortClick('A')}
+                                        >
+                                            All
+                                        </button>
+                                        <button
+                                            className={`ml-2 px-3 py-1 rounded-lg ${selectedOption === 'I' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+                                            onClick={() => handleSortClick('I')}
+                                        >
+                                            Individual
+                                        </button>
+                                        <button
+                                            className={`ml-2 px-3 py-1 rounded-lg ${selectedOption === 'F' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+                                            onClick={() => handleSortClick('F')}
+                                        >
+                                            Family
+                                        </button>
+                                    </div>
+                                )
+                            }
+                            <CornerDownLeft
+                                className="text-gray-500 cursor-pointer"
+                                onClick={() => {
+                                    // setSearchTerm('');
+                                    dispatch(clearSearchTerm());
+                                    setSelectedOption('');
+                                    setMembershipType('');
+                                    setSelectTerm('');
+                                }}
+                            />
+                        </div>
                     </div>
                 )}
-
                 <div>
                     {showList ? (
                         <div className="bg-gray-100 rounded-xl">
@@ -230,7 +277,7 @@ const DashBoard = () => {
                     )}
                 </div>
             </div>
-        </div>
+        </div >
 
     );
 };
