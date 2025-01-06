@@ -92,7 +92,7 @@ const DeleteBook = () => {
       {loading && <Spinner />}
 
       {!loading && (
-        <div className='flex flex-col items-center border-2 border-red-500 rounded-xl w-[600px] p-8 mx-auto shadow-lg'>
+        <div className='flex flex-col items-center border-2 border-red-500 rounded-xl w-[550px] p-8 mx-auto shadow-lg'>
           <h1 className='text-3xl text-center'>DELETE BOOK</h1>
           <hr className="my-2 border-t-4 border-red-500 w-full" />
           <h6 className='text-2xl font-bold text-red-600 mb-4'>

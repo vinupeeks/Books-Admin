@@ -8,6 +8,8 @@ import Pagination from '../../common/Pagination/Pagination';
 import Spinner from '../../utils/Spinner';
 import { SquareArrowOutUpRight } from 'lucide-react';
 import RouteConstants from '../../constant/Routeconstant';
+import { useDispatch } from 'react-redux';
+import { setSearchTerm } from '../../redux/reducers/searchReducers';
 
 const IssuedList = () => {
     const [issues, setIssues] = useState([]);
@@ -16,7 +18,7 @@ const IssuedList = () => {
     const [visibleIndex, setVisibleIndex] = useState(null);
     const [showFullNumber, setShowFullNumber] = useState(false);
 
-    const [searchTerm, setSearchTerm] = useState('');
+    const [searchTermComp, setSearchTermComp] = useState('');
     const [totalPage, setTotalPage] = useState(0);
     const [totalCount, setTotalCount] = useState(0);
     const [currentPage, setCurrentPage] = useState(0);
@@ -25,16 +27,18 @@ const IssuedList = () => {
     const { enqueueSnackbar } = useSnackbar();
     const navigate = useNavigate();
 
+    const dispatch = useDispatch();
+
     useEffect(() => {
         const token = getAuthToken();
         if (!token) {
             enqueueSnackbar('You need to log in.', { variant: 'warning' });
-            navigate('/login'); // Adjust the route if necessary
+            navigate('/login');
             return;
         }
         setLoading(true);
         fetchIssues();
-    }, [currentPage, pageSize, searchTerm]);
+    }, [currentPage, pageSize]);
 
     const getIssues = issuesQueries.issuedListMutation(
         async (response) => {
@@ -55,14 +59,14 @@ const IssuedList = () => {
         const params = new URLSearchParams({
             page: currentPage,
             size: pageSize,
-            search: searchTerm,
+            search: searchTermComp,
         });
         getIssues.mutate(params.toString());
     };
 
     const handleSearchChange = async (event) => {
         const value = event.target.value;
-        setSearchTerm(value);
+        setSearchTermComp(value);
         debouncedSearch(value);
     };
 
@@ -90,7 +94,7 @@ const IssuedList = () => {
     };
 
     const handleRemoveAndGo = () => {
-        setSearchTerm('')
+        setSearchTermComp('')
         getIssues.mutateAsync();
     }
 
@@ -105,7 +109,8 @@ const IssuedList = () => {
 
     const handleGoReturnPage = (MemId) => {
         console.log(MemId);
-        navigate(RouteConstants.DASHBOARD, { state: { memId: MemId } });
+        navigate(RouteConstants.DASHBOARD);
+        dispatch(setSearchTerm(MemId));
     }
 
     return (
@@ -116,7 +121,7 @@ const IssuedList = () => {
                     <input
                         type="text"
                         placeholder="Search by Book-Name / Member-ID"
-                        value={searchTerm}
+                        value={searchTermComp}
                         onChange={(event) => {
                             handleSearchChange(event);
                         }}
@@ -125,16 +130,14 @@ const IssuedList = () => {
                 </div>
             </div>
             {error && <p className="text-red-500">{error}</p>}
-            {loading ? (
-                // <p>Loading...</p>
+            {loading ? ( 
                 <Spinner />
             ) : issues?.length > 0 ? (
                 <>
                     <div className="mb-4 text-black dark:text-gray-300">
                         {currentPage * pageSize + 1} - {currentPage * pageSize + issues?.length} out of {totalCount} issues.
                     </div>
-                    <table
-                        // className="table-auto w-full border-collapse border border-gray-200"
+                    <table 
                         className='w-full border-separate border-spacing-2'
                     >
                         <thead className="bg-gray-200 text-gray-700">
@@ -144,8 +147,7 @@ const IssuedList = () => {
                                 <th className="border border-gray-300 px-4 py-2">Member Name</th>
                                 <th className="border border-gray-300 px-4 py-2">Contact Number</th>
                                 <th className="border border-gray-300 px-4 py-2">Book Title</th>
-                                <th className="border border-gray-300 px-4 py-2">Issue Date</th>
-                                {/* <th className="border border-gray-300 px-4 py-2">Author</th> */}
+                                <th className="border border-gray-300 px-4 py-2">Issue Date</th> 
                             </tr>
                         </thead>
                         <tbody>

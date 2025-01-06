@@ -56,7 +56,7 @@ function SideMenu() {
 
                         <li>
                             <a
-                                onClick={() => navigate(RouteConstants.FAMILY_MEMBERSHIP)}
+                                onClick={() => navigate(RouteConstants.CREATE_MEMBERSHIP)}
                                 className="flex items-center gap-3 text-white font-medium px-4 py-3 rounded-lg hover:bg-blue-400/30 transition-colors duration-200 no-underline"
                             >
                                 <Users className="w-5 h-5" />

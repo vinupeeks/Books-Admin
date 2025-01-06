@@ -2,8 +2,8 @@ import React, { useCallback, useEffect, useState } from 'react';
 import Spinner from '../../utils/Spinner';
 import { Link, useNavigate } from 'react-router-dom';
 import { MdOutlineAddBox } from 'react-icons/md';
-import BooksTable from '../Books/BooksTable';
-import BooksCard from '../Books/BooksCard';
+import BooksTable from './BooksTable';
+import BooksCard from './BooksCard';
 import { useSnackbar } from 'notistack';
 import { useViewContext } from '../../context/ViewContext';
 import RouteConstants from '../../constant/Routeconstant';
@@ -40,7 +40,7 @@ const Home = () => {
     }
     setLoading(true);
     fetchBooks();
-  }, [currentPage, pageSize, searchTerm,]);
+  }, [currentPage, pageSize]);
 
   const getBooks = bookQueries.booksListMutation(
     async (response) => {

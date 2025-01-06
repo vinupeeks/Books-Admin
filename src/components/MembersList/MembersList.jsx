@@ -6,7 +6,7 @@ import bookQueries from "../../queries/bookQueries";
 import { useSnackbar } from "notistack";
 import Pagination from "../../common/Pagination/Pagination";
 import { Modal, Button } from "react-bootstrap";
-import { FileText, GripVertical, NotebookText, NotepadText } from "lucide-react";
+import { NotepadText, SquarePen } from "lucide-react";
 
 const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipType }) => {
 
@@ -272,14 +272,11 @@ const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipT
             <div className="bg-white p-6 rounded-lg shadow-lg w-[700px] max-h-[75vh] overflow-y-auto"
               onClick={(e) => e.stopPropagation()}
             >
-              <h2 className="text-2xl font-semibold mb-4">Membership Details</h2>
+              <h2 className="text-2xl font-semibold mb-1">Membership Details</h2>
               <div className="mb-2 bg-gray-300 p-2 rounded">
                 <p className="mb-2">
                   <strong>Membership ID:</strong> {selectedMembership.memID}
                 </p>
-                {/* <p className="mb-2">
-                  <strong>Contact No:</strong> {selectedMembership.contactNumber}
-                </p> */}
                 <p className="mb-2">
                   <strong>Contact No:</strong>{' '}
                   <span
@@ -294,6 +291,9 @@ const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipT
                 </p>
                 <p className="mb-2">
                   <strong>Flat Name:</strong> {selectedMembership.flatType}{selectedMembership.floorNumber}
+                </p>
+                <p className="mb-2">
+                  <strong>DOB:</strong> {selectedMembership.dateOfBirth}
                 </p>
                 <p className="mb-2">
                   <strong>Membership Issued:</strong>{" "}
@@ -440,25 +440,6 @@ const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipT
                     </td>
                     <td className="px-4 py-2">{membership.memID}</td>
                     <td className="px-4 py-2">{membership.name}</td>
-                    {/* <td className="px-4 py-2">
-                      {membership.Issues.length > 0 ? (
-                        membership.Issues.map((issue) => (
-                          <div key={issue.id}>
-                            <p
-                              onMouseEnter={() => handleShow(issue)}
-                              // onMouseLeave={handleMouseLeave}
-                              style={{
-                                cursor: "pointer",
-                                display: "inline-block",
-                                width: "auto"
-                              }}
-                            ><GripVertical className="w-5 h-5" /></p>{issue.Book && issue.Book.title}
-                          </div>
-                        ))
-                      ) : (
-                        <p>---</p>
-                      )}
-                    </td> */}
                     <td className="px-4 py-2">
                       {membership.Issues.length > 0 ? (
                         <div className="flex flex-col gap-2">
@@ -477,14 +458,23 @@ const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipT
                       )}
                     </td>
                     <td className="px-4 py-2 text-center">
-                      <button
-                        type="button"
-                        className={`px-4 py-2 rounded-lg mr-2 ${hasBook ? "bg-gradient-to-r from-cyan-200 to-blue-200 hover:bg-red-100" : "bg-gray-300 hover:bg-gray-200"
-                          }`}
-                        onClick={() => handleModalOpen(membership)}
-                      >
-                        {hasBook ? "Return" : "Issue"}
-                      </button>
+                      <div className="flex items-center justify-between gap-0">
+                        <button
+                          type="button"
+                          className={`px-4 py-2 text-sm font-medium rounded-lg mr-2 ${hasBook ? "bg-gradient-to-r from-cyan-200 to-blue-200 hover:bg-red-100" : "bg-gray-300 hover:bg-gray-200"
+                            }`}
+                          onClick={() => handleModalOpen(membership)}
+                        >
+                          {hasBook ? "Return" : "\u00A0\u00A0Issue"}
+                        </button>
+                        <button
+                          type="button"
+                          className="flex justify-center items-center w-8 h-8 from-cyan-200 to-blue-200 rounded-full hover:bg-gray-300"
+                          onClick={() => console.log(membership)}
+                        >
+                          <SquarePen className="w-5 h-5" />
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 );

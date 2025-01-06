@@ -7,8 +7,15 @@ import { useSnackbar } from 'notistack';
 import { useNavigate } from 'react-router-dom';
 import RouteConstants from '../../constant/Routeconstant';
 
+import { useDispatch, useSelector } from 'react-redux';
+import { clearSearchTerm, selectSearchTerm, setSearchTerm } from '../../redux/reducers/searchReducers';
+
 const DashBoard = () => {
-    const [searchTerm, setSearchTerm] = useState('');
+
+    const dispatch = useDispatch();
+    const searchTerm = useSelector(selectSearchTerm);
+
+    // const [searchTerm, setSearchTerm] = useState('');
     const [selectTerm, setSelectTerm] = useState('');
     const [membershipType, setMembershipType] = useState('');
     const [showList, setShowList] = useState(false);
@@ -20,14 +27,20 @@ const DashBoard = () => {
 
     const [selectedOption, setSelectedOption] = useState(null);
 
+    const handleClearSearchTerm = () => {
+        dispatch(clearSearchTerm());
+    };
+
     const handleSearchChange = (event) => {
         const value = event.target.value;
         if (value.charAt(0) === ' ') {
-            setSearchTerm('');
+            // setSearchTerm('');
+            dispatch(clearSearchTerm());
             setMembershipType('');
             return;
         }
-        setSearchTerm(value);
+        // setSearchTerm(value);
+        dispatch(setSearchTerm(value));
         console.log(searchTerm, selectTerm);
 
     };
@@ -108,7 +121,8 @@ const DashBoard = () => {
 
     const rmvBtnCase = () => {
         setMembershipType('');
-        setSearchTerm('');
+        // setSearchTerm('');
+        dispatch(clearSearchTerm());
     }
 
     const handleTypeChange = (type) => {
@@ -154,7 +168,8 @@ const DashBoard = () => {
                     <X
                         className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 cursor-pointer"
                         onClick={() => {
-                            setSearchTerm('');
+                            // setSearchTerm('');
+                            dispatch(clearSearchTerm());
                             setSelectedOption('');
                             setMembershipType('');
                             setSelectTerm('');
@@ -196,7 +211,8 @@ const DashBoard = () => {
                             <CornerDownLeft
                                 className="text-gray-500 cursor-pointer"
                                 onClick={() => {
-                                    setSearchTerm('');
+                                    // setSearchTerm('');
+                                    dispatch(clearSearchTerm());
                                     setSelectedOption('');
                                     setMembershipType('');
                                     setSelectTerm('');
