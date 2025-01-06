@@ -6,6 +6,8 @@ import debounce from 'lodash.debounce';
 import issuesQueries from '../../queries/issuesQueries';
 import Pagination from '../../common/Pagination/Pagination';
 import Spinner from '../../utils/Spinner';
+import { SquareArrowOutUpRight } from 'lucide-react';
+import RouteConstants from '../../constant/Routeconstant';
 
 const IssuedList = () => {
     const [issues, setIssues] = useState([]);
@@ -36,14 +38,6 @@ const IssuedList = () => {
 
     const getIssues = issuesQueries.issuedListMutation(
         async (response) => {
-            console.log(`Repo: `, response?.data);
-            console.log({
-                totalPage: totalPage,
-                totalCount: totalCount,
-                currentPage: currentPage,
-                pageSize: pageSize
-            });
-
             setIssues(response?.data?.items);
             setTotalCount(response?.data?.totalItems);
             setTotalPage(response?.data?.totalPages);
@@ -109,6 +103,11 @@ const IssuedList = () => {
         }, 3000);
     };
 
+    const handleGoReturnPage = (MemId) => {
+        console.log(MemId);
+        navigate(RouteConstants.DASHBOARD, { state: { memId: MemId } });
+    }
+
     return (
         <div className="px-3 pb-5">
             <div className="flex justify-between items-center">
@@ -165,7 +164,17 @@ const IssuedList = () => {
                                                 : `******${issue.Member.contactNumber.slice(-4)}`}
                                         </td>
                                         <td className='border border-slate-700 rounded-md text-center'>{issue.Book.title}</td>
-                                        <td className='border border-slate-700 rounded-md text-center'>{new Date(issue.issueDate).toLocaleString()}</td>
+                                        <td className='border border-slate-700 rounded-md'>
+                                            <div className="flex flex-row justify-around">
+                                                <div key={issue.id} className="flex items-center gap-3">
+                                                    <span>{new Date(issue.issueDate).toLocaleString()}</span>
+                                                    <SquareArrowOutUpRight
+                                                        className="w-5 h-5 cursor-pointer text-blue-300"
+                                                        onClick={() => handleGoReturnPage(issue.Member.memID)}
+                                                    />
+                                                </div>
+                                            </div>
+                                        </td>
                                         {/* <td className='border border-slate-700 rounded-md text-center'>{issue.Book.author}</td> */}
                                     </tr>
                                 ))

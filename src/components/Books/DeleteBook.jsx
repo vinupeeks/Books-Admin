@@ -118,10 +118,10 @@ const DeleteBook = () => {
 
       {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-          <div className="bg-white p-6 rounded-lg w-[500px] shadow-lg">
-            <h3 className="text-2xl font-bold mb-4 text-center text-red-600">Book has Issues</h3>
+          <div className="bg-white p-6 rounded-lg w-[600px] shadow-lg">
+            <h3 className="text-2xl font-bold mb-4 text-center text-red-600">Book has been Issued</h3>
             <p className="text-gray-700 text-lg mb-4">
-              This book cannot be deleted because it has the following issues:
+              This book cannot be deleted because the book has been Issued to the following members
             </p>
             <ul className="list-disc list-inside text-left mb-4">
               {book.Issues.map((issue) => (
@@ -131,7 +131,7 @@ const DeleteBook = () => {
               ))}
             </ul>
             <p className="text-gray-700 text-lg mb-4">
-              Please resolve the issues to proceed with deletion.
+              Please return  the book to proceed with deletion.
             </p>
             <div className="flex justify-end space-x-4">
               <button

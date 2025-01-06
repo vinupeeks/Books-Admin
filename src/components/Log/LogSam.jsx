@@ -183,7 +183,7 @@ const AdminLogin = () => {
                                     },
                                 }}
                             >
-                                {isLoading ? 'Logging in...' : 'LOGIN'}
+                                {isLoading ? 'Logging...' : 'LOGIN'}
                             </Button>
                         </Box>
                     </form>
