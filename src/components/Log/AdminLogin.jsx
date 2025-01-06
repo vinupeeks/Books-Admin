@@ -3,7 +3,7 @@ import { Box, TextField, Button, Typography, InputAdornment, IconButton } from '
 import { Visibility, VisibilityOff, Person, Lock } from '@mui/icons-material';
 import { useSnackbar } from 'notistack';
 import { useNavigate } from 'react-router-dom';
-import RouteConstants from '../../constant/Routeconstant';
+import RouteConstants from '../../constant/Routeconstant.jsx';
 import adminQueries from '../../queries/adminQueries.jsx';
 import logo from '../../assets/images/Logo.jpg';
 import { jwtDecode } from 'jwt-decode';
@@ -183,7 +183,7 @@ const AdminLogin = () => {
                                     },
                                 }}
                             >
-                                {isLoading ? 'Logging in...' : 'LOGIN'}
+                                {isLoading ? 'Logging...' : 'LOGIN'}
                             </Button>
                         </Box>
                     </form>

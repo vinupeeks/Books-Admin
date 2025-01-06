@@ -21,7 +21,7 @@ const InputField = ({ label, type, value, onChange, required }) => (
   </div>
 );
 
-const FamilyMemberShip = () => {
+const MemberShipCreation = () => {
   const navigate = useNavigate();
 
   const [show, setShow] = useState(false);
@@ -133,27 +133,7 @@ const FamilyMemberShip = () => {
       console.log(error);
     }
   };
-
-  // const handleCancelBtn = () => {
-
-  //   if (!window.confirm("Are you sure you want to continue?")) {
-  //     return;
-  //   }
-  //   setFormData({
-  //     members: [
-  //       {
-  //         name: "",
-  //         contactNumber: "",
-  //         towerName: "",
-  //         floorNumber: "",
-  //         flatType: "",
-  //         dateOfBirth: "",
-  //       },
-  //     ],
-  //     membershipType: "single",
-  //   });
-  //   navigate(RouteConstants.DASHBOARD)
-  // }
+ 
   const handleCancelBtn = () => {
     const hasDataLoaded = formData.members.some(
       (member) =>
@@ -188,10 +168,10 @@ const FamilyMemberShip = () => {
 
 
   return (
-    <div className="p-2 m-5 mt-[80px]">
+    <div className="mt-3">
       {/* <BackButton destination='/dashboard' /><br /> */}
       <div
-        className="max-w-6xl flex flex-col border border-gray-300 rounded-lg shadow-lg mx-auto p-5 bg-white"
+        className="max-w-6xl flex flex-col border border-gray-300 rounded-lg shadow-lg mx-auto p-3 bg-white"
       >
         <h2 className="text-2xl font-bold text-gray-800 mb-6">Members Creation</h2>
         <div className="p-2">
@@ -397,4 +377,4 @@ const FamilyMemberShip = () => {
   );
 };
 
-export default FamilyMemberShip;
+export default MemberShipCreation;

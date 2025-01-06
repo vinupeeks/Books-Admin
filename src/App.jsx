@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import Home from './components/Home/Home';
+import BooksList from './components/Books/BooksList.jsx';
 // import IndividualMemberShip from './components/MemberShip/IndividualMemberShip';
-import FamilyMemberShip from './components/MemberShip/FamilyMemberShip';
+import MemberShipCreation from './components/MemberShip/MemberShipCreation.jsx';
 import MembersList from './components/MembersList/MembersList';
 import ShowBook from './components/Books/ShowBook';
 import EditBook from './components/Books/EditBook';
@@ -20,9 +20,8 @@ import ContactPage from './components/contact/ContactPage';
 import CreateBooks from './components/Books/CreateBooks';
 // import AdminLogin from './components/Log/Login';
 import RouteConstants from "./constant/Routeconstant.jsx";
-import IssuingBook from './components/BookIssuing/IssuingBook.jsx';
-import FamilyMemList from './components/MemberShip/FamilyMemList.jsx';
-import AdminLogin from './components/Log/LogSam.jsx';
+import IssuingBook from './components/BookIssuing/IssuingBook.jsx'; 
+import AdminLogin from './components/Log/AdminLogin.jsx';
 import Dashboard from './components/DashBoard/DashBoard.jsx';
 import SideMenu from './components/navbar/sideMenu.jsx';
 import { getAuthToken } from './utils/TokenHelper.jsx';
@@ -58,11 +57,10 @@ const App = () => {
               <Route path={RouteConstants.ROOT} element={<SideMenu />}>
                 <Route path={RouteConstants.DASHBOARD} element={<PrivateRoute element={<Dashboard />} />} />
 
-                <Route path={RouteConstants.BOOKS} element={<PrivateRoute element={<Home />} />} />
+                <Route path={RouteConstants.BOOKS} element={<PrivateRoute element={<BooksList />} />} />
                 <Route path={RouteConstants.ISSUEDLIST} element={<PrivateRoute element={<IssuedList />} />} />
 
-                <Route path={RouteConstants.FAMILY_MEMBERSHIP} element={<PrivateRoute element={<FamilyMemberShip />} />} />
-                <Route path={RouteConstants.FAMILY_LIST} element={<PrivateRoute element={<FamilyMemList />} />} />
+                <Route path={RouteConstants.CREATE_MEMBERSHIP} element={<PrivateRoute element={<MemberShipCreation />} />} /> 
 
                 <Route path={RouteConstants.BOOKCREATE} element={<PrivateRoute element={<CreateBooks />} />} />
                 <Route path={RouteConstants.BOKKSDETAILS} element={<ShowBook />} />
