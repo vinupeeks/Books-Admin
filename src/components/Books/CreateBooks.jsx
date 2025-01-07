@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
 import RouteConstants from '../../constant/Routeconstant';
 import bookQueries from '../../queries/bookQueries';
+import BackButton from '../../utils/BackButton';
 
 const CreateBooks = () => {
   const [title, setTitle] = useState('');
@@ -21,16 +22,16 @@ const CreateBooks = () => {
       if (response.status === 201) {
         setLoading(false);
         enqueueSnackbar('Book Created successfully', { variant: 'success' });
-        navigate(RouteConstants.ROOT);
+        navigate(RouteConstants.BOOKS);
       } else {
-        setLoading(false);
-        enqueueSnackbar('Error creating book. Check console for details.', { variant: 'error' });
+        setLoading(false); 
+        enqueueSnackbar(response.response?.data?.message || 'Error creating book. Check console for details.', { variant: 'error' });
       }
     },
     {
       onError: (error) => {
         setLoading(false);
-        enqueueSnackbar('Error creating book. Check console for details.', { variant: 'error' });
+        enqueueSnackbar(error.response?.data?.message || 'Error creating book. Check console for details.', { variant: 'error' });
       }
     }
   );
@@ -79,6 +80,7 @@ const CreateBooks = () => {
 
   return (
     <div className="p-6">
+      <BackButton destination='/books' />
       <h1 className="text-3xl font-bold text-center mb-6">Create Book</h1>
       {loading && <Spinner />}
       <div className="flex flex-col border border-gray-300 rounded-lg shadow-lg w-full max-w-2xl mx-auto p-6 bg-white">

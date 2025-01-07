@@ -6,6 +6,12 @@ import bookQueries from "../../queries/bookQueries";
 import { useSnackbar } from "notistack";
 import Pagination from "../../common/Pagination/Pagination";
 import { Modal, Button } from "react-bootstrap";
+import { ChevronDown, ChevronUp, NotepadText, SquarePen } from "lucide-react";
+import UpdateMemberModal from "../MemberShip/UpdateMemberModal";
+
+import { useDispatch } from 'react-redux';
+import { clearSearchTerm } from "../../redux/reducers/searchReducers";
+import FamilyListTable from "./FamilyListTable";
 
 const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipType }) => {
 
@@ -14,10 +20,14 @@ const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipT
   const [error, setError] = useState(null);
   const [selectedMembership, setSelectedMembership] = useState(null);
   const [selectedMember, setSelectedMember] = useState(null);
+  const [expandedRow, setExpandedRow] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [bookDetails, setBookDetails] = useState(null);
   const [bookDetailsGet, setBookDetailsGet] = useState(false);
   const [selectedBook, setSelectedBook] = useState(null);
+  const [isModalOpen, setModalOpen] = useState(false);
+
+  const dispatch = useDispatch();
 
   const [totalPage, setTotalPage] = useState(0);
   const [totalCount, setTotalCount] = useState(0);
@@ -26,9 +36,32 @@ const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipT
   const [show, setShow] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
 
+  const [isRevealed, setIsRevealed] = useState(false);
+
   const [bookModal, setBookModal] = useState(false);
   const [selectedIssue, setSelectedIssue] = useState(null);
+  const [success, setSuccess] = useState(false);
 
+  const handleUpdateMember = (success, updatedData) => {
+    console.log('Updated Member:', updatedData);
+  };
+
+  const openModal = (member) => {
+    setSelectedMember(member);
+    setModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+    setSelectedMember(null);
+  };
+
+  const handlePhoneClick = () => {
+    setIsRevealed(true);
+    setTimeout(() => {
+      setIsRevealed(false);
+    }, 3000);
+  };
 
   const handleShow = (issue) => {
     setSelectedIssue(issue);
@@ -42,10 +75,11 @@ const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipT
   const getMemberships = membershipsQueries.membershipListMutation(
     async (response) => {
       setMemberships(response?.data?.data?.items);
-      // setMemberships(response?.data || []);
+      // setMemberships(response?.data || []); 
       setTotalCount(response?.data?.data?.totalItems);
       setTotalPage(response?.data?.data?.totalPages);
       setLoading(false);
+
     },
     {
       onError: (error) => {
@@ -77,10 +111,12 @@ const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipT
 
   const BookIssueSubmit = bookQueries.BookIssueSubmitMutation(
     async (response) => {
-      window.location.reload();
-      enqueueSnackbar(`${response.data?.message}`, { variant: 'success' });
+      // window.location.reload();
+      fetchMemberships();
       handleCheckRemove();
       setLoading(false);
+      dispatch(clearSearchTerm());
+      enqueueSnackbar(`${response.data?.message}`, { variant: 'success' });
     },
     {
       onError: (error) => {
@@ -88,7 +124,7 @@ const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipT
         setLoading(false);
       }
     }
-  ); 
+  );
 
   const handleBookIssueSubmit = () => {
 
@@ -113,9 +149,10 @@ const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipT
   const BookIssueReturn = bookQueries.BookIssueReturnMutation(
     async (response) => {
       handleCheckRemove();
-      window.location.reload();
-      enqueueSnackbar(`${response.data?.message}`, { variant: 'success' });
+      fetchMemberships();
       setLoading(false);
+      dispatch(clearSearchTerm());
+      enqueueSnackbar(`${response.data?.message}`, { variant: 'success' });
     },
     {
       onError: (error) => {
@@ -199,10 +236,24 @@ const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipT
   useEffect(() => {
     setLoading(true);
     fetchMemberships();
-  }, [membershipType, currentPage, pageSize]);
+  }, [membershipType, currentPage, pageSize, success]);
 
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
+  };
+
+  // const handleToggleRow = (membershipId) => {
+  //   setExpandedRow(prevRow => {
+  //     if (prevRow === membershipId) {
+  //       setTimeout(() => {
+  //         setExpandedRow(null);
+  //       },);
+  //     }
+  //     return prevRow === membershipId ? null : membershipId;
+  //   });
+  // };
+  const handleToggleRow = (membershipId) => {
+    setExpandedRow(prevRow => (prevRow === membershipId ? null : membershipId));
   };
 
 
@@ -212,68 +263,8 @@ const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipT
   return (
     <div className=" bg-gray-50 min-h-screen">
       <br />
-      {/* 
-      <div className="overflow-x-auto bg-white shadow-lg rounded-lg">
-        <table className="min-w-full table-auto">
-          <thead className="bg-gray-300">
-            <tr>
-              <th className="px-4 py-2 text-left w-10">SL.N</th>
-              <th className="px-4 py-2 text-leftw-10">Membership ID</th>
-              <th className="px-4 py-2 text-left w-auto">Name</th>
-              <th className="px-4 py-2 text-left w-auto">Status</th>
-              <th className="px-4 py-2 text-left w-10">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {memberships?.map((membership, index) => {
-              const hasBook = membership.Issues.some((issue) => issue.Book);
-              return (
-                <tr
-                  key={membership.id}
-                  className={`border-b hover:bg-gray-100 ${hasBook ? "bg-red-100" : "bg-gray-200"
-                    }`}
-                >
-                  <td className="px-4 py-2">{index + 1}</td>
-                  <td className="px-4 py-2">{membership.memID}</td>
-                  <td className="px-4 py-2">{membership.name}</td>
-                  <td className="px-4 py-2">
-                    {membership.Issues.length > 0 ? (
-                      membership.Issues.map((issue) => (
-                        <div key={issue.id}>
-                          <p
-                            onMouseEnter={() => handleShow(issue)}
-                            // onMouseLeave={handleMouseLeave}
-                            style={{
-                              cursor: "pointer",
-                              display: "inline-block",
-                              width: "auto"
-                            }}
-                          >Book:</p> {issue.Book ? issue.Book.title : "No Book"}
-                        </div>
-                      ))
-                    ) : (
-                      <p>---</p>
-                    )}
-                  </td>
-                  <td className="px-4 py-2 text-center">
-                    <button
-                      type="button"
-                      className={`px-4 py-2 rounded-lg mr-2 ${hasBook ? "bg-red-200 hover:bg-red-100" : "bg-gray-300 hover:bg-gray-200"
-                        }`}
-                      onClick={() => handleModalOpen(membership)}
-                    >
-                      {hasBook ? "Return" : "Issue"}
-                    </button>
-                  </td>
-                </tr>
-              );
-            })}
-
-          </tbody>
-        </table>
-      </div> */}
-
-      <Modal show={bookModal} onHide={handleMouseLeave}>
+      <Modal show={bookModal} onHide={handleMouseLeave}
+        centered>
         <Modal.Header closeButton>
           <Modal.Title>Book Details</Modal.Title>
         </Modal.Header>
@@ -318,22 +309,32 @@ const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipT
             className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50"
             onClick={handleModalClose}
           >
-            <div className="bg-white p-6 rounded-lg shadow-lg w-[700px] max-h-[90vh] overflow-y-auto"
+            <div className="bg-white p-6 rounded-lg shadow-lg w-[700px] max-h-[75vh] overflow-y-auto"
               onClick={(e) => e.stopPropagation()}
             >
-              <h2 className="text-2xl font-semibold mb-4">Membership Details</h2>
+              <h2 className="text-2xl font-semibold mb-1">Membership Details</h2>
               <div className="mb-2 bg-gray-300 p-2 rounded">
                 <p className="mb-2">
                   <strong>Membership ID:</strong> {selectedMembership.memID}
                 </p>
                 <p className="mb-2">
-                  <strong>Contact No:</strong> {selectedMembership.contactNumber}
+                  <strong>Contact No:</strong>{' '}
+                  <span
+                    onClick={handlePhoneClick}
+                    className="cursor-pointer text-blue-500 hover:underline"
+                  >
+                    {isRevealed ? selectedMembership.contactNumber : `******${selectedMembership.contactNumber.slice(-4)}`}
+                  </span>
                 </p>
                 <p className="mb-2">
                   <strong>Tower Name:</strong> {selectedMembership.towerName}
                 </p>
                 <p className="mb-2">
                   <strong>Flat Name:</strong> {selectedMembership.flatType}{selectedMembership.floorNumber}
+                </p>
+                <p className="mb-2">
+                  <strong>DOB:</strong>
+                  {new Date(selectedMembership.dateOfBirth).toLocaleDateString()}{" "}
                 </p>
                 <p className="mb-2">
                   <strong>Membership Issued:</strong>{" "}
@@ -352,7 +353,6 @@ const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipT
                     >
                       <div>
                         <p><b>Member Name:</b> {selectedMembership?.name}</p>
-                        {/* <p><b>Member ID:</b> {selectedMembership.memID || 'N/A'} </p> */}
                       </div>
                       <div>
                         {/* <p style={{ color: 'green' }}>You are Eligible</p> */}
@@ -379,7 +379,6 @@ const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipT
                       >
                         <div>
                           <p><b>Member Name:</b> {selectedMembership.name}</p>
-                          {/* <p><b>Member ID:</b> {selectedMembership.memID || 'N/A'} </p> */}
                         </div>
                         <div>
                           {/* <p style={{ color: 'red' }}>You are Not Eligible</p> */}
@@ -441,7 +440,7 @@ const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipT
                       className="px-6 py-2 bg-green-300 text-black rounded-lg hover:bg-green-400 mr-2"
                       onClick={handleBookIssueSubmit}
                     >
-                      Issue 
+                      Issue
                     </button>
                   )
                 }
@@ -450,74 +449,130 @@ const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipT
           </div>
         )
       }
-
-      <div className="overflow-x-auto bg-white shadow-lg rounded-lg">
-        <table className="min-w-full table-auto">
-          <thead className="bg-gray-300">
-            <tr>
-              <th className="px-4 py-2 text-left w-10">SL.N</th>
-              <th className="px-4 py-2 text-leftw-10">Membership ID</th>
-              <th className="px-4 py-2 text-left w-auto">Name</th>
-              <th className="px-4 py-2 text-left w-auto">Status</th>
-              <th className="px-4 py-2 text-left w-10">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {memberships?.map((membership, index) => {
-              const hasBook = membership.Issues.some((issue) => issue.Book);
-              return (
-                <tr
-                  key={membership.id}
-                  // className={`border-b hover:bg-gray-100 ${hasBook ? "bg-red-100" : "bg-gray-200"
-                  className={`border-b hover:bg-gray-100 ${hasBook ? "bg-gradient-to-r from-cyan-100 to-blue-100" : "bg-gray-200"
-                    }`}
-                >
-                  <td className="px-4 py-2">{index + 1}</td>
-                  <td className="px-4 py-2">{membership.memID}</td>
-                  <td className="px-4 py-2">{membership.name}</td>
-                  <td className="px-4 py-2">
-                    {membership.Issues.length > 0 ? (
-                      membership.Issues.map((issue) => (
-                        <div key={issue.id}>
-                          <p
-                            onMouseEnter={() => handleShow(issue)}
-                            // onMouseLeave={handleMouseLeave}
-                            style={{
-                              cursor: "pointer",
-                              display: "inline-block",
-                              width: "auto"
-                            }}
-                          >Book:</p> {issue.Book ? issue.Book.title : "No Book"}
-                        </div>
-                      ))
-                    ) : (
-                      <p>---</p>
-                    )}
-                  </td>
-                  <td className="px-4 py-2 text-center">
-                    <button
-                      type="button"
-                      className={`px-4 py-2 rounded-lg mr-2 ${hasBook ? "bg-gradient-to-r from-cyan-200 to-blue-200 hover:bg-red-100" : "bg-gray-300 hover:bg-gray-200"
-                        }`}
-                      onClick={() => handleModalOpen(membership)}
+      {memberships?.length > 0 ? (
+        <div className="overflow-x-auto bg-white shadow-lg rounded-lg">
+          <div className=" text-black dark:text-gray-300 p-2">
+            &nbsp; {currentPage * pageSize + 1} - {currentPage * pageSize + memberships.length} out of {totalCount} members.
+          </div>
+          <table className="min-w-full table-auto">
+            <thead className="bg-gray-300">
+              <tr>
+                <th className="px-4 py-2 text-left w-10">SLN</th>
+                <th className="px-4 py-2 text-leftw-10">Membership ID</th>
+                <th className="px-4 py-2 text-left w-auto">Name</th>
+                <th className="px-4 py-2 text-left w-auto">Status</th>
+                <th className="px-4 py-2 text-left w-10">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {memberships?.map((membership, index) => {
+                const hasBook = membership.Issues.some((issue) => issue.Book);
+                const isRowExpanded = expandedRow === membership.id;
+                return (
+                  <>
+                    <tr
+                      key={membership.id}
+                      className={`border-b hover:bg-gray-100 ${hasBook ? "bg-gradient-to-r from-cyan-100 to-blue-100" : "bg-gray-200"}`}
                     >
-                      {hasBook ? "Return" : "Issue"}
-                    </button>
-                  </td>
-                </tr>
-              );
-            })}
+                      <td className="px-4 py-2">
+                        {currentPage * pageSize + index + 1}
+                      </td>
+                      <td className="px-4 py-2">{membership.memID}</td>
+                      <td className="px-4 py-2">{membership.name}</td>
+                      <td className="px-4 py-2">
+                        {membership.Issues.length > 0 ? (
+                          <div className="flex flex-col gap-2">
+                            {membership.Issues.map((issue) => (
+                              <div key={issue.id} className="flex items-center gap-2">
+                                <NotepadText
+                                  className="w-5 h-5"
+                                  onMouseEnter={() => handleShow(issue)}
+                                  style={{ cursor: "pointer" }}
+                                />
+                                <span>{issue.Book && issue.Book.title ? issue.Book.title : "No title available"}</span>
+                              </div>
+                            ))}
+                          </div>
+                        ) : (
+                          <p className="text-gray-500">---</p>
+                        )}
+                      </td>
+                      <td className="px-4 py-2 text-center">
+                        <div className="flex items-center justify-between gap-2">
+                          {membership.memID.startsWith("F") ? (
+                            <button
+                              type="button"
+                              className="flex justify-center items-center w-8 h-8 from-cyan-200 to-blue-200 rounded-full hover:bg-gray-300"
+                              onClick={() => handleToggleRow(membership.id)}
+                            >
+                              {
+                                expandedRow && isRowExpanded ? (
+                                  <ChevronUp className="w-5 h-5" />
+                                ) : (
+                                  <ChevronDown className="w-5 h-5" />
+                                )
+                              }
+                            </button>
+                          ) : (
+                            <div className="w-8 h-8"></div>
+                          )}
+                          <button
+                            type="button"
+                            className={`px-4 py-2 text-sm font-medium rounded-lg mr-2 ${hasBook
+                              ? "bg-gradient-to-r from-cyan-200 to-blue-200 hover:bg-red-100"
+                              : "bg-gray-300 hover:bg-gray-200"
+                              }`}
+                            onClick={() => handleModalOpen(membership)}
+                          >
+                            {hasBook ? "Return" : "\u00A0\u00A0Issue"}
+                          </button>
 
-          </tbody>
-        </table>
-      </div>
-      <Pagination
-        currentPage={currentPage}
-        totalPages={totalPage}
-        pageSize={pageSize}
-        setPageSize={setPageSize}
-        show={show}
-        onPageChange={handlePageChange} />
+                          <button
+                            type="button"
+                            className="flex justify-center items-center w-8 h-8 from-cyan-200 to-blue-200 rounded-full hover:bg-gray-300"
+                            onClick={() => openModal(membership)}
+                          >
+                            <SquarePen className="w-5 h-5" />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                    {
+                      expandedRow && isRowExpanded && (
+                        <FamilyListTable id={expandedRow} />
+                      )
+                    }
+                  </>
+                );
+              })}
+            </tbody>
+
+          </table>
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPage}
+            pageSize={pageSize}
+            setPageSize={setPageSize}
+            show={show}
+            onPageChange={handlePageChange} />
+          <br />
+        </div>
+      ) : (
+        <div className="flex flex-col items-center justify-center h-40 bg-gray-100 rounded-md shadow-md">
+          <h2 className="mt-4 text-lg font-semibold text-gray-700">No Members Found</h2>
+          <p className="mt-2 text-sm text-gray-500">
+            We couldn't find any members matching your search. Try modifying your criteria.
+          </p>
+        </div>
+      )
+      }
+      <UpdateMemberModal
+        member={selectedMember}
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        onUpdate={handleUpdateMember}
+        setSuccess={setSuccess}
+      />
     </div >
   );
 };

@@ -2,8 +2,8 @@ import React, { useCallback, useEffect, useState } from 'react';
 import Spinner from '../../utils/Spinner';
 import { Link, useNavigate } from 'react-router-dom';
 import { MdOutlineAddBox } from 'react-icons/md';
-import BooksTable from '../Books/BooksTable';
-import BooksCard from '../Books/BooksCard';
+import BooksTable from './BooksTable';
+import BooksCard from './BooksCard';
 import { useSnackbar } from 'notistack';
 import { useViewContext } from '../../context/ViewContext';
 import RouteConstants from '../../constant/Routeconstant';
@@ -11,6 +11,7 @@ import bookQueries from '../../queries/bookQueries';
 import { getAuthToken } from '../../utils/TokenHelper';
 import debounce from 'lodash.debounce';
 import Pagination from '../../common/Pagination/Pagination';
+import BackButton from '../../utils/BackButton';
 
 
 const Home = () => {
@@ -24,7 +25,8 @@ const Home = () => {
   const [totalPage, setTotalPage] = useState(0);
   const [totalCount, setTotalCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
-  const [pageSize, setPageSize] = useState(20);
+  const [pageSize, setPageSize] = useState(25);
+  const [show, setShow] = useState(true);
 
   const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
@@ -38,7 +40,7 @@ const Home = () => {
     }
     setLoading(true);
     fetchBooks();
-  }, [currentPage, pageSize, searchTerm,]);
+  }, [currentPage, pageSize]);
 
   const getBooks = bookQueries.booksListMutation(
     async (response) => {
@@ -80,6 +82,7 @@ const Home = () => {
       size: pageSize,
       // filter: dateFilter, 
     });
+    setCurrentPage(0);
     return params.toString();
   };
 
@@ -99,7 +102,8 @@ const Home = () => {
   };
 
   return (
-    <div className="p-4">
+    <div className="px-3 pb-5">
+      {/* <BackButton destination='/dashboard' /> */}
       <div className="flex justify-between items-center">
         <h1 className="text-3xl my-8">Books List</h1>
         <div className='flex justify-between items-center gap-3'>
@@ -107,10 +111,10 @@ const Home = () => {
             type="text"
             placeholder="Search by Book-Name"
             value={searchTerm}
-            onChange={(event) => { 
+            onChange={(event) => {
               handleSearchChange(event);
             }}
-            className="border-2 border-sky-500 rounded-lg bg-gray-100 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-sky-500 p-1 w- uppercase" 
+            className="border-2 border-sky-500 rounded-lg bg-gray-100 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-sky-500 p-1 w- uppercase"
           />
           <Link to="/books/create">
             <MdOutlineAddBox className="text-sky-800 text-4xl" />
@@ -119,8 +123,8 @@ const Home = () => {
       </div>
       {loading ? (
         <Spinner />
-      ) : books.length > 0 ? (
-        viewFormat === 'table' ? <BooksTable books={books} /> : <BooksCard books={books} />
+      ) : books?.length > 0 ? (
+        viewFormat === 'table' ? <BooksTable books={books} currentPage={currentPage} pageSize={pageSize} totalCount={totalCount} /> : <BooksCard books={books} />
       ) : (
         <div className="flex flex-col items-center justify-center h-40 bg-gray-100 rounded-md shadow-md">
           <svg
@@ -148,6 +152,7 @@ const Home = () => {
         currentPage={currentPage}
         totalPages={totalPage}
         pageSize={pageSize}
+        show={show}
         setPageSize={setPageSize}
         onPageChange={handlePageChange}
       />

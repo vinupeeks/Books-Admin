@@ -16,6 +16,7 @@
     "@heroicons/react": "^2.0.18",
     "@mui/icons-material": "^6.1.6",
     "@mui/material": "^6.1.6",
+    "@reduxjs/toolkit": "^2.5.0",
     "axios": "^1.6.1",
     "bootstrap": "^5.3.3",
     "dotenv": "^16.4.5",
@@ -30,7 +31,10 @@
     "react-icons": "^4.11.0",
     "react-modal": "^3.16.1",
     "react-query": "^3.39.3",
-    "react-router-dom": "^6.18.0"
+    "react-redux": "^9.2.0",
+    "react-router-dom": "^6.18.0",
+    "redux": "^5.0.1",
+    "redux-persist": "^6.0.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.14",

@@ -22,10 +22,20 @@ const adminProfileMutation = (onAdminLoginSuccess, onErrorCallback) => {
     });
 };
 
+const CountsOfBooksAndMembersMutation = (onAdminLoginSuccess, onErrorCallback) => {
 
+    return useMutation(adminService.CountsOfBooksAndMembers, {
+        onSuccess: (data) => {
+            onAdminLoginSuccess(data);
+        },
+        onError: onErrorCallback,
+    });
+};
+ 
 const adminQueries = {
     adminLoginMutation,
-    adminProfileMutation
+    adminProfileMutation,
+    CountsOfBooksAndMembersMutation, 
 };
 
 export default adminQueries;

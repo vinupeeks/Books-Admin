@@ -3,10 +3,12 @@ import { Box, TextField, Button, Typography, InputAdornment, IconButton } from '
 import { Visibility, VisibilityOff, Person, Lock } from '@mui/icons-material';
 import { useSnackbar } from 'notistack';
 import { useNavigate } from 'react-router-dom';
-import RouteConstants from '../../constant/Routeconstant';
+import RouteConstants from '../../constant/Routeconstant.jsx';
 import adminQueries from '../../queries/adminQueries.jsx';
 import logo from '../../assets/images/Logo.jpg';
 import { jwtDecode } from 'jwt-decode';
+import { useDispatch } from 'react-redux';
+import { setLogin } from '../../redux/reducers/authReducers.js';
 
 const AdminLogin = () => {
     const [formData, setFormData] = useState({ email: '', password: '' });
@@ -14,6 +16,8 @@ const AdminLogin = () => {
     const { enqueueSnackbar } = useSnackbar();
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
+
+    const dispatch = useDispatch()
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -27,9 +31,9 @@ const AdminLogin = () => {
             if (response?.data?.token) {
                 const token = response.data.token;
                 localStorage.setItem('BooksAdminToken', token);
+                dispatch(setLogin(token));
                 enqueueSnackbar('Login successful', { variant: 'success' });
                 navigate(RouteConstants.DASHBOARD);
-                window.location.reload();
             } else {
                 enqueueSnackbar('Invalid email or password', { variant: 'error' });
             }
@@ -55,7 +59,7 @@ const AdminLogin = () => {
             try {
                 const decoded = jwtDecode(token);
                 if (decoded.exp * 1000 > Date.now()) {
-                    navigate(RouteConstants.DASHBOARD);
+                    navigate(RouteConstants.ROOT);
                 }
             } catch {
                 localStorage.removeItem('BooksAdminToken');
@@ -109,8 +113,8 @@ const AdminLogin = () => {
                         }}
                         component="div"
                     >
-                        <h2>Skyline IVY-League</h2>
-                        <h3>Library Application</h3>
+                        {/* <h2>Skyline IVY-League</h2> */}
+                        <h1>Library Application</h1>
                     </Typography>
                     <form onSubmit={handleSubmit}>
                         <TextField
@@ -179,7 +183,7 @@ const AdminLogin = () => {
                                     },
                                 }}
                             >
-                                {isLoading ? 'Logging in...' : 'LOGIN'}
+                                {isLoading ? 'Logging...' : 'LOGIN'}
                             </Button>
                         </Box>
                     </form>

@@ -1,20 +1,48 @@
 import React, { useEffect, useState } from 'react';
-import { Search, Users, UserCheck, UserPlus, Sliders, X } from 'lucide-react';
+import { Search, Users, UserCheck, UserPlus, Sliders, X, Library, CornerDownLeft, LibraryBig } from 'lucide-react';
 import MembersList from '../MembersList/MembersList';
+import SideMenu from '../navbar/sideMenu';
+import adminQueries from '../../queries/adminQueries';
+import { useSnackbar } from 'notistack';
+import { useNavigate } from 'react-router-dom';
+import RouteConstants from '../../constant/Routeconstant';
 
-const MinimalistDashboard = () => {
-    const [searchTerm, setSearchTerm] = useState('');
+import { useDispatch, useSelector } from 'react-redux';
+import { clearSearchTerm, selectSearchTerm, setSearchTerm } from '../../redux/reducers/searchReducers';
+
+const DashBoard = () => {
+
+    const dispatch = useDispatch();
+    const searchTerm = useSelector(selectSearchTerm);
+
+    // const [searchTerm, setSearchTerm] = useState('');
+    const [selectTerm, setSelectTerm] = useState('');
     const [membershipType, setMembershipType] = useState('');
     const [showList, setShowList] = useState(false);
+    const [count, setCount] = useState(false);
+    const [booksCount, setBooksCount] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const { enqueueSnackbar } = useSnackbar();
+    const navigate = useNavigate();
+
+    const [selectedOption, setSelectedOption] = useState(null);
+
+    const handleClearSearchTerm = () => {
+        dispatch(clearSearchTerm());
+    };
 
     const handleSearchChange = (event) => {
         const value = event.target.value;
-        if (value.charAt(0) === ' ') { 
-            setSearchTerm('');
+        if (value.charAt(0) === ' ') {
+            // setSearchTerm('');
+            dispatch(clearSearchTerm());
             setMembershipType('');
             return;
         }
-        setSearchTerm(value);
+        // setSearchTerm(value);
+        dispatch(setSearchTerm(value));
+        console.log(searchTerm, selectTerm);
+
     };
     useEffect(() => {
         if (searchTerm === '' && membershipType === '') {
@@ -22,113 +50,180 @@ const MinimalistDashboard = () => {
         } else {
             setShowList(true);
         }
+        setLoading(true);
+        CountsOfBooksAndMembers.mutateAsync();
     }, [membershipType, searchTerm])
 
-    const handleTypeChange = (type) => {
-        setMembershipType(type);
-        setSearchTerm('');
-    };
+    const CountsOfBooksAndMembers = adminQueries.CountsOfBooksAndMembersMutation(
+        async (response) => {
+            if (response?.data) {
+                setCount(response?.data);
+                setLoading(false);
+            } else {
+                enqueueSnackbar('Error Fetching the Books And Members count..!', { variant: 'error' });
+                setLoading(false);
+            }
+        },
+        {
+            onError: (error) => {
+                enqueueSnackbar(error.response?.data?.message || 'Login failed', { variant: 'error' });
+                setLoading(false);
+            },
+        }
+    );
 
     const membershipTypes = [
         {
-            key: "A",
-            label: "All Members",
-            icon: Users,
-            background: "bg-gradient-to-r from-cyan-500 to-blue-500",
-            description: "View all membership types"
+            key: "IBC",
+            label: `Issued Books: ${count.IssuedBooksCount ?? 'N/A'}`,
+            action: true,
+            navigate: RouteConstants.ISSUEDLIST,
+            icon: Library,
+            background: "bg-gradient-to-r from-blue-500 to-cyan-500",
+            description: "Total Issued Books Count",
+            click: true,
         },
         {
-            key: "I",
-            label: "Individual",
-            icon: UserCheck,
+            key: "BC",
+            label: `Books: ${count.BooksCount ?? 'N/A'}`,
+            action: true,
+            navigate: RouteConstants.BOOKS,
+            icon: LibraryBig,
             background: "bg-gradient-to-r from-blue-500 to-cyan-500",
-            description: "Single membership accounts"
+            description: "Total Books Count",
+            click: true,
         },
+        {
+            key: "A",
+            label: `Members: ${count.MembersCount ?? 'N/A'}`,
+            icon: Users,
+            background: "bg-gradient-to-r from-blue-500 to-cyan-500",
+            description: "All membership accounts",
+            click: true,
+        },
+        // {
+        //     key: "I",
+        //     label: "Individual",
+        //     icon: UserCheck,
+        //     background: "bg-gradient-to-r from-blue-500 to-cyan-500",
+        //     description: "Single membership accounts",
+        //     click: true,
+        // },
         {
             key: "F",
             label: "Family",
             icon: UserPlus,
             background: "bg-gradient-to-r from-cyan-500 to-blue-500",
-            description: "Family membership accounts"
-        }
+            description: "Family membership accounts",
+            click: true,
+        },
     ];
 
     const rmvBtnCase = () => {
-        setMembershipType('')
+        setMembershipType('');
+        // setSearchTerm('');
+        dispatch(clearSearchTerm());
     }
 
+    const handleTypeChange = (type) => {
+        if (type.click) {
+            if (type.action) {
+                navigate(type.navigate);
+                return;
+            }
+            setMembershipType(type.key);
+            if (type.key === 'I') {
+                setSelectTerm('Individual List');
+            }
+            else if (type.key === 'A') {
+                setSelectTerm('All Members List');
+                setSelectedOption('A');
+            } else {
+                setSelectTerm('Family List');
+            }
+
+            // setSearchTerm(type.key);
+        }
+        return;
+    };
+
+    const handleSortClick = (option) => {
+        setSelectedOption(option);
+        setMembershipType(option);
+        // console.log(`Selected: ${option}`);
+    };
+
     return (
-        <div className="w-full h-screen bg-gray rounded-3xl shadow-2xl overflow-hidden grid md:grid-cols-5 p-3">
-            <div className="col-span-1 bg-gray-100 rounded-2xl p-6 h-auto">
-                <div className="flex items-center mb-8">
-                    <Sliders className="mr-3 text-gray-600" />
-                    <h2 className="text-2xl font-bold text-gray-800">Filters</h2>
-                </div>
-                <div className="space-y-4">
-                    <div className="space-y-4 h-full">
-                        {membershipTypes.map((type) => (
-                            <div
-                                key={type.key}
-                                onClick={() => handleTypeChange(type.key)}
-                                className={`cursor-pointer p-4 rounded-xl transition-all duration-300 ${membershipType === type.key
-                                    ? `${type.background} text-white`
-                                    : 'bg-white text-gray-600 hover:bg-gray-100'
-                                    }`}
-                            >
-                                <div className="flex items-center">
-                                    <type.icon className="mr-3 w-6 h-6" />
-                                    <div>
-                                        <h3 className="font-semibold">{type.label}</h3>
-                                        <p className={`text-sm ${membershipType === type.key ? 'text-gray-200' : 'text-gray-400'}`}>
-                                            {type.description}
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                    {membershipType && (
-                        // <button className="flex justify-end mt-4 w-auto p-2 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-xl hover:bg-blue-600 transition duration-300 ml-auto"
-                        <button className="w-full mt-4 p-2 bg-gradient-to-r  rounded-xl from-blue-500 to-cyan-500 transition duration-300 ml-auto"
-                            onClick={rmvBtnCase}>
-                            CLEAR
-                        </button>
-                    )}
-                </div>
-            </div>
-
-            <div className="col-span-4 p-4">
-                {/* <h1 className="text-3xl font-bold text-gray-800 mb-6">
-                    Membership Management
-                </h1> */}
-
-                {/* Search Section */}
-                <div className="relative mb-6">
+        <div className="w-full ms-1 min-h-screen bg-gray shadow-2xl overflow-y-auto grid md:grid-cols-6">
+            <div className="col-span-6 p-4">
+                <div className="relative mb-3">
                     <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
                     <input
                         type="text"
                         placeholder="Search members by Name, ID, or Phone number"
                         value={searchTerm}
                         onChange={handleSearchChange}
-                        className="w-full pl-12 pr-4 py-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700"
+                        className="w-full h-5 pl-12 pr-4 py-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700"
                     />
                     <X
                         className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 cursor-pointer"
-                        onClick={() => setSearchTerm('')}
+                        onClick={() => {
+                            // setSearchTerm('');
+                            dispatch(clearSearchTerm());
+                            setSelectedOption('');
+                            setMembershipType('');
+                            setSelectTerm('');
+                        }}
                     />
                 </div>
 
-                {searchTerm && (
-                    <div className="bg-blue-50 border-l-4 border-blue-500 rounded-r-xl mb-6">
-                        <p className="text-blue-700">
-                            Searching for: <span className="font-semibold ml-2">{searchTerm}</span>
+                {(searchTerm || selectTerm) && (
+                    <div className="bg-blue-50 border-l-4 border-blue-500 rounded-r-xl flex items-center justify-between px-4 py-2">
+                        <p className="text-blue-700 flex-grow">
+                            Searching for: <span className="font-semibold ml-2">{searchTerm || selectTerm}</span>
                         </p>
+                        <div className="flex items-center space-x-4">
+                            {
+                                selectTerm === 'All Members List' && (
+                                    <div className="flex items-center">
+                                        <span className="font-semibold ml-2">Sort:</span>
+                                        <button
+                                            className={`ml-2 px-3 py-1 rounded-lg ${selectedOption === 'A' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+                                            onClick={() => handleSortClick('A')}
+                                        >
+                                            All
+                                        </button>
+                                        <button
+                                            className={`ml-2 px-3 py-1 rounded-lg ${selectedOption === 'I' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+                                            onClick={() => handleSortClick('I')}
+                                        >
+                                            Individual
+                                        </button>
+                                        <button
+                                            className={`ml-2 px-3 py-1 rounded-lg ${selectedOption === 'F' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+                                            onClick={() => handleSortClick('F')}
+                                        >
+                                            Family
+                                        </button>
+                                    </div>
+                                )
+                            }
+                            <CornerDownLeft
+                                className="text-gray-500 cursor-pointer"
+                                onClick={() => {
+                                    // setSearchTerm('');
+                                    dispatch(clearSearchTerm());
+                                    setSelectedOption('');
+                                    setMembershipType('');
+                                    setSelectTerm('');
+                                }}
+                            />
+                        </div>
                     </div>
                 )}
-
                 <div>
                     {showList ? (
-                        < div className="bg-gray-100 rounded-xl">
+                        <div className="bg-gray-100 rounded-xl">
                             <MembersList
                                 searchTerm={searchTerm}
                                 setSearchTerm={setSearchTerm}
@@ -137,14 +232,48 @@ const MinimalistDashboard = () => {
                             />
                         </div>
                     ) : (
-                        <div className="bg-gray-50 rounded-xl shadow-lg p-8 flex flex-col items-center justify-center space-y-6 border border-gray-200">
-                            <h2 className="text-xl font-semibold text-gray-700">
-                                Welcome to Your Dashboard
-                            </h2>
-                            <p className="text-gray-500 text-center max-w-md">
-                                Your search results, book issue / return, and other activities will be displayed here. Start exploring the tools and features available to you.
-                            </p>
-                        </div> 
+                        <div className="space-y-4">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
+                                {membershipTypes?.map((type, index) => (
+                                    <div
+                                        key={index}
+                                        onClick={() => handleTypeChange(type)}
+                                        className={`relative p-3 rounded-xl h-fit shadow-lg border transition-transform transform hover:scale-105 duration-300 cursor-pointer ${membershipType === type.key
+                                            ? `border-${type.background.split(' ')[1]} bg-gradient-to-br from-cyan-500 to-blue-500 text-white`
+                                            : 'border-gray-300 bg-gray-100 text-gray-700 hover:border-gray-400 hover:shadow-md'
+                                            }`}
+                                    >
+                                        <div className="flex flex-col items-center space-y-2">
+                                            <div
+                                                className={`flex items-center justify-center w-8 h-8 rounded-full shadow-inner border-2 ${membershipType === type.key
+                                                    ? 'bg-white text-blue-500 border-white'
+                                                    : 'bg-gray-200 text-gray-600 border-gray-300'
+                                                    }`}
+                                            >
+                                                <type.icon className="w-4 h-4 text-black-400" />
+                                            </div>
+                                            <div className="text-center">
+                                                <h3 className="font-bold text-lg">{type.label}</h3>
+                                                <p className="mt-1 text-sm text-blue-900">{type.description}</p>
+                                            </div>
+                                        </div>
+                                        {/* {type.click && (
+                                            <div className="absolute bottom-4 right-4 text-xs font-semibold text-gray-500">
+                                                Clickable
+                                            </div>
+                                        )} */}
+                                    </div>
+                                ))}
+                            </div>
+                            {membershipType && (
+                                <button
+                                    className="w-full mt-4 p-2 bg-gradient-to-r rounded-xl from-blue-500 to-cyan-500 transition duration-300 ml-auto"
+                                    onClick={rmvBtnCase}
+                                >
+                                    CLEAR
+                                </button>
+                            )}
+                        </div>
                     )}
                 </div>
             </div>
@@ -153,4 +282,4 @@ const MinimalistDashboard = () => {
     );
 };
 
-export default MinimalistDashboard;
+export default DashBoard;

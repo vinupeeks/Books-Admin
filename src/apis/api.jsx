@@ -6,8 +6,9 @@ import {
     onResponseError,
 } from "./api-interceptors.jsx";
 
+// export const BASE_URL=`http://localhost:1000`
 
-const BASE_URL = import.meta.env.VITE_BASE_URL;
+export const BASE_URL = `https://njs.solminds.com/library/api`;
 
 const defaultOptions = {
     baseURL: `${BASE_URL}`,
