@@ -483,19 +483,6 @@ const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipT
                         <p className="text-gray-500">---</p>
                       )}
                     </td>
-
-
-
-
-
-
-
-
-
-
-
-
-
                     <td className="px-4 py-2 text-center">
                       <div className="flex items-center justify-between gap-2">
                         {membership.memID.startsWith("F") ? (
@@ -527,8 +514,8 @@ const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipT
                           <SquarePen className="w-5 h-5" />
                         </button>
                       </div>
-                    </td>  
-                  </tr> 
+                    </td>
+                  </tr>
                 );
               })}
             </tbody>
@@ -551,7 +538,6 @@ const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipT
         </div>
       )
       }
-
       <UpdateMemberModal
         member={selectedMember}
         isOpen={isModalOpen}
