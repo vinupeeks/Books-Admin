@@ -101,14 +101,14 @@ const DashBoard = () => {
             description: "All membership accounts",
             click: true,
         },
-        {
-            key: "I",
-            label: "Individual",
-            icon: UserCheck,
-            background: "bg-gradient-to-r from-blue-500 to-cyan-500",
-            description: "Single membership accounts",
-            click: true,
-        },
+        // {
+        //     key: "I",
+        //     label: "Individual",
+        //     icon: UserCheck,
+        //     background: "bg-gradient-to-r from-blue-500 to-cyan-500",
+        //     description: "Single membership accounts",
+        //     click: true,
+        // },
         {
             key: "F",
             label: "Family",

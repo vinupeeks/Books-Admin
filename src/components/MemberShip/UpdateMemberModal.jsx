@@ -18,8 +18,6 @@ const UpdateMemberModal = ({ member, isOpen, onClose, onUpdate, setSuccess }) =>
     const { enqueueSnackbar } = useSnackbar();
 
     useEffect(() => {
-        console.log(member);
-
         if (member) {
             setFormData({
                 memId: member.id,
@@ -180,7 +178,11 @@ const UpdateMemberModal = ({ member, isOpen, onClose, onUpdate, setSuccess }) =>
                         <input
                             type="date"
                             name="dateOfBirth"
-                            value={formData.dateOfBirth}
+                            value={
+                                formData.dateOfBirth
+                                    ? new Date(formData.dateOfBirth).toISOString().split("T")[0]
+                                    : ""
+                            }
                             onChange={handleInputChange}
                             // required
                             className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"

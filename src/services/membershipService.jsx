@@ -94,6 +94,19 @@ const membershipService = {
             data: memberData,
         });
     },
+
+    getFamilyMembersList: async (data) => {
+        const Token = selectAuthToken(store.getState())
+        const MemId = data.id;
+
+        return apiRequest({
+            method: "GET",
+            url: `members/family-members/${MemId}`,
+            headers: {
+                Authorization: "Bearer " + Token
+            },
+        });
+    },
 }
 
 export default membershipService;

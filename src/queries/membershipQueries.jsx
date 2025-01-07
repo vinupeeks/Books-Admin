@@ -60,13 +60,24 @@ const editMemberDetailsMutation = (editMemberDetailsSuccess, onErrorCallback) =>
         onError: onErrorCallback,
     });
 };
+
+const getFamilyMembersListMutation = (getFamilyMembersListSuccess, onErrorCallback) => {
+
+    return useMutation(membershipService.getFamilyMembersList, {
+        onSuccess: (data) => {
+            getFamilyMembersListSuccess(data);
+        },
+        onError: onErrorCallback,
+    });
+};
 const membershipsQueries = {
     membershipListMutation,
     familyMembershipListMutation,
     membershipByIdMutation,
     memberBookDetailsMutation,
     createMmberMutation,
-    editMemberDetailsMutation
+    editMemberDetailsMutation,
+    getFamilyMembersListMutation
 };
 
 export default membershipsQueries;
