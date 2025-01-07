@@ -79,6 +79,21 @@ const membershipService = {
             data: memberData,
         });
     },
+
+    editMemberDetails: async (data) => {
+        const Token = selectAuthToken(store.getState())
+        const memberData = data;
+        const MemId = data.memId;
+
+        return apiRequest({
+            method: "POST",
+            url: `members/updation/${MemId}`,
+            headers: {
+                Authorization: "Bearer " + Token
+            },
+            data: memberData,
+        });
+    },
 }
 
 export default membershipService;

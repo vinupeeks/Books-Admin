@@ -6,7 +6,11 @@ import bookQueries from "../../queries/bookQueries";
 import { useSnackbar } from "notistack";
 import Pagination from "../../common/Pagination/Pagination";
 import { Modal, Button } from "react-bootstrap";
-import { NotepadText, SquarePen } from "lucide-react";
+import { ChevronDown, NotepadText, SquarePen } from "lucide-react";
+import UpdateMemberModal from "../MemberShip/UpdateMemberModal";
+
+import { useDispatch } from 'react-redux';
+import { clearSearchTerm } from "../../redux/reducers/searchReducers";
 
 const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipType }) => {
 
@@ -15,10 +19,14 @@ const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipT
   const [error, setError] = useState(null);
   const [selectedMembership, setSelectedMembership] = useState(null);
   const [selectedMember, setSelectedMember] = useState(null);
+  const [selectedRow, setSelectedRow] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [bookDetails, setBookDetails] = useState(null);
   const [bookDetailsGet, setBookDetailsGet] = useState(false);
   const [selectedBook, setSelectedBook] = useState(null);
+  const [isModalOpen, setModalOpen] = useState(false);
+
+  const dispatch = useDispatch();
 
   const [totalPage, setTotalPage] = useState(0);
   const [totalCount, setTotalCount] = useState(0);
@@ -31,6 +39,22 @@ const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipT
 
   const [bookModal, setBookModal] = useState(false);
   const [selectedIssue, setSelectedIssue] = useState(null);
+  const [success, setSuccess] = useState(false);
+
+
+  const handleUpdateMember = (success, updatedData) => {
+    console.log('Updated Member:', updatedData);
+  };
+
+  const openModal = (member) => {
+    setSelectedMember(member);
+    setModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+    setSelectedMember(null);
+  };
 
   const handlePhoneClick = () => {
     setIsRevealed(true);
@@ -91,6 +115,7 @@ const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipT
       fetchMemberships();
       handleCheckRemove();
       setLoading(false);
+      dispatch(clearSearchTerm());
       enqueueSnackbar(`${response.data?.message}`, { variant: 'success' });
     },
     {
@@ -126,6 +151,7 @@ const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipT
       handleCheckRemove();
       fetchMemberships();
       setLoading(false);
+      dispatch(clearSearchTerm());
       enqueueSnackbar(`${response.data?.message}`, { variant: 'success' });
     },
     {
@@ -210,7 +236,7 @@ const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipT
   useEffect(() => {
     setLoading(true);
     fetchMemberships();
-  }, [membershipType, currentPage, pageSize]);
+  }, [membershipType, currentPage, pageSize, success]);
 
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
@@ -458,19 +484,32 @@ const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipT
                       )}
                     </td>
                     <td className="px-4 py-2 text-center">
-                      <div className="flex items-center justify-between gap-0">
+                      <div className="flex items-center justify-between gap-2">
+                        {membership.memID.startsWith("F") ? (
+                          <button
+                            type="button"
+                            className="flex justify-center items-center w-8 h-8 from-cyan-200 to-blue-200 rounded-full hover:bg-gray-300"
+                            onClick={() => alert(membership.id)}
+                          >
+                            <ChevronDown className="w-5 h-5" />
+                          </button>
+                        ) : (
+                          <div className="w-8 h-8"></div>)}
                         <button
                           type="button"
-                          className={`px-4 py-2 text-sm font-medium rounded-lg mr-2 ${hasBook ? "bg-gradient-to-r from-cyan-200 to-blue-200 hover:bg-red-100" : "bg-gray-300 hover:bg-gray-200"
+                          className={`px-4 py-2 text-sm font-medium rounded-lg mr-2 ${hasBook
+                            ? "bg-gradient-to-r from-cyan-200 to-blue-200 hover:bg-red-100"
+                            : "bg-gray-300 hover:bg-gray-200"
                             }`}
                           onClick={() => handleModalOpen(membership)}
                         >
                           {hasBook ? "Return" : "\u00A0\u00A0Issue"}
                         </button>
+
                         <button
                           type="button"
                           className="flex justify-center items-center w-8 h-8 from-cyan-200 to-blue-200 rounded-full hover:bg-gray-300"
-                          onClick={() => console.log(membership)}
+                          onClick={() => openModal(membership)}
                         >
                           <SquarePen className="w-5 h-5" />
                         </button>
@@ -479,7 +518,6 @@ const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipT
                   </tr>
                 );
               })}
-
             </tbody>
           </table>
           <Pagination
@@ -498,7 +536,15 @@ const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipT
             We couldn't find any members matching your search. Try modifying your criteria.
           </p>
         </div>
-      )}
+      )
+      }
+      <UpdateMemberModal
+        member={selectedMember}
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        onUpdate={handleUpdateMember}
+        setSuccess={setSuccess}
+      />
     </div >
   );
 };
