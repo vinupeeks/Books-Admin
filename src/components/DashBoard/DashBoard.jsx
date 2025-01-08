@@ -102,21 +102,21 @@ const DashBoard = () => {
             click: true,
         },
         {
-            key: "I",
-            label: "Individual",
-            icon: UserCheck,
-            background: "bg-gradient-to-r from-blue-500 to-cyan-500",
-            description: "Single membership accounts",
-            click: true,
-        },
-        {
             key: "F",
-            label: "Family",
+            label: `Family: ${count.FamilyMembersCount ?? 'N/A'}`,
             icon: UserPlus,
             background: "bg-gradient-to-r from-cyan-500 to-blue-500",
             description: "Family membership accounts",
-            click: true,
+            // click: true,
         },
+        // {
+        //     key: "I",
+        //     label: "Individual",
+        //     icon: UserCheck,
+        //     background: "bg-gradient-to-r from-blue-500 to-cyan-500",
+        //     description: "Single membership accounts",
+        //     click: true,
+        // },
     ];
 
     const rmvBtnCase = () => {

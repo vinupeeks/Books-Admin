@@ -6,11 +6,12 @@ import bookQueries from "../../queries/bookQueries";
 import { useSnackbar } from "notistack";
 import Pagination from "../../common/Pagination/Pagination";
 import { Modal, Button } from "react-bootstrap";
-import { ChevronDown, NotepadText, SquarePen } from "lucide-react";
+import { ChevronDown, ChevronUp, NotepadText, SquarePen } from "lucide-react";
 import UpdateMemberModal from "../MemberShip/UpdateMemberModal";
 
 import { useDispatch } from 'react-redux';
 import { clearSearchTerm } from "../../redux/reducers/searchReducers";
+import FamilyListTable from "./FamilyListTable";
 
 const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipType }) => {
 
@@ -19,7 +20,7 @@ const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipT
   const [error, setError] = useState(null);
   const [selectedMembership, setSelectedMembership] = useState(null);
   const [selectedMember, setSelectedMember] = useState(null);
-  const [selectedRow, setSelectedRow] = useState(null);
+  const [expandedRow, setExpandedRow] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [bookDetails, setBookDetails] = useState(null);
   const [bookDetailsGet, setBookDetailsGet] = useState(false);
@@ -40,7 +41,6 @@ const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipT
   const [bookModal, setBookModal] = useState(false);
   const [selectedIssue, setSelectedIssue] = useState(null);
   const [success, setSuccess] = useState(false);
-
 
   const handleUpdateMember = (success, updatedData) => {
     console.log('Updated Member:', updatedData);
@@ -242,6 +242,20 @@ const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipT
     setCurrentPage(newPage);
   };
 
+  // const handleToggleRow = (membershipId) => {
+  //   setExpandedRow(prevRow => {
+  //     if (prevRow === membershipId) {
+  //       setTimeout(() => {
+  //         setExpandedRow(null);
+  //       },);
+  //     }
+  //     return prevRow === membershipId ? null : membershipId;
+  //   });
+  // };
+  const handleToggleRow = (membershipId) => {
+    setExpandedRow(prevRow => (prevRow === membershipId ? null : membershipId));
+  };
+
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
@@ -319,7 +333,9 @@ const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipT
                   <strong>Flat Name:</strong> {selectedMembership.flatType}{selectedMembership.floorNumber}
                 </p>
                 <p className="mb-2">
-                  <strong>DOB:</strong> {selectedMembership.dateOfBirth}
+                  <strong>DOB:</strong>
+                  {selectedMembership.dateOfBirth}
+                  {/* {new Date(selectedMembership.dateOfBirth).toLocaleDateString()} */}
                 </p>
                 <p className="mb-2">
                   <strong>Membership Issued:</strong>{" "}
@@ -338,7 +354,6 @@ const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipT
                     >
                       <div>
                         <p><b>Member Name:</b> {selectedMembership?.name}</p>
-                        {/* <p><b>Member ID:</b> {selectedMembership.memID || 'N/A'} </p> */}
                       </div>
                       <div>
                         {/* <p style={{ color: 'green' }}>You are Eligible</p> */}
@@ -365,7 +380,6 @@ const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipT
                       >
                         <div>
                           <p><b>Member Name:</b> {selectedMembership.name}</p>
-                          {/* <p><b>Member ID:</b> {selectedMembership.memID || 'N/A'} </p> */}
                         </div>
                         <div>
                           {/* <p style={{ color: 'red' }}>You are Not Eligible</p> */}
@@ -454,71 +468,86 @@ const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipT
             <tbody>
               {memberships?.map((membership, index) => {
                 const hasBook = membership.Issues.some((issue) => issue.Book);
+                const isRowExpanded = expandedRow === membership.id;
                 return (
-                  <tr
-                    key={membership.id}
-                    // className={`border-b hover:bg-gray-100 ${hasBook ? "bg-red-100" : "bg-gray-200"
-                    className={`border-b hover:bg-gray-100 ${hasBook ? "bg-gradient-to-r from-cyan-100 to-blue-100" : "bg-gray-200"
-                      }`}
-                  >
-                    <td className="px-4 py-2">
-                      {currentPage * pageSize + index + 1}
-                    </td>
-                    <td className="px-4 py-2">{membership.memID}</td>
-                    <td className="px-4 py-2">{membership.name}</td>
-                    <td className="px-4 py-2">
-                      {membership.Issues.length > 0 ? (
-                        <div className="flex flex-col gap-2">
-                          {membership.Issues.map((issue) => (
-                            <div key={issue.id} className="flex items-center gap-2">
-                              <NotepadText className="w-5 h-5"
-                                onMouseEnter={() => handleShow(issue)}
-                                style={{ cursor: "pointer" }}
-                              />
-                              <span>{issue.Book && issue.Book.title ? issue.Book.title : "No title available"}</span>
-                            </div>
-                          ))}
-                        </div>
-                      ) : (
-                        <p className="text-gray-500">---</p>
-                      )}
-                    </td>
-                    <td className="px-4 py-2 text-center">
-                      <div className="flex items-center justify-between gap-2">
-                        {membership.memID.startsWith("F") ? (
+                  <>
+                    <tr
+                      key={membership.id}
+                      className={`border-b hover:bg-gray-100 ${hasBook ? "bg-gradient-to-r from-cyan-100 to-blue-100" : "bg-gray-200"}`}
+                    >
+                      <td className="px-4 py-2">
+                        {currentPage * pageSize + index + 1}
+                      </td>
+                      <td className="px-4 py-2">{membership.memID}</td>
+                      <td className="px-4 py-2">{membership.name}</td>
+                      <td className="px-4 py-2">
+                        {membership.Issues.length > 0 ? (
+                          <div className="flex flex-col gap-2">
+                            {membership.Issues.map((issue) => (
+                              <div key={issue.id} className="flex items-center gap-2">
+                                <NotepadText
+                                  className="w-5 h-5"
+                                  onMouseEnter={() => handleShow(issue)}
+                                  style={{ cursor: "pointer" }}
+                                />
+                                <span>{issue.Book && issue.Book.title ? issue.Book.title : "No title available"}</span>
+                              </div>
+                            ))}
+                          </div>
+                        ) : (
+                          <p className="text-gray-500">---</p>
+                        )}
+                      </td>
+                      <td className="px-4 py-2 text-center">
+                        <div className="flex items-center justify-between gap-2">
+                          {membership.memID.startsWith("F") ? (
+                            <button
+                              type="button"
+                              className="flex justify-center items-center w-8 h-8 from-cyan-200 to-blue-200 rounded-full hover:bg-gray-300"
+                              onClick={() => handleToggleRow(membership.id)}
+                            >
+                              {
+                                expandedRow && isRowExpanded ? (
+                                  <ChevronUp className="w-5 h-5" />
+                                ) : (
+                                  <ChevronDown className="w-5 h-5" />
+                                )
+                              }
+                            </button>
+                          ) : (
+                            <div className="w-8 h-8"></div>
+                          )}
+                          <button
+                            type="button"
+                            className={`px-4 py-2 text-sm font-medium rounded-lg mr-2 ${hasBook
+                              ? "bg-gradient-to-r from-cyan-200 to-blue-200 hover:bg-red-100"
+                              : "bg-gray-300 hover:bg-gray-200"
+                              }`}
+                            onClick={() => handleModalOpen(membership)}
+                          >
+                            {hasBook ? "Return" : "\u00A0\u00A0Issue"}
+                          </button>
+
                           <button
                             type="button"
                             className="flex justify-center items-center w-8 h-8 from-cyan-200 to-blue-200 rounded-full hover:bg-gray-300"
-                            onClick={() => alert(membership.id)}
+                            onClick={() => openModal(membership)}
                           >
-                            <ChevronDown className="w-5 h-5" />
+                            <SquarePen className="w-5 h-5" />
                           </button>
-                        ) : (
-                          <div className="w-8 h-8"></div>)}
-                        <button
-                          type="button"
-                          className={`px-4 py-2 text-sm font-medium rounded-lg mr-2 ${hasBook
-                            ? "bg-gradient-to-r from-cyan-200 to-blue-200 hover:bg-red-100"
-                            : "bg-gray-300 hover:bg-gray-200"
-                            }`}
-                          onClick={() => handleModalOpen(membership)}
-                        >
-                          {hasBook ? "Return" : "\u00A0\u00A0Issue"}
-                        </button>
-
-                        <button
-                          type="button"
-                          className="flex justify-center items-center w-8 h-8 from-cyan-200 to-blue-200 rounded-full hover:bg-gray-300"
-                          onClick={() => openModal(membership)}
-                        >
-                          <SquarePen className="w-5 h-5" />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
+                        </div>
+                      </td>
+                    </tr>
+                    {
+                      expandedRow && isRowExpanded && (
+                        <FamilyListTable id={expandedRow} />
+                      )
+                    }
+                  </>
                 );
               })}
             </tbody>
+
           </table>
           <Pagination
             currentPage={currentPage}
