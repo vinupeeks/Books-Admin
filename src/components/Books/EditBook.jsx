@@ -83,7 +83,7 @@ const EditBook = () => {
     // setLoading(true);
     editBook.mutateAsync(data);
   };
-
+ 
   return (
     <div className="p-6 px-10">
       {loading ? <Spinner />
