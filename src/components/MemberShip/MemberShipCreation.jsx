@@ -122,6 +122,7 @@ const MemberShipCreation = () => {
     try {
       const updatedMembershipType =
         formData.members.length > 1 ? "family" : "single";
+      formData.members[0].leader = "YES";
       const updatedFormData = {
         ...formData,
         membershipType: updatedMembershipType,
@@ -133,7 +134,7 @@ const MemberShipCreation = () => {
       console.log(error);
     }
   };
- 
+
   const handleCancelBtn = () => {
     const hasDataLoaded = formData.members.some(
       (member) =>

@@ -334,7 +334,8 @@ const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipT
                 </p>
                 <p className="mb-2">
                   <strong>DOB:</strong>
-                  {new Date(selectedMembership.dateOfBirth).toLocaleDateString()}{" "}
+                  {selectedMembership.dateOfBirth}
+                  {/* {new Date(selectedMembership.dateOfBirth).toLocaleDateString()} */}
                 </p>
                 <p className="mb-2">
                   <strong>Membership Issued:</strong>{" "}

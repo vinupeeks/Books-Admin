@@ -179,8 +179,8 @@ const UpdateMemberModal = ({ member, isOpen, onClose, onUpdate, setSuccess }) =>
                             type="date"
                             name="dateOfBirth"
                             value={
-                                formData.dateOfBirth
-                                    ? new Date(formData.dateOfBirth).toISOString().split("T")[0]
+                                formData?.dateOfBirth
+                                    ? formData.dateOfBirth
                                     : ""
                             }
                             onChange={handleInputChange}

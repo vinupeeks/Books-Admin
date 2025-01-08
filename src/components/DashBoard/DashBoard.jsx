@@ -101,6 +101,14 @@ const DashBoard = () => {
             description: "All membership accounts",
             click: true,
         },
+        {
+            key: "F",
+            label: `Family: ${count.FamilyMembersCount ?? 'N/A'}`,
+            icon: UserPlus,
+            background: "bg-gradient-to-r from-cyan-500 to-blue-500",
+            description: "Family membership accounts",
+            // click: true,
+        },
         // {
         //     key: "I",
         //     label: "Individual",
@@ -109,14 +117,6 @@ const DashBoard = () => {
         //     description: "Single membership accounts",
         //     click: true,
         // },
-        {
-            key: "F",
-            label: "Family",
-            icon: UserPlus,
-            background: "bg-gradient-to-r from-cyan-500 to-blue-500",
-            description: "Family membership accounts",
-            click: true,
-        },
     ];
 
     const rmvBtnCase = () => {
