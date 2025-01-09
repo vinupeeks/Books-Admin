@@ -107,6 +107,20 @@ const membershipService = {
             },
         });
     },
+
+    getFamilyLeadersList: async (data) => {
+        const Token = selectAuthToken(store.getState())
+        const memberData = data;
+
+        return apiRequest({
+            method: "POST",
+            url: `members/family-head`,
+            headers: {
+                Authorization: "Bearer " + Token
+            },
+            data: memberData,
+        });
+    },
 }
 
 export default membershipService;
