@@ -458,7 +458,7 @@ const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipT
           <table className="min-w-full table-auto">
             <thead className="bg-gray-300">
               <tr>
-                <th className="px-4 py-2 text-left w-10">SLN</th>
+                <th className="px-4 py-2 text-center w-10">#</th>
                 <th className="px-4 py-2 text-leftw-10">Membership ID</th>
                 <th className="px-4 py-2 text-left w-auto">Name</th>
                 <th className="px-4 py-2 text-left w-auto">Status</th>
@@ -500,7 +500,7 @@ const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipT
                       </td>
                       <td className="px-4 py-2 text-center">
                         <div className="flex items-center justify-between gap-2">
-                          {membership.memID.startsWith("F") ? (
+                          {/* {membership.memID.startsWith("F") ? (
                             <button
                               type="button"
                               className="flex justify-center items-center w-8 h-8 from-cyan-200 to-blue-200 rounded-full hover:bg-gray-300"
@@ -516,7 +516,7 @@ const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipT
                             </button>
                           ) : (
                             <div className="w-8 h-8"></div>
-                          )}
+                          )} */}
                           <button
                             type="button"
                             className={`px-4 py-2 text-sm font-medium rounded-lg mr-2 ${hasBook
@@ -542,7 +542,7 @@ const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipT
                       expandedRow && isRowExpanded && (
                         <FamilyListTable id={expandedRow} />
                       )
-                    }
+                    } 
                   </>
                 );
               })}
@@ -579,3 +579,4 @@ const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipT
 };
 
 export default MembersList;
+

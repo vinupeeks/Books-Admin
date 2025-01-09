@@ -19,6 +19,7 @@ const RouteConstants = {
     BOOK_ISSUE_API: '/issues/issue',
     BOOK_RETURN_API: '/issues/return',
     BOOK_ISSUING: '/book/issuing',
+    FAMILY_LEADERS_LIST: '/family-leaders',
 
     BOOKCREATE: '/books/create',
     BOKKSDETAILS: '/books/details/:id',
