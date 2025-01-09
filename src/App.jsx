@@ -27,6 +27,7 @@ import SideMenu from './components/navbar/sideMenu.jsx';
 import { getAuthToken } from './utils/TokenHelper.jsx';
 import { useSelector } from 'react-redux';
 import IssuedList from './components/BookIssuing/IssuedList.jsx';
+import FamilyLeadersList from './components/MembersList/FamilyLeadersList.jsx';
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -67,6 +68,7 @@ const App = () => {
                 <Route path={RouteConstants.BOOKSEDIT} element={<PrivateRoute element={<EditBook />} />} />
                 <Route path={RouteConstants.BOOKSDELETE} element={<PrivateRoute element={<DeleteBook />} />} />
                 <Route path={RouteConstants.BOOK_ISSUING} element={<PrivateRoute element={<IssuingBook />} />} />
+                <Route path={RouteConstants.FAMILY_LEADERS_LIST} element={<PrivateRoute element={<FamilyLeadersList />} />} />
 
 
                 <Route path={RouteConstants.USERSLIST} element={<PrivateRoute element={<UsersList />} />} />

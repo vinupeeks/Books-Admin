@@ -142,7 +142,7 @@ const IssuedList = () => {
                     >
                         <thead className="bg-gray-200 text-gray-700">
                             <tr>
-                                <th className="border border-slate-600 rounded-md px-4 py-2 text-left w-auto">SLN</th>
+                                <th className="border border-slate-600 rounded-md px-4 py-2 text-center w-auto">#</th>
                                 <th className="border border-gray-300 px-4 py-2 w-20">M_ID</th>
                                 <th className="border border-gray-300 px-4 py-2">Member Name</th>
                                 <th className="border border-gray-300 px-4 py-2">Contact Number</th>
