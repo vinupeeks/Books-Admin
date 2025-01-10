@@ -7,6 +7,7 @@ import { Button } from "react-bootstrap";
 import membershipsQueries from "../../queries/membershipQueries";
 import { useSnackbar } from "notistack";
 import BackButton from "../../utils/BackButton";
+import ConfirmationBox from "../../utils/ConfirmationBox";
 
 const InputField = ({ label, type, value, onChange, required }) => (
   <div>
@@ -29,7 +30,14 @@ const MemberShipCreation = () => {
   const [updatedMembers, setUpdatedMembers] = useState([]);
   const [loading, setLoading] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
+  const [isConfirmationBoxOpen, setIsConfirmationBoxOpen] = useState(false);
 
+
+  const [checkBox, setCheckBox] = useState({
+    action: "",
+    title: "",
+    message: "",
+  });
   const [formData, setFormData] = useState({
     members: [
       {
@@ -116,10 +124,17 @@ const MemberShipCreation = () => {
   );
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!window.confirm("Are you sure you want to continue?")) {
-      return;
-    }
-    try {
+    setCheckBox({
+      action: "submit",
+      title: "Submit confirmation",
+      message: "Are you sure you want to create membership? This action can't be undone."
+    })
+    setIsConfirmationBoxOpen(true);
+  };
+
+
+  const handleConfirm = () => {
+    if (checkBox.action === "submit") {
       const updatedMembershipType =
         formData.members.length > 1 ? "family" : "single";
       formData.members[0].leader = "YES";
@@ -127,29 +142,9 @@ const MemberShipCreation = () => {
         ...formData,
         membershipType: updatedMembershipType,
       };
-      console.log(updatedFormData);
+      setLoading(true);
       createMmbers.mutateAsync(updatedFormData);
-
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const handleCancelBtn = () => {
-    const hasDataLoaded = formData.members.some(
-      (member) =>
-        member.name ||
-        member.contactNumber ||
-        member.towerName ||
-        member.floorNumber ||
-        member.flatType ||
-        member.dateOfBirth
-    );
-
-    if (hasDataLoaded) {
-      if (!window.confirm("Are you sure you want to continue?")) {
-        return;
-      }
+      setIsConfirmationBoxOpen(false);
     }
     setFormData({
       members: [
@@ -164,9 +159,36 @@ const MemberShipCreation = () => {
       ],
       membershipType: "single",
     });
-    navigate(RouteConstants.DASHBOARD);
+    setIsConfirmationBoxOpen(false);
+  };
+  const handleCancel = () => {
+    setIsConfirmationBoxOpen(false);
+    setCheckBox({ action: "", title: "", message: "" });
   };
 
+
+  const handleCancelBtn = () => {
+    const hasDataLoaded = formData.members.some(
+      (member) =>
+        member.name ||
+        member.contactNumber ||
+        member.towerName ||
+        member.floorNumber ||
+        member.flatType ||
+        member.dateOfBirth
+    );
+
+    if (hasDataLoaded) {
+      setCheckBox({
+        action: "clear",
+        title: "Clear confirmation",
+        message: "Are you sure you want to cancel membership creation ?"
+      })
+      setIsConfirmationBoxOpen(true);
+    } else {
+      navigate(RouteConstants.DASHBOARD);
+    }
+  };
 
   return (
     <div className="mt-3">
@@ -374,6 +396,15 @@ const MemberShipCreation = () => {
           </>
         </div>
       </div>
+      <ConfirmationBox
+        isOpen={isConfirmationBoxOpen}
+        // title="Confirm Submission"
+        title={checkBox.title}
+        // message="Are you sure you want to create membership? This action can't be undone."
+        message={checkBox.message}
+        onConfirm={handleConfirm}
+        onCancel={handleCancel}
+      />
     </div>
   );
 };
