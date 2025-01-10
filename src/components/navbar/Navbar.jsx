@@ -15,6 +15,7 @@ import { getDecodedToken } from '../../utils/TokenHelper';
 import { useDispatch } from 'react-redux';
 import { setLogout } from '../../redux/reducers/authReducers';
 import { LogOut } from 'lucide-react';
+import ConfirmationBox from '../../utils/ConfirmationBox';
 
 export default function AppBarWithSideMenu() {
     const { setViewFormat } = useViewContext();
@@ -22,22 +23,13 @@ export default function AppBarWithSideMenu() {
     const [anchorEl, setAnchorEl] = useState(null);
     const [name, setName] = useState('Guest');
     const [role, setRole] = useState('');
+    const [isConfirmationBoxOpen, setIsConfirmationBoxOpen] = useState(false);
+
     const dispatch = useDispatch()
     const navigate = useNavigate();
 
     const handleClose = () => {
         setAnchorEl(null);
-    };
-
-    const handleLogOut = () => {
-        localStorage.removeItem('BooksAdminToken');
-        if (!window.confirm("Are you sure you want to logout?")) {
-            return;
-        }
-        localStorage.removeItem('BooksAdminToken');
-        navigate(RouteConstants.LOGIN);
-        dispatch(setLogout())
-        enqueueSnackbar('Logged out successfully', { variant: 'success' });
     };
 
     const handleMenu = (event) => {
@@ -57,6 +49,23 @@ export default function AppBarWithSideMenu() {
             }
         }
     }, [enqueueSnackbar, navigate]);
+
+    const handleLogOut = () => {
+        // localStorage.removeItem('BooksAdminToken')
+        handleClose();
+        setIsConfirmationBoxOpen(true);
+    };
+
+    const handleConfirm = () => {
+        setIsConfirmationBoxOpen(false);
+        localStorage.removeItem('BooksAdminToken');
+        navigate(RouteConstants.LOGIN);
+        dispatch(setLogout())
+        enqueueSnackbar('Logged out successfully', { variant: 'success' });
+    };
+    const handleCancel = () => {
+        setIsConfirmationBoxOpen(false);
+    };
 
     return (
         <Box sx={{ flexGrow: 1, marginTop: '80px' }}>
@@ -104,6 +113,16 @@ export default function AppBarWithSideMenu() {
                     </Menu>
                 </Toolbar>
             </AppBar>
+
+            <ConfirmationBox
+                isOpen={isConfirmationBoxOpen}
+                title="Log-Out Confirmation"
+                message="Are you sure you want to log-Out? This action can't be undone."
+                onConfirm={handleConfirm}
+                onCancel={handleCancel}
+                style={{ zIndex: 1500 }}
+            />
+
         </Box>
     );
 }

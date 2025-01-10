@@ -146,8 +146,8 @@ const DeleteBook = () => {
       )}
       <ConfirmationBox
         isOpen={showConfirmation}
-        title="Delete Book"
-        message="Are you sure you want to delete this book? This action cannot be undone."
+        title="Confirm Delete Book"
+        message="Are you sure you want to delete this book? This action can't be undone."
         onConfirm={confirmDelete}
         onCancel={cancelDelete}
       />

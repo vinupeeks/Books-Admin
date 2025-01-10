@@ -209,7 +209,7 @@ const UpdateMemberModal = ({ member, isOpen, onClose, onUpdate, setSuccess }) =>
             <ConfirmationBox
                 isOpen={isConfirmationBoxOpen}
                 title="Confirm Submission"
-                message="Are you sure you want to submit this editions?"
+                message="Are you sure you want to update? This action can't be undone."
                 onConfirm={handleConfirm}
                 onCancel={handleCancel}
             />
