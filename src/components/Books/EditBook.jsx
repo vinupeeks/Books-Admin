@@ -6,6 +6,7 @@ import { useSnackbar } from 'notistack';
 import RouteConstants from '../../constant/Routeconstant';
 import bookQueries from '../../queries/bookQueries';
 import { getAuthToken } from '../../utils/TokenHelper';
+import ConfirmationBox from '../../utils/ConfirmationBox';
 
 const EditBook = () => {
   const [title, setTitle] = useState('');
@@ -20,6 +21,9 @@ const EditBook = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const { enqueueSnackbar } = useSnackbar();
+
+  const [isConfirmationBoxOpen, setIsConfirmationBoxOpen] = useState(false);
+  const [formData, setFormData] = useState();
 
   const getBookDetail = bookQueries.bookByIdMutation(
     async (response) => {
@@ -80,10 +84,21 @@ const EditBook = () => {
       DonatedBy: donatedBy,
       status
     };
+    setFormData(data);
+    setIsConfirmationBoxOpen(true);
     // setLoading(true);
-    editBook.mutateAsync(data);
+    // editBook.mutateAsync(data);
   };
- 
+
+  const handleConfirm = () => {
+    setIsConfirmationBoxOpen(false);
+    setLoading(true);
+    editBook.mutateAsync(formData);
+  };
+  const handleCancel = () => {
+    setIsConfirmationBoxOpen(false);
+  };
+
   return (
     <div className="p-6 px-10">
       {loading ? <Spinner />
@@ -184,8 +199,14 @@ const EditBook = () => {
             </div>
           </div>
         )}
+      <ConfirmationBox
+        isOpen={isConfirmationBoxOpen}
+        title="Confirm Book Update"
+        message="Are you sure you want to update? This action can't be undone."
+        onConfirm={handleConfirm}
+        onCancel={handleCancel}
+      />
     </div>
-
   );
 };
 

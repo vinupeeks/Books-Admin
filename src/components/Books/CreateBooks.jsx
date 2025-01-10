@@ -5,6 +5,7 @@ import { useSnackbar } from 'notistack';
 import RouteConstants from '../../constant/Routeconstant';
 import bookQueries from '../../queries/bookQueries';
 import BackButton from '../../utils/BackButton';
+import ConfirmationBox from '../../utils/ConfirmationBox';
 
 const CreateBooks = () => {
   const [title, setTitle] = useState('');
@@ -16,6 +17,8 @@ const CreateBooks = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
+  const [isConfirmationBoxOpen, setIsConfirmationBoxOpen] = useState(false);
+  const [formData, setFormData] = useState();
 
   const submitForm = bookQueries.booksAddMutation(
     async (response) => {
@@ -24,7 +27,7 @@ const CreateBooks = () => {
         enqueueSnackbar('Book Created successfully', { variant: 'success' });
         navigate(RouteConstants.BOOKS);
       } else {
-        setLoading(false); 
+        setLoading(false);
         enqueueSnackbar(response.response?.data?.message || 'Error creating book. Check console for details.', { variant: 'error' });
       }
     },
@@ -60,22 +63,42 @@ const CreateBooks = () => {
       return;
     }
 
-    try {
-      const datavalues = {
-        title,
-        author,
-        Stock: Number(stock),
-        ISBN: isbn,
-        Price: Number(price),
-        DonatedBy: donatedBy,
-      };
+    const datavalues = {
+      title,
+      author,
+      Stock: Number(stock),
+      ISBN: isbn,
+      Price: Number(price),
+      DonatedBy: donatedBy,
+    };
+    setFormData(datavalues);
+    setIsConfirmationBoxOpen(true);
+    // try {
 
-      setLoading(true);
-      submitForm.mutateAsync(datavalues);
-    } catch (error) {
-      setLoading(false);
-      enqueueSnackbar(error.response?.data?.message || 'An error occurred', { variant: 'error' });
-    }
+    //   const datavalues = {
+    //     title,
+    //     author,
+    //     Stock: Number(stock),
+    //     ISBN: isbn,
+    //     Price: Number(price),
+    //     DonatedBy: donatedBy,
+    //   };
+
+    //   // setLoading(true);
+    //   // submitForm.mutateAsync(datavalues);
+    // } catch (error) {
+    //   setLoading(false);
+    //   enqueueSnackbar(error.response?.data?.message || 'An error occurred', { variant: 'error' });
+    // }
+  };
+
+  const handleConfirm = () => {
+    setIsConfirmationBoxOpen(false);
+    setLoading(true);
+    submitForm.mutateAsync(formData);
+  };
+  const handleCancel = () => {
+    setIsConfirmationBoxOpen(false);
   };
 
   return (
@@ -160,6 +183,13 @@ const CreateBooks = () => {
           Save
         </button>
       </div>
+      <ConfirmationBox
+        isOpen={isConfirmationBoxOpen}
+        title="Confirm Book Creation"
+        message="Are you sure you want to create? This action can't be undone."
+        onConfirm={handleConfirm}
+        onCancel={handleCancel}
+      />
     </div>
   );
 };

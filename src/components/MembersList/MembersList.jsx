@@ -12,6 +12,7 @@ import UpdateMemberModal from "../MemberShip/UpdateMemberModal";
 import { useDispatch } from 'react-redux';
 import { clearSearchTerm } from "../../redux/reducers/searchReducers";
 import FamilyListTable from "./FamilyListTable";
+import ConfirmationBox from "../../utils/ConfirmationBox";
 
 const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipType }) => {
 
@@ -41,6 +42,13 @@ const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipT
   const [bookModal, setBookModal] = useState(false);
   const [selectedIssue, setSelectedIssue] = useState(null);
   const [success, setSuccess] = useState(false);
+
+  const [isConfirmationBoxOpen, setIsConfirmationBoxOpen] = useState(false);
+  const [message, setMessage] = useState({
+    action: "",
+    title: "",
+    message: "",
+  });
 
   const handleUpdateMember = (success, updatedData) => {
     console.log('Updated Member:', updatedData);
@@ -132,19 +140,34 @@ const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipT
       enqueueSnackbar(`Select a book or close the section..!`, { variant: 'warning' });
       return;
     }
-
-    const isConfirmed = window.confirm("Are you sure you want to issue this book ?");
-    if (!isConfirmed) {
-      return;
-    }
-
-    const payload = {
-      bookId: selectedBook?.id,
-      memberId: selectedMember?.id
-    }
-    setLoading(true);
-    BookIssueSubmit.mutateAsync(payload);
+    setMessage({
+      action: "issue",
+      title: "Issue Book",
+      message: "Are you sure you want to issue this book? This action can't be undone.",
+    })
+    setIsConfirmationBoxOpen(true);
   }
+
+  const handleConfirm = () => {
+    if (message.action === "issue") {
+      const payload = {
+        bookId: selectedBook?.id,
+        memberId: selectedMember?.id
+      }
+      setLoading(true);
+      BookIssueSubmit.mutateAsync(payload);
+      setIsConfirmationBoxOpen(false); 
+    }
+    const returnBookID = bookDetails[0].id;
+    setLoading(true);
+    BookIssueReturn.mutateAsync({ returnBookID });
+    setIsConfirmationBoxOpen(false);
+  };
+
+  const handleCancel = () => {
+    setIsConfirmationBoxOpen(false);
+    setMessage({ action: "", title: "", message: "" });
+  };
 
   const BookIssueReturn = bookQueries.BookIssueReturnMutation(
     async (response) => {
@@ -162,14 +185,21 @@ const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipT
     }
   );
   const handleBookReturn = () => {
-    const isConfirmed = window.confirm("Are you sure you want to return this book ?");
+    // const isConfirmed = window.confirm("Are you sure you want to return this book ?");
 
-    if (!isConfirmed) {
-      return;
-    }
-    const returnBookID = bookDetails[0].id;
-    setLoading(true);
-    BookIssueReturn.mutateAsync({ returnBookID });
+    // if (!isConfirmed) {
+    //   return;
+    // }
+    // const returnBookID = bookDetails[0].id;
+    // setLoading(true);
+    // BookIssueReturn.mutateAsync({ returnBookID });
+
+    setMessage({
+      action: "return",
+      title: "Return Book",
+      message: "Are you sure you want to return this book? This action can't be undone.",
+    })
+    setIsConfirmationBoxOpen(true);
   }
 
 
@@ -241,17 +271,6 @@ const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipT
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
   };
-
-  // const handleToggleRow = (membershipId) => {
-  //   setExpandedRow(prevRow => {
-  //     if (prevRow === membershipId) {
-  //       setTimeout(() => {
-  //         setExpandedRow(null);
-  //       },);
-  //     }
-  //     return prevRow === membershipId ? null : membershipId;
-  //   });
-  // };
   const handleToggleRow = (membershipId) => {
     setExpandedRow(prevRow => (prevRow === membershipId ? null : membershipId));
   };
@@ -542,7 +561,7 @@ const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipT
                       expandedRow && isRowExpanded && (
                         <FamilyListTable id={expandedRow} />
                       )
-                    } 
+                    }
                   </>
                 );
               })}
@@ -573,6 +592,14 @@ const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipT
         onClose={closeModal}
         onUpdate={handleUpdateMember}
         setSuccess={setSuccess}
+      />
+      <ConfirmationBox
+        isOpen={isConfirmationBoxOpen}
+        title={message.title}
+        // message="Are you sure you want to create? This action can't be undone."
+        message={message.message}
+        onConfirm={handleConfirm}
+        onCancel={handleCancel}
       />
     </div >
   );
