@@ -160,7 +160,7 @@ const MemberShipCreation = () => {
       membershipType: "single",
     });
     setIsConfirmationBoxOpen(false);
-  };
+  }; 
   const handleCancel = () => {
     setIsConfirmationBoxOpen(false);
     setCheckBox({ action: "", title: "", message: "" });
