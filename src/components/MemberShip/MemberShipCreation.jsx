@@ -65,7 +65,7 @@ const MemberShipCreation = () => {
       const updatedMembers = [
         ...prevFormData.members,
         {
-          name: "", 
+          name: "",  
           contactNumber: "",
           towerName: "",
           floorNumber: "",
