@@ -72,7 +72,7 @@ const MemberShipCreation = () => {
           flatType: "",
           dateOfBirth: "",
         },
-      ];
+      ]; 
       return {
         ...prevFormData,
         members: updatedMembers,
