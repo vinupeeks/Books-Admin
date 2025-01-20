@@ -124,11 +124,11 @@ function BookSearchComp(props) {
                 <thead>
                     {filteredBooks.length > 0 && (
                         <tr style={{ backgroundColor: '#f2f2f2', verticalAlign: 'top' }}>
-                            <th style={{ border: '1px solid #ccc', padding: '10px' }}>ID</th>
+                            <th style={{ border: '1px solid #ccc', padding: '10px' }}>#</th>
                             <th style={{ border: '1px solid #ccc', padding: '10px' }}>Title</th>
                             <th style={{ border: '1px solid #ccc', padding: '10px' }}>Author</th>
                             <th style={{ border: '1px solid #ccc', padding: '10px' }}>Price</th>
-                            <th style={{ border: '1px solid #ccc', padding: '10px' }}>Stock</th>
+                            <th style={{ border: '1px solid #ccc', padding: '10px' }}>Availability</th>
                             <th style={{ border: '1px solid #ccc', padding: '10px' }}>Options</th>
                         </tr>)}
                 </thead>
@@ -139,10 +139,7 @@ function BookSearchComp(props) {
                             <td style={{ border: '1px solid #ccc', padding: '10px' }}>{book?.title}</td>
                             <td style={{ border: '1px solid #ccc', padding: '10px' }}>{book?.author}</td>
                             <td style={{ border: '1px solid #ccc', padding: '10px' }}>{book?.Price}</td>
-                            <td style={{ border: '1px solid #ccc', padding: '10px' }}>({book.Stock}) = {book?.AvailableStock}</td>
-                            {/* <td style={{ border: '1px solid #ccc', padding: '10px', display: 'flex', justifyContent: 'center' }}> */}
-                            {/* <BsInfoCircle className='text-2xl text-green-800' /> */}
-                            {/* </td> */}
+                            <td style={{ border: '1px solid #ccc', padding: '10px' }}>{book?.AvailableStock}</td> 
                             <td style={{ border: '1px solid #ccc', padding: '10px' }}>
                                 <button type="button"
                                     className={`px-1 py-1 rounded-lg mr-2 ${book?.AvailableStock > 0 ? 'bg-green-300 hover:bg-green-400' : 'bg-red-200 cursor-not-allowed'

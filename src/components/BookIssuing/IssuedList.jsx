@@ -130,14 +130,14 @@ const IssuedList = () => {
                 </div>
             </div>
             {error && <p className="text-red-500">{error}</p>}
-            {loading ? ( 
+            {loading ? (
                 <Spinner />
             ) : issues?.length > 0 ? (
                 <>
                     <div className="mb-4 text-black dark:text-gray-300">
                         {currentPage * pageSize + 1} - {currentPage * pageSize + issues?.length} out of {totalCount} issues.
                     </div>
-                    <table 
+                    <table
                         className='w-full border-separate border-spacing-2'
                     >
                         <thead className="bg-gray-200 text-gray-700">
@@ -147,7 +147,7 @@ const IssuedList = () => {
                                 <th className="border border-gray-300 px-4 py-2">Member Name</th>
                                 <th className="border border-gray-300 px-4 py-2">Contact Number</th>
                                 <th className="border border-gray-300 px-4 py-2">Book Title</th>
-                                <th className="border border-gray-300 px-4 py-2">Issue Date</th> 
+                                <th className="border border-gray-300 px-4 py-2">Issue Date</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -189,6 +189,14 @@ const IssuedList = () => {
                             )}
                         </tbody>
                     </table>
+                    <Pagination
+                        currentPage={currentPage}
+                        totalPages={totalPage}
+                        pageSize={pageSize}
+                        // show={true}
+                        onPageChange={handlePageChange}
+                        setPageSize={setPageSize}
+                    />
                 </>
             ) : (
                 <div className="flex flex-col items-center justify-center h-40 bg-gray-100 rounded-md shadow-md">
@@ -213,14 +221,6 @@ const IssuedList = () => {
                     </p>
                 </div>
             )}
-            <Pagination
-                currentPage={currentPage}
-                totalPages={totalPage}
-                pageSize={pageSize}
-                // show={true}
-                onPageChange={handlePageChange}
-                setPageSize={setPageSize}
-            />
         </div>
     );
 };
