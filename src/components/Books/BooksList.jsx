@@ -124,7 +124,19 @@ const Home = () => {
       {loading ? (
         <Spinner />
       ) : books?.length > 0 ? (
-        viewFormat === 'table' ? <BooksTable books={books} currentPage={currentPage} pageSize={pageSize} totalCount={totalCount} /> : <BooksCard books={books} />
+        viewFormat === 'table' ?
+          <>
+            <BooksTable books={books} currentPage={currentPage} pageSize={pageSize} totalCount={totalCount} />
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPage}
+              pageSize={pageSize}
+              show={show}
+              setPageSize={setPageSize}
+              onPageChange={handlePageChange}
+            />
+          </>
+          : <BooksCard books={books} />
       ) : (
         <div className="flex flex-col items-center justify-center h-40 bg-gray-100 rounded-md shadow-md">
           <svg
@@ -148,14 +160,6 @@ const Home = () => {
           </p>
         </div>
       )}
-      <Pagination
-        currentPage={currentPage}
-        totalPages={totalPage}
-        pageSize={pageSize}
-        show={show}
-        setPageSize={setPageSize}
-        onPageChange={handlePageChange}
-      />
     </div>
   );
 };
