@@ -216,9 +216,10 @@ function FamilyLeadersList() {
                 </div>
             ) : (
                 <div className="flex flex-col items-center justify-center h-40 bg-gray-100 rounded-md shadow-md">
-                    <h2 className="mt-4 text-lg font-semibold text-gray-700">No Members Found</h2>
+                    <h2 className="mt-4 text-lg font-semibold text-gray-700">No Family Leaders Found</h2>
                     <p className="mt-2 text-sm text-gray-500">
-                        We couldn't find any members matching your search. Try modifying your criteria.
+                        {/* We couldn't find any members matching your search. Try modifying your criteria. */}
+                        Because you have no family memberships..!
                     </p>
                 </div>
             )
