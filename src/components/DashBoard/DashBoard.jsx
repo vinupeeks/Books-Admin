@@ -272,26 +272,11 @@ const DashBoard = () => {
                                     </div>
                                 ))}
                             </div>
-<<<<<<< HEAD
-                        </Card.Body>
-                    </Card>
-                </Col> 
-=======
-                            {membershipType && (
-                                <button
-                                    className="w-full mt-4 p-2 bg-gradient-to-r rounded-xl from-blue-500 to-cyan-500 transition duration-300 ml-auto"
-                                    onClick={rmvBtnCase}
-                                >
-                                    CLEAR
-                                </button>
-                            )}
                         </div>
                     )}
                 </div>
             </div>
-        </div >
->>>>>>> vinu
-
+        </div>
     );
 };
 
