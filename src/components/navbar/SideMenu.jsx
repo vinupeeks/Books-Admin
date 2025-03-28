@@ -31,7 +31,7 @@ function SideMenu() {
                 className="fixed top-[80px] h-[calc(100%-80px)] border-r shadow-lg"
                 style={{
                     backgroundColor: '#2D82D6',
-                    width: '300px',
+                    width: '250px',
                     zIndex: 1100
                 }}
             >
@@ -43,7 +43,7 @@ function SideMenu() {
                         </div>
                     </div> */}
 
-                    <ul className="list-none space-y-1 px-3 flex-1">
+                    <ul className="list-none space-y-1 px-0 flex-1">
                         <li>
                             <a
                                 onClick={() => navigate(RouteConstants.DASHBOARD)}
@@ -109,7 +109,7 @@ function SideMenu() {
             </div>
 
             {/* Main Content */}
-            <div className="flex-1 overflow-y-auto ml-[300px] mt-[80px] relative z-10">
+            <div className="flex-1 overflow-y-auto ml-[250px] mt-[80px] relative z-10">
                 <Outlet />
             </div>
         </div>
