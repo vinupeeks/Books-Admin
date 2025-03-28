@@ -61,18 +61,17 @@ const MemberShipCreation = () => {
   };
 
   const addMember = () => {
+    const { towerName, floorNumber, flatType } = formData.members[0];
     setFormData((prevFormData) => {
       const updatedMembers = [
         ...prevFormData.members,
         {
-          name: "",  
+          name: "",
           contactNumber: "",
-          towerName: "",
-          floorNumber: "",
-          flatType: "",
+          towerName, floorNumber, flatType,
           dateOfBirth: "",
         },
-      ]; 
+      ];
       return {
         ...prevFormData,
         members: updatedMembers,
@@ -160,7 +159,7 @@ const MemberShipCreation = () => {
       membershipType: "single",
     });
     setIsConfirmationBoxOpen(false);
-  }; 
+  };
   const handleCancel = () => {
     setIsConfirmationBoxOpen(false);
     setCheckBox({ action: "", title: "", message: "" });
