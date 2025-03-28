@@ -88,7 +88,7 @@ function BookSearchComp(props) {
                         className="p-2 my-2 w-full border rounded-md"
                     />
                 ) : (
-                    <div className="p-4">
+                    <div className="">
                         <hr className="my-2" />
                         <h2 className="text-xl font-semibold text-gray-800 mb-4">Book Details</h2>
                         <ul className="list-none space-y-3">
@@ -108,7 +108,7 @@ function BookSearchComp(props) {
 
                         <div className="mt-4 flex items-end justify-end">
                             <button
-                                className="px-4 py-2 bg-red-200 text-white rounded-lg hover:bg-red-300 focus:outline-none focus:ring-2 focus:ring-red-400"
+                                className="px-1 py-1 bg-red-200 text-white rounded-lg hover:bg-red-300 focus:outline-none focus:ring-2 focus:ring-red-400"
                                 onClick={() => setSelectedBook(null)}
                             >
                                 Remove Book
@@ -124,11 +124,11 @@ function BookSearchComp(props) {
                 <thead>
                     {filteredBooks.length > 0 && (
                         <tr style={{ backgroundColor: '#f2f2f2', verticalAlign: 'top' }}>
-                            <th style={{ border: '1px solid #ccc', padding: '10px' }}>ID</th>
+                            <th style={{ border: '1px solid #ccc', padding: '10px' }}>#</th>
                             <th style={{ border: '1px solid #ccc', padding: '10px' }}>Title</th>
                             <th style={{ border: '1px solid #ccc', padding: '10px' }}>Author</th>
                             <th style={{ border: '1px solid #ccc', padding: '10px' }}>Price</th>
-                            <th style={{ border: '1px solid #ccc', padding: '10px' }}>Stock</th>
+                            <th style={{ border: '1px solid #ccc', padding: '10px' }}>Availability</th>
                             <th style={{ border: '1px solid #ccc', padding: '10px' }}>Options</th>
                         </tr>)}
                 </thead>
@@ -139,10 +139,7 @@ function BookSearchComp(props) {
                             <td style={{ border: '1px solid #ccc', padding: '10px' }}>{book?.title}</td>
                             <td style={{ border: '1px solid #ccc', padding: '10px' }}>{book?.author}</td>
                             <td style={{ border: '1px solid #ccc', padding: '10px' }}>{book?.Price}</td>
-                            <td style={{ border: '1px solid #ccc', padding: '10px' }}>({book.Stock}) = {book?.AvailableStock}</td>
-                            {/* <td style={{ border: '1px solid #ccc', padding: '10px', display: 'flex', justifyContent: 'center' }}> */}
-                            {/* <BsInfoCircle className='text-2xl text-green-800' /> */}
-                            {/* </td> */}
+                            <td style={{ border: '1px solid #ccc', padding: '10px' }}>{book?.AvailableStock}</td> 
                             <td style={{ border: '1px solid #ccc', padding: '10px' }}>
                                 <button type="button"
                                     className={`px-1 py-1 rounded-lg mr-2 ${book?.AvailableStock > 0 ? 'bg-green-300 hover:bg-green-400' : 'bg-red-200 cursor-not-allowed'

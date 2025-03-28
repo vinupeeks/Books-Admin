@@ -1,51 +1,58 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
 import Spinner from '../../utils/Spinner';
-import { jwtDecode } from 'jwt-decode';
 import RouteConstants from '../../constant/Routeconstant';
+import adminQueries from '../../queries/adminQueries';
+import { useDispatch } from 'react-redux';
+import { setLogout } from '../../redux/reducers/authReducers';
 
 const ProfilePage = () => {
+    const dispatch = useDispatch()
+
     const navigate = useNavigate();
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
     const { enqueueSnackbar } = useSnackbar();
 
     useEffect(() => {
-        const fetchUserData = async () => {
-            try {
-                const token = localStorage.getItem('BooksAdminToken');
-                const decodedToken = jwtDecode(token);
-                const id = decodedToken.id;
-
-                if (!token) {
-                    enqueueSnackbar('No token found, redirecting to login...', { variant: 'warning' });
-                    navigate(RouteConstants.LOGIN);
-                    return;
-                }
-
-                const response = await axios.get(`http://localhost:1000/admin/${id}`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
-                setUser(response.data);
-                setLoading(false);
-            } catch (error) {
-                console.error('Error fetching user data:', error);
-                setLoading(false);
-            }
-        };
-
         fetchUserData();
     }, []);
 
+    const fetchUserData = async () => {
+        setLoading(true);
+        getProfileDetails.mutate();
+    }
+    const getProfileDetails = adminQueries.adminProfileMutation(
+        async (response) => { 
+            setUser(response?.data);
+            setLoading(false);
+        },
+        {
+            onError: (error) => {
+                setError("Error fetching membership data");
+                setLoading(false);
+            }
+        }
+    );
+
+    // const handleLogout = () => {
+    //     localStorage.removeItem('BooksAdminToken');
+    //     navigate(RouteConstants.LOGIN);
+    //     window.location.reload();
+    //     enqueueSnackbar('Admin Logged-Out Successfully', { variant: 'success' });
+    // };
+
     const handleLogout = () => {
+
+        if (!window.confirm("Are you sure you want to logout?")) {
+            return;
+        }
         localStorage.removeItem('BooksAdminToken');
         navigate(RouteConstants.LOGIN);
-        enqueueSnackbar('Admin Logged-Out Successfully', { variant: 'success' });
-    };
+        dispatch(setLogout())
+        enqueueSnackbar('Logged out successfully', { variant: 'success' });
+    }
 
     if (loading) {
         return (
@@ -59,18 +66,19 @@ const ProfilePage = () => {
             <div className="min-h-screen bg-gray-100 flex  justify-center ">
                 <div className="bg-white p-10 rounded-lg shadow-lg   w-[700px] mx-auto h-[400px]">
                     <h2 className="text-2xl font-semibold text-center text-gray-700 mb-6">Profile</h2>
-                    <hr className="my-2" />
                     {user ? (
-                        <div className="space-y-6">
-                            <div className="flex justify-between items-center">
+                        <div className="space-y-6 px-5">
+                            <hr className="my-2" />
+                            <div className="flex justify-between items-center px-4">
                                 <span className="text-lg text-gray-600">Username:</span>
-                                <span className="font-medium text-gray-800">{user.username}</span>
+                                <span className="font-medium text-gray-800">{user?.username}</span>
                             </div>
 
-                            <div className="flex justify-between items-center">
+                            <div className="flex justify-between items-center px-4">
                                 <span className="text-lg text-gray-600">Email:</span>
-                                <span className="font-medium text-gray-800">{user.email}</span>
+                                <span className="font-medium text-gray-800">{user?.email}</span>
                             </div>
+                            <hr className="my-2" />
                             <div className="flex justify-center mt-6">
                                 <button
                                     onClick={handleLogout}
@@ -79,10 +87,9 @@ const ProfilePage = () => {
                                     Logout
                                 </button>
                             </div>
-                            <hr className="my-2" />
                         </div>
                     ) : (
-                        <p className="text-center text-gray-600">No user data found.</p>
+                        <p className="text-center text-gray-600">No Admin data found.</p>
                     )}
                 </div>
             </div>

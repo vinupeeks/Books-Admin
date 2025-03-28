@@ -1,13 +1,14 @@
 const RouteConstants = {
-    DASHBOARD: '/',
-    ROOT: '/home',
-    LOGIN: '/auth/admin/login',
+    ROOT: '/',
+    DASHBOARD: '/dashboard',
+    LOGIN: '/',
     BOOKS: '/books',
     BOOKSLAST: '/books/last',
     SEARCHEDBOOKS: '/books/searchedBook',
+    ISSUEDLIST: '/issues',
 
     INDIVIDUAL_MEMBERSHIP: '/membership/indivual',
-    FAMILY_MEMBERSHIP: '/membership/family',
+    CREATE_MEMBERSHIP: 'membership/creation',
     FAMILY_LIST: '/membership/family/list',
     // MEMBERS_LIST: '/members',
     MEMBER_SHIP: '/membership/details',
@@ -18,6 +19,7 @@ const RouteConstants = {
     BOOK_ISSUE_API: '/issues/issue',
     BOOK_RETURN_API: '/issues/return',
     BOOK_ISSUING: '/book/issuing',
+    FAMILY_LEADERS_LIST: '/family-leaders',
 
     BOOKCREATE: '/books/create',
     BOKKSDETAILS: '/books/details/:id',

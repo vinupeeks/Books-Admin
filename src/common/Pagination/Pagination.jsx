@@ -1,8 +1,9 @@
 import React from 'react';
 import { Dropdown, DropdownButton } from 'react-bootstrap';
 
-const Pagination = ({ totalPages, currentPage, pageSize, setPageSize, onPageChange }) => {
-    if (totalPages <= 1) return null;
+const Pagination = ({ totalPages, currentPage, pageSize, setPageSize, show, onPageChange }) => {
+    const [rowCount, setRowCount] = React.useState(null);
+    if (totalPages <= 0) return null;
 
     const visiblePages = 3; // Show 3 pages in the middle for visibility
     let startPage = Math.max(1, currentPage - Math.floor(visiblePages / 2));
@@ -15,6 +16,7 @@ const Pagination = ({ totalPages, currentPage, pageSize, setPageSize, onPageChan
 
     const handlePageSizeChange = (size) => {
         setPageSize(size);
+        setRowCount(size)
         onPageChange(0);
     };
 
@@ -49,15 +51,15 @@ const Pagination = ({ totalPages, currentPage, pageSize, setPageSize, onPageChan
                         <button
                             key={page}
                             onClick={() => onPageChange(page)}
-                            className={`relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium ${currentPage === page
-                                ? 'z-10 bg-indigo-50 border-indigo-500 text-indigo-600'
+                            className={`relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium ${currentPage === page
+                                ? 'z-10 bg-gray-400 text-white !important' // Use !important to force styles
                                 : 'text-gray-500 hover:bg-gray-50'
                                 }`}
                         >
                             {page + 1}
                         </button>
                     );
-                })}
+                })} 
 
                 {/* Ellipsis if necessary */}
                 {endPage < totalPages - 2 && <span className="px-4 py-2">...</span>}
@@ -84,21 +86,22 @@ const Pagination = ({ totalPages, currentPage, pageSize, setPageSize, onPageChan
                     Next
                 </button>
             </nav>
-            <DropdownButton
-                id="dropdown-page-size"
-                title={pageSize}
-                variant="secondary"
-                drop='up'
-                onSelect={handlePageSizeChange}
-            >
-                {[10, 25, 50, 100, 500].map((size) => (
-                    <Dropdown.Item key={size} eventKey={size.toString()}>
-                        {size}
-                    </Dropdown.Item>
-                ))}
-            </DropdownButton>
+            {show && (
+                <DropdownButton
+                    id="dropdown-page-size"
+                    title={rowCount === null ? 'Select Rows Size' : rowCount}
+                    variant="secondary"
+                    drop="up"
+                    onSelect={handlePageSizeChange}
+                >
+                    {[10, 25, 50, 100, 500].map((size) => (
+                        <Dropdown.Item key={size} eventKey={size.toString()}>
+                            {size}
+                        </Dropdown.Item>
+                    ))}
+                </DropdownButton> 
+            )}
         </div >
     );
 };
-
 export default Pagination;
