@@ -5,8 +5,10 @@ import { useSnackbar } from 'notistack';
 import RouteConstants from '../../constant/Routeconstant';
 import bookQueries from '../../queries/bookQueries';
 import BackButton from '../../utils/BackButton';
+import ConfirmationBox from '../../utils/ConfirmationBox';
 
 const CreateBooks = () => {
+  const [sln, setSln] = useState('');
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [stock, setStock] = useState('');
@@ -16,6 +18,8 @@ const CreateBooks = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
+  const [isConfirmationBoxOpen, setIsConfirmationBoxOpen] = useState(false);
+  const [formData, setFormData] = useState();
 
   const submitForm = bookQueries.booksAddMutation(
     async (response) => {
@@ -24,7 +28,7 @@ const CreateBooks = () => {
         enqueueSnackbar('Book Created successfully', { variant: 'success' });
         navigate(RouteConstants.BOOKS);
       } else {
-        setLoading(false); 
+        setLoading(false);
         enqueueSnackbar(response.response?.data?.message || 'Error creating book. Check console for details.', { variant: 'error' });
       }
     },
@@ -60,22 +64,43 @@ const CreateBooks = () => {
       return;
     }
 
-    try {
-      const datavalues = {
-        title,
-        author,
-        Stock: Number(stock),
-        ISBN: isbn,
-        Price: Number(price),
-        DonatedBy: donatedBy,
-      };
+    const datavalues = {
+      sln,
+      title,
+      author,
+      Stock: Number(stock),
+      ISBN: isbn,
+      Price: Number(price),
+      DonatedBy: donatedBy,
+    };
+    setFormData(datavalues);
+    setIsConfirmationBoxOpen(true);
+    // try {
 
-      setLoading(true);
-      submitForm.mutateAsync(datavalues);
-    } catch (error) {
-      setLoading(false);
-      enqueueSnackbar(error.response?.data?.message || 'An error occurred', { variant: 'error' });
-    }
+    //   const datavalues = {
+    //     title,
+    //     author,
+    //     Stock: Number(stock),
+    //     ISBN: isbn,
+    //     Price: Number(price),
+    //     DonatedBy: donatedBy,
+    //   };
+
+    //   // setLoading(true);
+    //   // submitForm.mutateAsync(datavalues);
+    // } catch (error) {
+    //   setLoading(false);
+    //   enqueueSnackbar(error.response?.data?.message || 'An error occurred', { variant: 'error' });
+    // }
+  };
+
+  const handleConfirm = () => {
+    setIsConfirmationBoxOpen(false);
+    setLoading(true);
+    submitForm.mutateAsync(formData);
+  };
+  const handleCancel = () => {
+    setIsConfirmationBoxOpen(false);
   };
 
   return (
@@ -84,6 +109,18 @@ const CreateBooks = () => {
       <h1 className="text-3xl font-bold text-center mb-6">Create Book</h1>
       {loading && <Spinner />}
       <div className="flex flex-col border border-gray-300 rounded-lg shadow-lg w-full max-w-2xl mx-auto p-6 bg-white">
+
+        <div className="mb-4">
+          <label className="block text-lg font-medium text-gray-600 mb-2">SLN</label>
+          <input
+            type="text"
+            value={sln}
+            onChange={(e) => setSln(e.target.value)}
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-400 focus:outline-none"
+            placeholder="SL Number"
+          />
+        </div>
+
         {/* Title Field */}
         <div className="mb-4">
           <label className="block text-lg font-medium text-gray-600 mb-2">Title</label>
@@ -160,6 +197,13 @@ const CreateBooks = () => {
           Save
         </button>
       </div>
+      <ConfirmationBox
+        isOpen={isConfirmationBoxOpen}
+        title="Confirm Book Creation"
+        message="Are you sure you want to create? This action can't be undone."
+        onConfirm={handleConfirm}
+        onCancel={handleCancel}
+      />
     </div>
   );
 };

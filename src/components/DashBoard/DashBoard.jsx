@@ -25,6 +25,8 @@ const DashBoard = () => {
     const { enqueueSnackbar } = useSnackbar();
     const navigate = useNavigate();
 
+    const [filterName, setFilterName] = useState(null);
+
     const [selectedOption, setSelectedOption] = useState(null);
 
     const handleClearSearchTerm = () => {
@@ -37,6 +39,7 @@ const DashBoard = () => {
             // setSearchTerm('');
             dispatch(clearSearchTerm());
             setMembershipType('');
+            setFilterName('');
             return;
         }
         // setSearchTerm(value);
@@ -101,6 +104,16 @@ const DashBoard = () => {
             description: "All membership accounts",
             click: true,
         },
+        {
+            key: "FC",
+            label: `Family: ${count.FamilyMembersCount ?? 'N/A'}`,
+            action: true,
+            navigate: RouteConstants.FAMILY_LEADERS_LIST,
+            icon: LibraryBig,
+            background: "bg-gradient-to-r from-blue-500 to-cyan-500",
+            description: "Total Books Count",
+            click: true,
+        },
         // {
         //     key: "I",
         //     label: "Individual",
@@ -109,14 +122,6 @@ const DashBoard = () => {
         //     description: "Single membership accounts",
         //     click: true,
         // },
-        {
-            key: "F",
-            label: "Family",
-            icon: UserPlus,
-            background: "bg-gradient-to-r from-cyan-500 to-blue-500",
-            description: "Family membership accounts",
-            click: true,
-        },
     ];
 
     const rmvBtnCase = () => {
@@ -141,7 +146,7 @@ const DashBoard = () => {
             } else {
                 setSelectTerm('Family List');
             }
-
+            setFilterName(searchTerm);
             // setSearchTerm(type.key);
         }
         return;
@@ -151,6 +156,8 @@ const DashBoard = () => {
         setSelectedOption(option);
         setMembershipType(option);
         // console.log(`Selected: ${option}`);
+        const filter = option === 'A' ? 'All' : option === 'I' ? 'Individual' : option === 'F' ? 'Family' : { searchTerm };
+        setFilterName(filter);
     };
 
     return (
@@ -180,7 +187,7 @@ const DashBoard = () => {
                 {(searchTerm || selectTerm) && (
                     <div className="bg-blue-50 border-l-4 border-blue-500 rounded-r-xl flex items-center justify-between px-4 py-2">
                         <p className="text-blue-700 flex-grow">
-                            Searching for: <span className="font-semibold ml-2">{searchTerm || selectTerm}</span>
+                            Searching for: <span className="font-semibold ml-2">{filterName || searchTerm || selectTerm}</span>
                         </p>
                         <div className="flex items-center space-x-4">
                             {

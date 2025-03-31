@@ -179,8 +179,8 @@ const UpdateMemberModal = ({ member, isOpen, onClose, onUpdate, setSuccess }) =>
                             type="date"
                             name="dateOfBirth"
                             value={
-                                formData.dateOfBirth
-                                    ? new Date(formData.dateOfBirth).toISOString().split("T")[0]
+                                formData?.dateOfBirth
+                                    ? new Date(formData.dateOfBirth).toISOString().slice(0, 10)
                                     : ""
                             }
                             onChange={handleInputChange}
@@ -209,7 +209,7 @@ const UpdateMemberModal = ({ member, isOpen, onClose, onUpdate, setSuccess }) =>
             <ConfirmationBox
                 isOpen={isConfirmationBoxOpen}
                 title="Confirm Submission"
-                message="Are you sure you want to submit this editions?"
+                message="Are you sure you want to update? This action can't be undone."
                 onConfirm={handleConfirm}
                 onCancel={handleCancel}
             />

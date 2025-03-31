@@ -6,8 +6,10 @@ import { useSnackbar } from 'notistack';
 import RouteConstants from '../../constant/Routeconstant';
 import bookQueries from '../../queries/bookQueries';
 import { getAuthToken } from '../../utils/TokenHelper';
+import ConfirmationBox from '../../utils/ConfirmationBox';
 
 const EditBook = () => {
+  const [sln, setSLn] = useState('');
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [stock, setStock] = useState('');
@@ -21,9 +23,13 @@ const EditBook = () => {
   const { id } = useParams();
   const { enqueueSnackbar } = useSnackbar();
 
+  const [isConfirmationBoxOpen, setIsConfirmationBoxOpen] = useState(false);
+  const [formData, setFormData] = useState();
+
   const getBookDetail = bookQueries.bookByIdMutation(
     async (response) => {
-      const { title, author, Stock, ISBN, Price, DonatedBy, status, Issues } = response.data;
+      const { sln, title, author, Stock, ISBN, Price, DonatedBy, status, Issues } = response.data;
+      setSLn(sln);
       setTitle(title);
       setAuthor(author);
       setStock(Stock);
@@ -72,6 +78,7 @@ const EditBook = () => {
   const handleEditBook = () => {
     const data = {
       id,
+      sln,
       title,
       author,
       Stock: stock,
@@ -80,8 +87,19 @@ const EditBook = () => {
       DonatedBy: donatedBy,
       status
     };
+    setFormData(data);
+    setIsConfirmationBoxOpen(true);
     // setLoading(true);
-    editBook.mutateAsync(data);
+    // editBook.mutateAsync(data);
+  };
+
+  const handleConfirm = () => {
+    setIsConfirmationBoxOpen(false);
+    setLoading(true);
+    editBook.mutateAsync(formData);
+  };
+  const handleCancel = () => {
+    setIsConfirmationBoxOpen(false);
   };
 
   return (
@@ -94,6 +112,18 @@ const EditBook = () => {
               {/* <h1 className="text-3xl font-bold text-center mb-6 ">UPDATE BOOK</h1> */}
               <h1 className="text-2xl font-bold text-center mb-6 text-gray-600">UPDATE BOOK</h1>
               <hr className="my-2 border-t-2 border-gray-600" />
+
+              <div className="mb-4">
+                <label className="block text-lg font-medium text-gray-600 mb-2">SLN</label>
+                <input
+                  type="text"
+                  value={sln}
+                  onChange={(e) => setSLn(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-400 focus:outline-none"
+                  placeholder="SL Number"
+                />
+              </div>
+
               {/* Title Field */}
               <div className="mb-4">
                 <label className="block text-lg font-medium text-gray-600 mb-2">Title</label>
@@ -184,8 +214,14 @@ const EditBook = () => {
             </div>
           </div>
         )}
+      <ConfirmationBox
+        isOpen={isConfirmationBoxOpen}
+        title="Confirm Book Update"
+        message="Are you sure you want to update? This action can't be undone."
+        onConfirm={handleConfirm}
+        onCancel={handleCancel}
+      />
     </div>
-
   );
 };
 

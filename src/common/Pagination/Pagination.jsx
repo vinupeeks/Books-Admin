@@ -59,8 +59,7 @@ const Pagination = ({ totalPages, currentPage, pageSize, setPageSize, show, onPa
                             {page + 1}
                         </button>
                     );
-                })}
-
+                })} 
 
                 {/* Ellipsis if necessary */}
                 {endPage < totalPages - 2 && <span className="px-4 py-2">...</span>}
@@ -100,8 +99,7 @@ const Pagination = ({ totalPages, currentPage, pageSize, setPageSize, show, onPa
                             {size}
                         </Dropdown.Item>
                     ))}
-                </DropdownButton>
-
+                </DropdownButton> 
             )}
         </div >
     );

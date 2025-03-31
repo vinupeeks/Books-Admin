@@ -59,8 +59,8 @@ const ShowBook = () => {
             <h1 className="text-2xl font-bold text-center mb-6 text-gray-600">BOOK DETAILS</h1>
             <hr className="my-2 border-t-2 border-gray-600" />
             <div className="grid grid-cols-2 gap-4 text-gray-700">
-              <div className="font-semibold">ID:</div>
-              <div>{book.id || 'N/A'}</div>
+              <div className="font-semibold">Book No:</div>
+              <div>{book.sln || 'N/A'}</div>
               <div className="font-semibold">Title:</div>
               <div>{book.title || 'N/A'}</div>
               <div className="font-semibold">Author:</div>

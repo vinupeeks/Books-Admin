@@ -12,6 +12,7 @@ import UpdateMemberModal from "../MemberShip/UpdateMemberModal";
 import { useDispatch } from 'react-redux';
 import { clearSearchTerm } from "../../redux/reducers/searchReducers";
 import FamilyListTable from "./FamilyListTable";
+import ConfirmationBox from "../../utils/ConfirmationBox";
 
 const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipType }) => {
 
@@ -41,6 +42,13 @@ const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipT
   const [bookModal, setBookModal] = useState(false);
   const [selectedIssue, setSelectedIssue] = useState(null);
   const [success, setSuccess] = useState(false);
+
+  const [isConfirmationBoxOpen, setIsConfirmationBoxOpen] = useState(false);
+  const [message, setMessage] = useState({
+    action: "",
+    title: "",
+    message: "",
+  });
 
   const handleUpdateMember = (success, updatedData) => {
     console.log('Updated Member:', updatedData);
@@ -132,19 +140,34 @@ const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipT
       enqueueSnackbar(`Select a book or close the section..!`, { variant: 'warning' });
       return;
     }
-
-    const isConfirmed = window.confirm("Are you sure you want to issue this book ?");
-    if (!isConfirmed) {
-      return;
-    }
-
-    const payload = {
-      bookId: selectedBook?.id,
-      memberId: selectedMember?.id
-    }
-    setLoading(true);
-    BookIssueSubmit.mutateAsync(payload);
+    setMessage({
+      action: "issue",
+      title: "Issue Book",
+      message: "Are you sure you want to issue this book? This action can't be undone.",
+    })
+    setIsConfirmationBoxOpen(true);
   }
+
+  const handleConfirm = () => {
+    if (message.action === "issue") {
+      const payload = {
+        bookId: selectedBook?.id,
+        memberId: selectedMember?.id
+      }
+      setLoading(true);
+      BookIssueSubmit.mutateAsync(payload);
+      setIsConfirmationBoxOpen(false); 
+    }
+    const returnBookID = bookDetails[0].id;
+    setLoading(true);
+    BookIssueReturn.mutateAsync({ returnBookID });
+    setIsConfirmationBoxOpen(false);
+  };
+
+  const handleCancel = () => {
+    setIsConfirmationBoxOpen(false);
+    setMessage({ action: "", title: "", message: "" });
+  };
 
   const BookIssueReturn = bookQueries.BookIssueReturnMutation(
     async (response) => {
@@ -162,14 +185,21 @@ const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipT
     }
   );
   const handleBookReturn = () => {
-    const isConfirmed = window.confirm("Are you sure you want to return this book ?");
+    // const isConfirmed = window.confirm("Are you sure you want to return this book ?");
 
-    if (!isConfirmed) {
-      return;
-    }
-    const returnBookID = bookDetails[0].id;
-    setLoading(true);
-    BookIssueReturn.mutateAsync({ returnBookID });
+    // if (!isConfirmed) {
+    //   return;
+    // }
+    // const returnBookID = bookDetails[0].id;
+    // setLoading(true);
+    // BookIssueReturn.mutateAsync({ returnBookID });
+
+    setMessage({
+      action: "return",
+      title: "Return Book",
+      message: "Are you sure you want to return this book? This action can't be undone.",
+    })
+    setIsConfirmationBoxOpen(true);
   }
 
 
@@ -241,17 +271,6 @@ const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipT
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
   };
-
-  // const handleToggleRow = (membershipId) => {
-  //   setExpandedRow(prevRow => {
-  //     if (prevRow === membershipId) {
-  //       setTimeout(() => {
-  //         setExpandedRow(null);
-  //       },);
-  //     }
-  //     return prevRow === membershipId ? null : membershipId;
-  //   });
-  // };
   const handleToggleRow = (membershipId) => {
     setExpandedRow(prevRow => (prevRow === membershipId ? null : membershipId));
   };
@@ -334,7 +353,8 @@ const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipT
                 </p>
                 <p className="mb-2">
                   <strong>DOB:</strong>
-                  {new Date(selectedMembership.dateOfBirth).toLocaleDateString()}{" "}
+                  {/* {selectedMembership.dateOfBirth} */}
+                  {new Date(selectedMembership.dateOfBirth).toLocaleDateString()}
                 </p>
                 <p className="mb-2">
                   <strong>Membership Issued:</strong>{" "}
@@ -457,7 +477,7 @@ const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipT
           <table className="min-w-full table-auto">
             <thead className="bg-gray-300">
               <tr>
-                <th className="px-4 py-2 text-left w-10">SLN</th>
+                <th className="px-4 py-2 text-center w-10">#</th>
                 <th className="px-4 py-2 text-leftw-10">Membership ID</th>
                 <th className="px-4 py-2 text-left w-auto">Name</th>
                 <th className="px-4 py-2 text-left w-auto">Status</th>
@@ -499,7 +519,7 @@ const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipT
                       </td>
                       <td className="px-4 py-2 text-center">
                         <div className="flex items-center justify-between gap-2">
-                          {membership.memID.startsWith("F") ? (
+                          {/* {membership.memID.startsWith("F") ? (
                             <button
                               type="button"
                               className="flex justify-center items-center w-8 h-8 from-cyan-200 to-blue-200 rounded-full hover:bg-gray-300"
@@ -515,7 +535,7 @@ const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipT
                             </button>
                           ) : (
                             <div className="w-8 h-8"></div>
-                          )}
+                          )} */}
                           <button
                             type="button"
                             className={`px-4 py-2 text-sm font-medium rounded-lg mr-2 ${hasBook
@@ -573,8 +593,17 @@ const MembersList = ({ searchTerm, setSearchTerm, membershipType, setMembershipT
         onUpdate={handleUpdateMember}
         setSuccess={setSuccess}
       />
+      <ConfirmationBox
+        isOpen={isConfirmationBoxOpen}
+        title={message.title}
+        // message="Are you sure you want to create? This action can't be undone."
+        message={message.message}
+        onConfirm={handleConfirm}
+        onCancel={handleCancel}
+      />
     </div >
   );
 };
 
 export default MembersList;
+

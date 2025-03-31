@@ -13,7 +13,8 @@ const BooksTable = ({ books, currentPage, pageSize, totalCount }) => {
       <table className='w-full border-separate border-spacing-2'>
         <thead className="bg-gray-200 text-gray-700">
           <tr>
-            <th className="border border-slate-600 rounded-md px-4 py-2 text-left">SLN</th>
+            <th className="border border-slate-600 rounded-md px-4 py-2 text-center">#</th>
+            <th className="border border-slate-600 rounded-md px-4 py-2 text-left">BN</th>
             <th className="border border-slate-600 rounded-md px-4 py-2 text-left">Book Title</th>
             <th className="border border-slate-600 rounded-md px-4 py-2 text-left max-md:hidden">
               Author Name
@@ -33,6 +34,9 @@ const BooksTable = ({ books, currentPage, pageSize, totalCount }) => {
               <td className='border border-slate-700 rounded-md text-center'>
                 {/* {index + 1} */}
                 {currentPage * pageSize + index + 1}
+              </td>
+              <td className='border border-slate-700 rounded-md text-center'>
+                {book.sln}
               </td>
               <td className='border border-slate-700 rounded-md text-center'>
                 {book.title}
